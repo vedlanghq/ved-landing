@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "eslint"
   },
@@ -13,6 +14,7 @@
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.577.0",
     "next": "16.2.1",
+    "next-sitemap": "^4.2.3",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-icons": "^5.6.0",
