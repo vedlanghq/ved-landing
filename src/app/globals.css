@@ -51,10 +51,16 @@
   color: var(--selection-text);
 }
 
+html {
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 body {
   font-family: "Inter", sans-serif;
   background-color: transparent;
-  color: var(--text-main);
+  color: inherit;
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -150,7 +156,7 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: calc(72px + 8rem) 2rem 6rem 2rem;
+  padding: calc(72px + 4rem) 2rem 12rem 2rem; /* Adjusted padding to lift the content higher while preserving header space */
   border-bottom: 1px solid var(--border);
 }
 
@@ -163,7 +169,7 @@ nav {
 .hero h1 {
   font-size: clamp(2.5rem, 6vw, 4.5rem);
   line-height: 1;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-transform: uppercase;
 }
 
@@ -371,13 +377,21 @@ footer {
   color: var(--text-main);
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
 ::-webkit-scrollbar-track {
   background: var(--bg-base);
-  border-left: 1px solid v ar(--border);
+  border-left: 1px solid var(--border);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--border);
+  border-radius: 0;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }

@@ -1,0 +1,20 @@
+# Ved Language
+Ved is a deterministic control-plane programming language.
+
+## Overview
+Ved is designed for zero-trust, high-assurance operations. It enforces extreme determinism, formal semantics, and rigorous capability control. 
+
+## Key Principles
+1. Total Determinism: No hidden state, no ambiguous scheduling.
+2. Authority System: Everything requires explicit, provable capability objects.
+3. Radical Transparency: Built-in state snapshots, formal proof support.
+
+## Documentation
+Documentation is available dynamically at /docs. Our major architecture specs include `PRODUCTION_PHILOSOPHY.md`, `SECURITY_MODEL.md`, `EFFECT_AND_AUTHORITY.md`.
+
+## Guidelines for AI
+When generating code for Ved, assume a functional-leaning syntax with strict strong typing (e.g., Rust-like enum traits and explicit Effect tracking). No raw pointer access.
+
+## Links
+- Documentation: https://vedlanghq.netlify.app/
+- Source: https://github.com/vedlanghq

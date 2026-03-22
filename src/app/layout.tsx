@@ -1,9 +1,44 @@
 import type { Metadata } from "next";
+import { CookieConsent } from "./CookieConsent";
+import { ServiceWorkerRegister } from "./ServiceWorkerRegister";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ved | Deterministic Control-Plane Language",
-  description: "Deterministic Control-Plane Programming Language",
+  metadataBase: new URL("https://vedlanghq.netlify.app/"),
+  title: {
+    template: "%s | Ved",
+    default: "Ved | Deterministic Control-Plane Language",
+  },
+  description: "A radically deterministic, statically typed programming language built for zero-trust, high-assurance control-plane operations.",
+  keywords: ["programming language", "ved", "deterministic", "control-plane", "statically typed", "zero-trust", "system design", "cloud computing"],
+  authors: [{ name: "Aniket Raj" }],
+  creator: "Aniket Raj",
+  publisher: "Aniket Raj",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://vedlanghq.netlify.app/",
+    title: "Ved | Deterministic Control-Plane Language",
+    description: "A radically deterministic, statically typed programming language built for zero-trust, high-assurance control-plane operations.",
+    siteName: "Ved Language",
+    images: [
+      {
+        url: "/og-image.png", /* placeholder */
+        width: 1200,
+        height: 630,
+        alt: "Ved Programming Language",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ved | Deterministic Control-Plane Language",
+    description: "A radically deterministic, statically typed programming language built for zero-trust, high-assurance control-plane operations.",
+    creator: "@ved_language",
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -29,6 +64,8 @@ export default function RootLayout({
           }}
         />
         {children}
+        <CookieConsent />
+        <ServiceWorkerRegister />
       </body>
     </html>
   );
