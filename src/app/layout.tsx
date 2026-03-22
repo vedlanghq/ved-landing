@@ -9,8 +9,18 @@ export const metadata: Metadata = {
     template: "%s | Ved",
     default: "Ved | Deterministic Control-Plane Language",
   },
-  description: "A radically deterministic, statically typed programming language built for zero-trust, high-assurance control-plane operations.",
-  keywords: ["programming language", "ved", "deterministic", "control-plane", "statically typed", "zero-trust", "system design", "cloud computing"],
+  description:
+    "A radically deterministic, statically typed programming language built for zero-trust, high-assurance control-plane operations.",
+  keywords: [
+    "programming language",
+    "ved",
+    "deterministic",
+    "control-plane",
+    "statically typed",
+    "zero-trust",
+    "system design",
+    "cloud computing",
+  ],
   authors: [{ name: "Aniket Raj" }],
   creator: "Aniket Raj",
   publisher: "Aniket Raj",
@@ -19,11 +29,12 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://vedlanghq.netlify.app/",
     title: "Ved | Deterministic Control-Plane Language",
-    description: "A radically deterministic, statically typed programming language built for zero-trust, high-assurance control-plane operations.",
+    description:
+      "A radically deterministic, statically typed programming language built for zero-trust, high-assurance control-plane operations.",
     siteName: "Ved Language",
     images: [
       {
-        url: "/og-image.png", /* placeholder */
+        url: "/og-image.png" /* placeholder */,
         width: 1200,
         height: 630,
         alt: "Ved Programming Language",
@@ -33,11 +44,15 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Ved | Deterministic Control-Plane Language",
-    description: "A radically deterministic, statically typed programming language built for zero-trust, high-assurance control-plane operations.",
+    description:
+      "A radically deterministic, statically typed programming language built for zero-trust, high-assurance control-plane operations.",
     creator: "@ved_language",
   },
   icons: {
     icon: "/favicon.ico",
+  },
+  verification: { 
+    google : "googlec38aaf57e2bde5ad" 
   },
 };
 
