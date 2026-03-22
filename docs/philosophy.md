@@ -1,3 +1,7 @@
+---
+title: "Philosophy"
+order: 2
+---
 # Philosophy
 
 Ved is motivated by the observation that operating distributed systems

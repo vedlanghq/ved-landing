@@ -1,3 +1,7 @@
+---
+title: "Architecture"
+order: 3
+---
 # Architecture Overview
 
 Ved consists of several major components.

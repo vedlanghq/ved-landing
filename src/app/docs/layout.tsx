@@ -1,9 +1,10 @@
-import BackgroundShapes from "@/components/BackgroundShapes";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Link from "next/link";
+import BackgroundShapes from "@/components/BackgroundShapes";
 import { getAllDocs } from "@/lib/docs";
 import React from "react";
+import DocsSidebar from "./DocsSidebar";
+import "./docs.css";
 
 export default async function DocsLayout({
   children,
@@ -17,26 +18,21 @@ export default async function DocsLayout({
       <BackgroundShapes />
       <Header />
       <div className="docs-layout">
-        <aside className="docs-sidebar">
-          <h3>Documentation</h3>
-          <nav className="docs-nav">
-            {docs.map((doc) => {
-              const formattedTitle = doc.meta.title || doc.slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-              return (
-                <Link 
-                  key={doc.slug} 
-                  href={`/docs/${doc.slug}`}
-                  className="docs-nav-link"
-                >
-                  {formattedTitle}
-                </Link>
-              );
-            })}
-          </nav>
-        </aside>
+        <DocsSidebar docs={docs} />
         <main className="docs-content">
-          {children}
+          <div className="docs-content-inner">
+            {children}
+          </div>
         </main>
+        <aside className="docs-toc">
+          <h4>On this page</h4>
+          <ul>
+            {/* TOC will be dynamically populated later via a unified MDX pipeline or remark-toc. Quick placeholder below to match layout. */}
+            <li><a href="#">Introduction</a></li>
+            <li><a href="#">Concepts</a></li>
+            <li><a href="#">Architecture</a></li>
+          </ul>
+        </aside>
       </div>
       <Footer />
     </>

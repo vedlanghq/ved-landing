@@ -1,3 +1,7 @@
+---
+title: "Introduction"
+order: 1
+---
 # Introduction
 
 Ved is a deterministic control-plane programming language designed for

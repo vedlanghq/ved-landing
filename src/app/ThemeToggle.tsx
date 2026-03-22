@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FaSun, FaMoon } from "react-icons/fa";
+import { Moon, Sun } from "lucide-react";
 
 export default function ThemeToggle() {
   const [theme, setTheme] = useState("dark");
@@ -24,16 +24,16 @@ export default function ThemeToggle() {
   if (!mounted) {
     return (
       <button className="theme-toggle" id="themeToggle" aria-hidden="true" style={{ opacity: 0 }}>
-        <span><FaSun size={14} /></span>
+        <span><Sun size={14} /></span>
         <span>Light</span>
       </button>
     );
   }
 
   return (
-    <button className="theme-toggle" id="themeToggle" onClick={toggleTheme}>
+    <button className="theme-toggle" id="themeToggle" onClick={toggleTheme}>    
       <span id="themeIcon" style={{ display: 'inline-flex', alignItems: 'center' }}>
-        {theme === "dark" ? <FaSun size={14} /> : <FaMoon size={14} />}
+        {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
       </span>
       <span id="themeText">{theme === "dark" ? "Light" : "Dark"}</span>
     </button>
