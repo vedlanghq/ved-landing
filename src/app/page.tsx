@@ -1,34 +1,20 @@
 import ThemeToggle from "./ThemeToggle";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import BackgroundShapes from "../components/BackgroundShapes";
 
 export default function Home() {
   return (
     <>
-      {/* Solid Background Shapes */}
-      <div className="bg-shapes">
-        <div className="shape shape-1"></div>
-        <div className="shape shape-2"></div>
-        <div className="shape shape-3"></div>
-      </div>
+      <BackgroundShapes />
 
-      <header>
-        <nav>
-          <a href="#" className="logo">
-            <span className="logo-dot"></span> Ved
-          </a>
-          <div className="nav-links">
-            <a href="#vision">Vision</a>
-            <a href="#features">Features</a>
-            <a href="#syntax">Syntax</a>
-            <ThemeToggle />
-          </div>
-        </nav>
-      </header>
+      <Header />
 
       <main>
         <section className="hero">
           <div className="badge">v0.1 Experimental Spec</div>
 
-          <h1>Deterministic Control-Plane Programming Language</h1>
+          <h1>Deterministic Control Plane Programming Language</h1>
 
           <p>
             Ved is a deterministic declarative systems programming language for
@@ -37,10 +23,10 @@ export default function Home() {
           </p>
 
           <div className="cta-group">
-            <a href="docs.html" className="btn btn-primary">
+            <a href="/docs" className="btn btn-primary">
               Read the Documentation
             </a>
-            <a href="#" className="btn btn-secondary">
+            <a href="https://github.com/vedlanghq" target="_blank" className="btn btn-secondary">
               View GitHub
             </a>
           </div>
@@ -228,22 +214,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer>
-        <div className="footer-content">
-          <div className="logo">
-            <span className="logo-dot"></span> Ved
-          </div>
-
-          <div className="footer-text">
-            &copy; 2025 Ved Programming Language. Experimental Research Project.
-          </div>
-
-          <div className="footer-links">
-            <a href="#">Spec v0.1</a> <a href="#">Compiler</a>
-            <a href="#">Community</a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
