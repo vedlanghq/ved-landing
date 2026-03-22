@@ -758,3 +758,100 @@ footer {
 
 /* Remove previous layout conflicts */
 .hero, .split-section { display: none; }
+
+/* --- COMPREHENSIVE MOBILE OPTIMIZATION OVERRIDES --- */
+@media (max-width: 900px) {
+  .hero-text {
+    margin-left: 0;
+    padding: 0 1rem;
+  }
+  
+  .hero-text h1 {
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 1.1;
+  }
+  
+  .sub-text {
+    font-size: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .cta-group {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+  
+  .cta-group .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-links {
+    gap: 1rem;
+  }
+
+  .two-col-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .content-section, .execution-loop-section, .code-split-section, .footer-cta-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .code-panel {
+    padding: 1.5rem;
+    overflow-x: auto;
+  }
+
+  .loop-track {
+    padding: 1.5rem;
+    font-size: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .loop-container h2, .col-text h2 {
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .large-ctas {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .large-link {
+    font-size: 1.25rem;
+    width: 100%;
+    display: block;
+    padding-bottom: 0.5rem;
+  }
+
+  .final-tagline {
+    font-size: 1rem;
+    text-align: left;
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  header nav {
+    padding: 1rem 1.5rem;
+  }
+  
+  .hero-section {
+    padding: 6rem 1rem 3rem;
+  }
+  
+  .brutalist-list li {
+    font-size: 1.1rem;
+    padding-left: 1rem;
+  }
+}
+
