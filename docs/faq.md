@@ -2,6 +2,7 @@
 title: "FAQ"
 order: 6
 ---
+
 # FAQ
 
 ## Is Ved a general-purpose programming language?

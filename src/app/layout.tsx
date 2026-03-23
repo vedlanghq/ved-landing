@@ -51,8 +51,8 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-  verification: { 
-    google : "googlec38aaf57e2bde5ad" 
+  verification: {
+    google: "googlec38aaf57e2bde5ad",
   },
 };
 

@@ -29,7 +29,7 @@ export function CookieConsent() {
 
   const enableAnalytics = () => {
     // Placeholder for analytics initialization (e.g. GA, Plausible)
-    window.dispatchEvent(new Event("cookie-consent-granted"));
+    globalThis.dispatchEvent(new Event("cookie-consent-granted"));
   };
 
   if (!showBanner) return null;
@@ -57,15 +57,26 @@ export function CookieConsent() {
       className="cookie-banner"
     >
       <div style={{ flex: 1 }}>
-        <p style={{ margin: "0 0 0.5rem", fontSize: "0.95rem", fontWeight: "600", color: "var(--text-main)" }}>
+        <p
+          style={{
+            margin: "0 0 0.5rem",
+            fontSize: "0.95rem",
+            fontWeight: "600",
+            color: "var(--text-main)",
+          }}
+        >
           We value your privacy
         </p>
-        <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}>
-          We use cookies to enhance your browsing experience and analyze our traffic. 
-          By clicking "Accept", you consent to our use of cookies.
+        <p
+          style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-muted)" }}
+        >
+          We use cookies to enhance your browsing experience and analyze our
+          traffic. By clicking Accept&quot;, you consent to our use of cookies.
         </p>
       </div>
-      <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
+      <div
+        style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}
+      >
         <button
           onClick={handleDecline}
           style={{
@@ -77,8 +88,12 @@ export function CookieConsent() {
             fontSize: "0.85rem",
             transition: "all 0.2s",
           }}
-          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "var(--bg-glass)")}
-          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+          onMouseOver={(e) =>
+            (e.currentTarget.style.backgroundColor = "var(--bg-glass)")
+          }
+          onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor = "transparent")
+          }
         >
           Decline
         </button>

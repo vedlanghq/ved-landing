@@ -14,10 +14,10 @@ export default function Header() {
         <Link href="/" className="logo">
           <span className="logo-dot"></span> Ved
         </Link>
-        
+
         {/* Mobile Hamburger Icon */}
-        <button 
-          className="mobile-menu-btn" 
+        <button
+          className="mobile-menu-btn"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle Navigation"
         >
@@ -25,9 +25,19 @@ export default function Header() {
         </button>
 
         <div className={`nav-links ${isMenuOpen ? "open" : ""}`}>
-          <Link href="/#vision" onClick={() => setIsMenuOpen(false)}>Vision</Link>
-          <Link href="/#features" onClick={() => setIsMenuOpen(false)}>Features</Link>
-          <Link href="/docs" onClick={() => setIsMenuOpen(false)} style={{ fontWeight: 600, color: 'var(--accent)' }}>Docs</Link>
+          <Link href="/#vision" onClick={() => setIsMenuOpen(false)}>
+            Vision
+          </Link>
+          <Link href="/#features" onClick={() => setIsMenuOpen(false)}>
+            Features
+          </Link>
+          <Link
+            href="/docs"
+            onClick={() => setIsMenuOpen(false)}
+            style={{ fontWeight: 600, color: "var(--accent)" }}
+          >
+            Docs
+          </Link>
           <div className="theme-toggle-wrapper">
             <ThemeToggle />
           </div>

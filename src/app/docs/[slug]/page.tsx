@@ -12,9 +12,9 @@ export async function generateStaticParams() {
 
 export default async function DocPage({
   params,
-}: {
+}: Readonly<{
   params: Promise<{ slug: string }>;
-}) {
+}>) {
   const resolvedParams = await params;
   const doc = getDocBySlug(resolvedParams.slug);
 

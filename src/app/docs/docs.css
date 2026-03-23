@@ -230,7 +230,8 @@
   background: var(--shape-1);
   padding: 1.5rem;
 }
-.markdown-body ul, .markdown-body ol {
+.markdown-body ul,
+.markdown-body ol {
   margin-bottom: 1.5rem;
   padding-left: 2rem;
   color: var(--text-muted);

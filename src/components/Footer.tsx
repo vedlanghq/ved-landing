@@ -16,8 +16,20 @@ export default function Footer() {
 
         <div className="footer-links">
           <Link href="/docs">Spec v0.1</Link>
-          <a href="https://github.com/vedlanghq" target="_blank" rel="noopener noreferrer">Source</a>
-          <a href="#" className="disabled" style={{ opacity: 0.5, cursor: "not-allowed" }}>Community</a>
+          <a
+            href="https://github.com/vedlanghq"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Source
+          </a>
+          <a
+            href="#"
+            className="disabled"
+            style={{ opacity: 0.5, cursor: "not-allowed" }}
+          >
+            Community
+          </a>
         </div>
       </div>
     </footer>

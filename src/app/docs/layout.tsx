@@ -8,10 +8,10 @@ import "./docs.css";
 
 export default async function DocsLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
-  const docs = await getAllDocs();
+}>) {
+  const docs = getAllDocs();
 
   return (
     <>
@@ -20,17 +20,21 @@ export default async function DocsLayout({
       <div className="docs-layout">
         <DocsSidebar docs={docs} />
         <main className="docs-content">
-          <div className="docs-content-inner">
-            {children}
-          </div>
+          <div className="docs-content-inner">{children}</div>
         </main>
         <aside className="docs-toc">
           <h4>On this page</h4>
           <ul>
             {/* TOC will be dynamically populated later via a unified MDX pipeline or remark-toc. Quick placeholder below to match layout. */}
-            <li><a href="#">Introduction</a></li>
-            <li><a href="#">Concepts</a></li>
-            <li><a href="#">Architecture</a></li>
+            <li>
+              <a href="#">Introduction</a>
+            </li>
+            <li>
+              <a href="#">Concepts</a>
+            </li>
+            <li>
+              <a href="#">Architecture</a>
+            </li>
           </ul>
         </aside>
       </div>
