@@ -1,5 +1,6 @@
 ---
 title: "Architecture"
+category: "Core Concepts"
 order: 3
 ---
 

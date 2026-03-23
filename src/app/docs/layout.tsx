@@ -4,6 +4,7 @@ import BackgroundShapes from "@/components/BackgroundShapes";
 import { getAllDocs } from "@/lib/docs";
 import React from "react";
 import DocsSidebar from "./DocsSidebar";
+import DocsSearch from "@/components/DocsSearch";
 import "./docs.css";
 
 export default async function DocsLayout({
@@ -16,27 +17,10 @@ export default async function DocsLayout({
   return (
     <>
       <BackgroundShapes />
-      <Header />
+      <Header searchSlot={<DocsSearch />} />
       <div className="docs-layout">
         <DocsSidebar docs={docs} />
-        <main className="docs-content">
-          <div className="docs-content-inner">{children}</div>
-        </main>
-        <aside className="docs-toc">
-          <h4>On this page</h4>
-          <ul>
-            {/* TOC will be dynamically populated later via a unified MDX pipeline or remark-toc. Quick placeholder below to match layout. */}
-            <li>
-              <a href="#">Introduction</a>
-            </li>
-            <li>
-              <a href="#">Concepts</a>
-            </li>
-            <li>
-              <a href="#">Architecture</a>
-            </li>
-          </ul>
-        </aside>
+        {children}
       </div>
       <Footer />
     </>

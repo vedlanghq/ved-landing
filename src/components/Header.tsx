@@ -5,7 +5,7 @@ import Link from "next/link";
 import ThemeToggle from "@/app/ThemeToggle";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-export default function Header() {
+export default function Header({ searchSlot }: { searchSlot?: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -38,6 +38,11 @@ export default function Header() {
           >
             Docs
           </Link>
+          {searchSlot && (
+            <div style={{ marginLeft: "1rem", display: "flex", alignItems: "center" }}>
+              {searchSlot}
+            </div>
+          )}
           <div className="theme-toggle-wrapper">
             <ThemeToggle />
           </div>

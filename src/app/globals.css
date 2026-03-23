@@ -111,7 +111,9 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: transparent;
+  background-color: var(--header-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   z-index: 100;
 }

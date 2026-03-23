@@ -1,5 +1,6 @@
 ---
 title: "FAQ"
+category: "Reference"
 order: 6
 ---
 

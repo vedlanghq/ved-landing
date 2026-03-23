@@ -2,9 +2,9 @@
 .docs-layout {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr) 250px;
-  align-items: start;
-  margin-top: 72px; /* offset fixed header */
-  min-height: calc(100vh - 72px);
+
+  margin-top: 73px; /* offset fixed header */
+  min-height: calc(100vh - 73px);
   width: 100%;
   max-width: none;
   background-color: transparent;
@@ -13,22 +13,17 @@
 
 .docs-sidebar {
   border-right: 1px solid var(--border);
-  background: var(--header-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-main);
+  z-index: 10;
   display: flex;
   flex-direction: column;
-  position: sticky;
-  top: 72px;
-  height: calc(100vh - 72px);
-  overflow-y: auto;
 }
 
 .docs-sidebar h3 {
   padding: 2rem;
   margin: 0;
   border-bottom: 1px solid var(--border);
-  font-size: 0.85rem;
+  font-size: 0.76rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -44,7 +39,7 @@
 .docs-nav-link {
   display: block;
   padding: 1.25rem 2rem;
-  font-size: 0.9rem;
+  font-size: 0.81rem;
   color: var(--text-muted);
   border-bottom: 1px solid var(--border);
   text-transform: uppercase;
@@ -77,15 +72,16 @@
 
 .docs-toc {
   position: sticky;
-  top: 72px;
-  height: calc(100vh - 72px);
+  top: 73px;
+  height: calc(100vh - 73px);
   padding: 4rem 2rem;
-  border-left: 1px solid var(--border);
   overflow-y: auto;
+  z-index: 10;
+  align-self: start;
 }
 
 .docs-toc h4 {
-  font-size: 0.85rem;
+  font-size: 0.76rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-main);
@@ -103,7 +99,7 @@
 }
 
 .docs-toc a {
-  font-size: 0.85rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
   transition: color 0.2s;
 }
@@ -121,7 +117,7 @@
   border: none;
   border-bottom: 1px solid var(--border);
   color: var(--text-main);
-  font-size: 0.9rem;
+  font-size: 0.81rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -178,12 +174,12 @@
 /* Markdown prose overrides */
 .markdown-body {
   color: var(--text-main);
-  font-size: 1.125rem;
+  font-size: 1rem;
   line-height: 1.7;
 }
 .markdown-body h1 {
   margin-bottom: 2rem;
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.25rem, 4.5vw, 3.6rem);
   text-transform: uppercase;
   letter-spacing: -0.02em;
   font-weight: 800;
@@ -193,7 +189,7 @@
 .markdown-body h2 {
   margin-top: 4rem;
   margin-bottom: 1.5rem;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: var(--text-main);
 }
@@ -238,4 +234,55 @@
 }
 .markdown-body li {
   margin-bottom: 0.5rem;
+}
+
+/* Pagination */
+.docs-pagination {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  gap: 1.5rem;
+}
+.docs-pagination-link {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  flex: 1;
+  text-decoration: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+.docs-pagination-link:hover {
+  border-color: var(--accent);
+  background: var(--shape-1);
+}
+.docs-pagination-link.prev {
+  align-items: flex-start;
+}
+.docs-pagination-link.next {
+  align-items: flex-end;
+  text-align: right;
+}
+.docs-pagination-label {
+  font-size: 0.81rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.docs-pagination-title {
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 1rem;
+}
+.docs-pagination-empty {
+  flex: 1;
+}
+@media (max-width: 768px) {
+  .docs-pagination {
+    flex-direction: column;
+  }
 }

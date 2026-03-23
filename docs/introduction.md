@@ -1,5 +1,6 @@
 ---
 title: "Introduction"
+category: "Getting Started"
 order: 1
 ---
 

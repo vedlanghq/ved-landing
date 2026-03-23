@@ -1,5 +1,6 @@
 ---
 title: "Philosophy"
+category: "Getting Started"
 order: 2
 ---
 
