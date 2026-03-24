@@ -13,10 +13,9 @@
 
 .docs-sidebar {
   border-right: 1px solid var(--border);
-  background: var(--bg-main);
+  background: var(--bg-surface);
   z-index: 10;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
 }
 
 .docs-sidebar h3 {

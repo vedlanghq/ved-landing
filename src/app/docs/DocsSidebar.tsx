@@ -24,7 +24,10 @@ export default function DocsSidebar({
   let activeCategory = "";
 
   docs.forEach((doc) => {
-    const category = doc.meta?.category || "Overview";
+    const rawCategory = doc.meta?.category || "Overview";
+    // Remove leading numbers, e.g. "1. Introduction" -> "Introduction"
+    const category = rawCategory.replace(/^\d+\.\s*/, "");
+    
     if (!groupedDocs[category]) groupedDocs[category] = [];
     groupedDocs[category].push(doc);
 
@@ -246,7 +249,7 @@ export default function DocsSidebar({
                                         height: "6px",
                                         borderRadius: "50%",
                                         background: "var(--accent)",
-                                        boxShadow: "0 0 0 3px var(--bg-main)",
+                                        boxShadow: "0 0 0 3px var(--bg-surface)",
                                       }}
                                     />
                                   )}

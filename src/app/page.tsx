@@ -259,8 +259,8 @@ export default function Home() {
               </motion.p>
 
               <motion.div className="cta-group" variants={itemFade}>
-                <Link href="/docs" className="btn btn-primary">
-                  Explore Architecture
+                <Link href="/errors" className="btn btn-primary">
+                  Explore Development Experience
                 </Link>
                 <a
                   href="https://github.com/vedlanghq"
@@ -750,8 +750,8 @@ export default function Home() {
               >
                 Join discussions
               </a>
-              <Link href="/docs" className="large-link">
-                Explore architecture
+              <Link href="/errors" className="large-link">
+                Explore developer experience
               </Link>
               <a
                 href="https://github.com/vedlanghq"
