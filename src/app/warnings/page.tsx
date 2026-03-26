@@ -86,7 +86,7 @@ export default function WarningSystem() {
         <div className="layout-grid">
           <div className="grid-column">
              <h2>Suppression & Policy</h2>
-             <p>Explicit acknowledgement via local suppression guarantees warnings don't get lost in noise, while policy enforcement lets teams raise warnings to errors.</p>
+             <p>Explicit acknowledgement via local suppression guarantees warnings don&apos;t get lost in noise, while policy enforcement lets teams raise warnings to errors.</p>
           </div>
         </div>
       </section>

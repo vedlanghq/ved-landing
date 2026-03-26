@@ -223,7 +223,6 @@
   color: var(--text-muted);
   font-style: italic;
   background: var(--shape-1);
-  padding: 1.5rem;
 }
 .markdown-body ul,
 .markdown-body ol {

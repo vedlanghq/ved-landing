@@ -19,8 +19,8 @@ export default function SearchDialog({ docs = [] }: { docs: any[] }) {
         setIsOpen(false);
       }
     };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    globalThis.addEventListener("keydown", handleKeyDown);
+    return () => globalThis.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const filteredDocs = docs.filter((doc) => {
@@ -31,8 +31,8 @@ export default function SearchDialog({ docs = [] }: { docs: any[] }) {
       const isWholeWord = false;
 
       // Escape special characters in query to prevent regex errors
-      const escapedQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const regexPattern = isWholeWord ? `\\b${escapedQuery}\\b` : escapedQuery;
+      const escapedQuery = searchQuery.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
+      const regexPattern = isWholeWord ? String.raw`\b${escapedQuery}\b` : escapedQuery;
       const regexFlags = isMatchCase ? "" : "i";
 
       const searchRegex = new RegExp(regexPattern, regexFlags);
@@ -236,7 +236,7 @@ export default function SearchDialog({ docs = [] }: { docs: any[] }) {
                     color: "var(--text-muted)",
                   }}
                 >
-                  No results found for "{searchQuery}"
+                  No results found for &quot;{searchQuery}"
                 </div>
               )}
             </div>
