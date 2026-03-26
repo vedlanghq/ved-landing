@@ -4,15 +4,30 @@ import matter from "gray-matter";
 
 const docsDirectory = path.join(process.cwd(), "docs");
 
+function sanitizeSlug(input: string): string {
+  // Remove markdown extension if present
+  const withoutExtension = input.replace(/\.md$/i, "");
+  // Lowercase and replace any sequence of non-alphanumeric/hyphen characters with a single hyphen
+  const normalized = withoutExtension
+    .toLowerCase()
+    .replace(/[^a-z0-9\-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return normalized;
+}
+
 export function getDocSlugs() {
   return fs
     .readdirSync(docsDirectory)
     .filter((file) => file.endsWith(".md"))
-    .map((file) => file.replace(/\.md$/, ""));
+    .map((file) => sanitizeSlug(file))
+    .filter((slug) => slug.length > 0);
 }
 
 export function getDocBySlug(slug: string) {
-  const realSlug = slug.replace(/\.md$/, "");
+  const realSlug = sanitizeSlug(slug);
+  if (!realSlug) {
+    return null;
+  }
   const fullPath = path.join(docsDirectory, `${realSlug}.md`);
 
   if (!fs.existsSync(fullPath)) {
