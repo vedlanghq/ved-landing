@@ -1,24 +1,25 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import readingTime from "reading-time";
 
 const docsDirectory = path.join(process.cwd(), "docs");
 
 function sanitizeSlug(input: string): string {
   // Remove markdown extension if present
-  const withoutExtension = input.replace(/\.md$/i, "");
+  const withoutExtension = input.replace(/\.mdx?$/i, "");
   // Lowercase and replace any sequence of non-alphanumeric/hyphen characters with a single hyphen
   const normalized = withoutExtension
     .toLowerCase()
-    .replace(/[^a-z0-9\-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replaceAll(/[^a-z0-9\-]+/g, "-")
+    .replaceAll(/^-+|-+$/g, "");
   return normalized;
 }
 
 export function getDocSlugs() {
   return fs
     .readdirSync(docsDirectory)
-    .filter((file) => file.endsWith(".md"))
+    .filter((file) => file.endsWith(".mdx") || file.endsWith(".md"))
     .map((file) => sanitizeSlug(file))
     .filter((slug) => slug.length > 0);
 }
@@ -28,18 +29,27 @@ export function getDocBySlug(slug: string) {
   if (!realSlug) {
     return null;
   }
-  const fullPath = path.join(docsDirectory, `${realSlug}.md`);
+  let fullPath = path.join(docsDirectory, `${realSlug}.mdx`);
 
   if (!fs.existsSync(fullPath)) {
-    return null;
+    fullPath = path.join(docsDirectory, `${realSlug}.md`);
+    if (!fs.existsSync(fullPath)) {
+      return null;
+    }
   }
 
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
+  const readTime = readingTime(content);
+
+  const meta = {
+    ...data,
+    readingTime: Math.ceil(readTime.minutes),
+  } as Record<string, any>;
 
   return {
     slug: realSlug,
-    meta: data,
+    meta,
     content,
   };
 }

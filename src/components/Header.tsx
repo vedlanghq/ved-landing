@@ -24,6 +24,11 @@ export default function Header({ searchSlot }: { searchSlot?: React.ReactNode })
           {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>
 
+        <div 
+          className={`mobile-backdrop ${isMenuOpen ? "open" : ""}`} 
+          onClick={() => setIsMenuOpen(false)} 
+          role="presentation"
+        />
         <div className={`nav-links ${isMenuOpen ? "open" : ""}`}>
           <Link href="/#vision" onClick={() => setIsMenuOpen(false)}>
             Vision

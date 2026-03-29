@@ -26,35 +26,35 @@ export default function SearchDialog({ docs = [] }: { docs: any[] }) {
   const filteredDocs = docs.filter((doc) => {
     if (!searchQuery.trim()) return true;
     try {
-      // Setup placeholders for future toggle features
-      const isMatchCase = false;
-      const isWholeWord = false;
+      // Split search query into individual terms for multi-word matching
+      const terms = searchQuery
+        .trim()
+        .split(/\s+/)
+        .map(term => term.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&')) // Escape safely
+        .filter(term => term.length > 0);
 
-      // Escape special characters in query to prevent regex errors
-      const escapedQuery = searchQuery.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
-      const regexPattern = isWholeWord ? String.raw`\b${escapedQuery}\b` : escapedQuery;
-      const regexFlags = isMatchCase ? "" : "i";
+      if (terms.length === 0) return true;
 
-      const searchRegex = new RegExp(regexPattern, regexFlags);
+      // Compile a regex for each word typed
+      const regexes = terms.map(term => new RegExp(term, 'i'));
 
       const title = doc.meta?.title || "";
       const slug = doc.slug || "";
       const category = doc.meta?.category || "";
       const description = doc.meta?.description || "";
+      const content = doc.content || "";
 
-      return (
-        searchRegex.test(title) ||
-        searchRegex.test(slug) ||
-        searchRegex.test(category) ||
-        searchRegex.test(description)
-      );
+      // Concatenate all extractable data into one searchable payload
+      const searchableText = `${title} ${slug} ${category} ${description} ${content}`;
+
+      // Ensure every word the user typed exists SOMEWHERE in this page
+      return regexes.every(regex => regex.test(searchableText));
+      
     } catch (e) {
-      // Fallback
+      // Extreme Fallback
       const normalizedQuery = searchQuery.toLowerCase();
-      return (
-        (doc.meta?.title || "").toLowerCase().includes(normalizedQuery) ||
-        (doc.slug || "").toLowerCase().includes(normalizedQuery)
-      );
+      const title = doc.meta?.title?.toLowerCase() || "";
+      return title.includes(normalizedQuery) || (doc.slug || "").toLowerCase().includes(normalizedQuery);
     }
   });
 
