@@ -443,7 +443,7 @@ footer {
   .mobile-backdrop {
     display: none; /* Hide default, show via .open on mobile */
   }
-  
+
   .mobile-backdrop.open {
     display: block;
     position: fixed;
@@ -705,23 +705,137 @@ footer {
   letter-spacing: -0.03em;
 }
 
-.loop-track {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1rem 1.75rem;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.25rem;
-  color: var(--accent);
-  padding: 3rem;
-  background: var(--bg-base);
-  border: 1px solid var(--border);
+/* ── Pipeline Track (Execution Loop) ─────────────────────── */
+
+/*
+  Desktop: CSS grid with 11 columns — 6 equal step cells (1fr each)
+  and 5 fixed 28px connector cells between them.
+  This guarantees all step boxes are the same width regardless of content.
+*/
+.pipeline-track {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr 28px) 1fr;
+  align-items: start;
   margin-bottom: 3rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
-.loop-track .arrow {
+/* ── Step Card ─────────────────────────────────────────────── */
+.pipeline-step {
+  /* Flat: fixed collapsed height so every card matches */
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem 0.9rem 1rem;
+  /* Extra right padding to avoid text colliding with expand icon */
+  padding-right: 2.25rem;
+  border: 1px solid var(--border);
+  background: var(--bg-base);
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+  /* Stretch to fill grid cell height */
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.pipeline-step:hover {
+  background: var(--bg-surface);
+  border-color: var(--accent);
+}
+
+.pipeline-step:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.pipeline-step--expanded {
+  border-color: var(--accent);
+  background: var(--bg-surface);
+}
+
+/* ── Expand / Collapse Icon ────────────────────────────────── */
+.pipeline-expand-icon {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 2px;
   color: var(--text-muted);
-  opacity: 0.5;
+  background: transparent;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.pipeline-step:hover .pipeline-expand-icon,
+.pipeline-step--expanded .pipeline-expand-icon {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── Step Text ─────────────────────────────────────────────── */
+.pipeline-num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.pipeline-label {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+  text-transform: uppercase;
+  line-height: 1.25;
+}
+
+.pipeline-desc {
+  display: block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.67rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Connector (arrow between cards) ───────────────────────── */
+.pipeline-connector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 80px; /* matches collapsed card min-height */
+  width: 100%;
+}
+
+.pipeline-connector-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.pipeline-connector-arrow {
+  width: 12px;
+  height: 12px;
+  color: var(--text-muted);
+  flex-shrink: 0;
 }
 
 .loop-container p {
@@ -729,6 +843,38 @@ footer {
   max-width: 800px;
   color: var(--text-muted);
   line-height: 1.6;
+}
+
+/* ── Mobile: vertical stack ──────────────────────────────── */
+@media (max-width: 768px) {
+  .pipeline-track {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    overflow-x: visible;
+  }
+
+  .pipeline-step {
+    min-height: 72px;
+    width: 100%;
+    padding: 0.85rem 2.25rem 0.85rem 0.9rem;
+  }
+
+  .pipeline-connector {
+    flex-direction: column;
+    height: 24px;
+    width: auto;
+    justify-content: center;
+  }
+
+  .pipeline-connector-line {
+    flex: 1;
+    width: 1px;
+    height: auto;
+  }
+
+  .pipeline-connector-arrow {
+    transform: rotate(90deg);
+  }
 }
 
 .code-block-wrapper h3 {
@@ -740,41 +886,398 @@ footer {
   letter-spacing: -0.01em;
 }
 
-.code-panel.runtime-output {
-  background: var(--bg-surface-hover);
-  border: 1px solid var(--border);
+/* ── Project Cards ─────────────────────────────────────────── */
+.proj-cards {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
 }
 
-.primary-code code {
-  color: var(--code-text);
+.proj-card {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s ease;
+}
+
+.proj-card--open {
+  background: transparent;
+}
+
+.proj-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1.1rem 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  gap: 1rem;
+}
+
+.proj-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.proj-card-name {
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-.runtime-output code {
-  color: var(--text-main);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.95rem;
-  line-height: 1.8;
-}
-
-.runtime-output .hl-accent {
-  color: var(--accent);
-  font-weight: bold;
-}
-
-.runtime-output .hl-success {
-  color: #10b981;
-  font-weight: bold;
-}
-
-.caption {
-  margin-top: 1.5rem;
   font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.proj-card-tag {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+.proj-card-chevron {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.proj-card--open .proj-card-chevron {
+  color: var(--text-main);
+}
+
+
+
+.proj-card-desc {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0 0 1rem 0;
+  padding-right: 1rem;
+}
+
+/* Repo link with animated arrow */
+.proj-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-main);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.1em;
+  margin-bottom: 1.2rem;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.proj-card-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Arrow nudges ↗ on hover */
+.proj-card-arrow {
+  transition: transform 0.2s ease;
+}
+.proj-card-link:hover .proj-card-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* ── Roadmap Chart ─────────────────────────────────────────── */
+.rdmap-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.rdmap-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--text-muted);
 }
 
+.rdmap-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.rdmap-dot--done    { background: #10b981; }
+.rdmap-dot--active  { background: var(--accent); }
+.rdmap-dot--planned { background: var(--border); border: 1px solid var(--text-muted); box-sizing: border-box; }
+
+.rdmap-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--border);
+}
+
+/* Each milestone row */
+.rdmap-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .rdmap-row {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+}
+
+.rdmap-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.rdmap-label {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rdmap-note {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rdmap-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.rdmap-fill {
+  height: 100%;
+  border-radius: 3px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Fill colour by status */
+.rdmap-row--done   .rdmap-fill { background: #10b981; }
+.rdmap-row--active .rdmap-fill {
+  background: linear-gradient(90deg, var(--accent), #60a5fa);
+  /* Subtle shimmer pulse */
+  animation: rdmap-pulse 2.5s ease-in-out infinite;
+}
+.rdmap-row--planned .rdmap-fill { display: none; }
+
+@keyframes rdmap-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+.rdmap-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rdmap-badge--done    { color: #10b981; border-color: #10b981; background: rgba(16,185,129,0.08); }
+.rdmap-badge--active  { color: var(--accent); border-color: var(--accent); background: rgba(59,130,246,0.08); }
+.rdmap-badge--planned { color: var(--text-muted); border-color: var(--border); }
+
+/* ── Terminal Shell (shared by both panels) ─────────────────── */
+.term-shell {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--bg-surface);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Titlebar */
+.term-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  background: var(--bg-base);
+  border-bottom: 1px solid var(--border);
+  min-height: 36px;
+}
+
+.term-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-red    { background: #ff5f57; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green  { background: #28ca42; }
+
+.term-filename {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-left: 0.5rem;
+  flex: 1;
+  letter-spacing: 0.02em;
+}
+
+.term-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 0.2rem 0.55rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  line-height: 1;
+}
+.term-copy-btn:hover {
+  color: var(--text-main);
+  border-color: var(--text-muted);
+}
+
+/* Body: gutter + code side-by-side */
+.term-body {
+  display: flex;
+  flex-direction: row;
+  overflow: auto;
+  /* Let the shell height grow with content */
+}
+
+.term-gutter {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.7rem 1rem 0.6rem;
+  border-right: 1px solid var(--border);
+  background: var(--bg-base);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  opacity: 0.45;
+  user-select: none;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.term-code {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  margin: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--text-main);
+  overflow-x: auto;
+  background: transparent;
+}
+
+.term-line {
+  display: block;
+  white-space: pre;
+  min-height: 1.65em;
+}
+
+/* ── Code Editor token colours ──────────────────────────────── */
+/* These read from the theme CSS variables so dark/light both work */
+.ct-keyword  { color: var(--token-keyword);  font-weight: 700; }
+.ct-entity   { color: var(--token-entity);   font-weight: 700; }
+.ct-property { color: var(--token-property); }
+.ct-operator { color: var(--token-operator); }
+
+
+
+.rt-body {
+  min-height: 8rem;   /* Starts small; grows as lines appear */
+  align-items: flex-start;
+}
+
+.rt-code {
+  color: var(--text-main);
+  font-size: 0.85rem;
+  line-height: 1.75;
+  width: 100%;
+}
+
+/* Output token colours */
+.rt-dim     { color: var(--text-muted); opacity: 0.55; }
+.rt-accent  { color: var(--accent); font-weight: 700; }
+.rt-success { color: #10b981; font-weight: 700; }
+
+/* Blinking block cursor */
+.rt-cursor {
+  display: inline-block;
+  color: var(--accent);
+  animation: blink 1s step-end infinite;
+  font-size: 0.9em;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Live badge */
+.rt-live-badge {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  color: #10b981;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid #10b981;
+  padding: 0.1rem 0.45rem;
+  border-radius: 9999px;
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
+/* ── Keep old token classes alive (used elsewhere) */
 .token-dim {
   color: var(--text-muted);
   opacity: 0.5;

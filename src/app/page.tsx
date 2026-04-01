@@ -4,8 +4,8 @@ import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import BackgroundShapes from "../components/BackgroundShapes";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 
 function AccordionItem({
   title,
@@ -13,19 +13,21 @@ function AccordionItem({
   solution,
   labelA = "The limit:",
   labelB = "The Ved approach:",
+  isOpen,
+  onToggle,
 }: Readonly<{
   title: string;
   limitation?: string;
   solution: string;
   labelA?: string;
   labelB?: string;
+  isOpen: boolean;
+  onToggle: () => void;
 }>) {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <div style={{ borderBottom: "1px solid var(--border)", padding: "1rem 0" }}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={onToggle}
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -41,6 +43,7 @@ function AccordionItem({
           fontFamily: "inherit",
           textAlign: "left",
         }}
+        aria-expanded={isOpen}
       >
         <span>{title}</span>
         <motion.svg
@@ -95,25 +98,24 @@ function AccordionItem({
 function FAQItem({
   question,
   answer,
+  isOpen,
+  onToggle,
 }: Readonly<{
   question: string;
   answer: React.ReactNode;
+  isOpen: boolean;
+  onToggle: () => void;
 }>) {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
     <motion.div
-      style={{
-        borderBottom: "1px solid var(--border)",
-      }}
+      style={{ borderBottom: "1px solid var(--border)" }}
       initial={false}
-      animate={{
-        backgroundColor: isOpen ? "var(--bg-surface-hover)" : "transparent",
-      }}
+      animate={{ backgroundColor: isOpen ? "var(--bg-surface-hover)" : "transparent" }}
       transition={{ duration: 0.2 }}
     >
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={onToggle}
+        aria-expanded={isOpen}
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -147,16 +149,7 @@ function FAQItem({
             marginLeft: "1rem",
           }}
         >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 5v14M5 12h14" />
           </svg>
         </motion.div>
@@ -167,21 +160,440 @@ function FAQItem({
         style={{ overflow: "hidden", padding: "0 1rem" }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div
-          style={{
-            paddingBottom: "1.5rem",
-            color: "var(--text-muted)",
-            fontSize: "1.1rem",
-            lineHeight: 1.6,
-          }}
-        >
+        <div style={{ paddingBottom: "1.5rem", color: "var(--text-muted)", fontSize: "1.1rem", lineHeight: 1.6 }}>
           {answer}
         </div>
       </motion.div>
     </motion.div>
   );
 }
+
+function PipelineStep({
+  num,
+  label,
+  desc,
+}: Readonly<{ num: string; label: string; desc: string }>) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <button
+      className={`pipeline-step${expanded ? " pipeline-step--expanded" : ""}`}
+      onClick={() => setExpanded((v) => !v)}
+      aria-expanded={expanded}
+    >
+      {/* Expand / collapse icon — top-right */}
+      <motion.div
+        className="pipeline-expand-icon"
+        animate={{ rotate: expanded ? 45 : 0 }}
+        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        aria-hidden="true"
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+        </svg>
+      </motion.div>
+
+      <span className="pipeline-num">{num}</span>
+      <span className="pipeline-label">{label}</span>
+
+      <motion.div
+        className="pipeline-desc-wrap"
+        initial={false}
+        animate={{
+          height: expanded ? "auto" : 0,
+          opacity: expanded ? 1 : 0,
+          marginTop: expanded ? "0.6rem" : 0,
+        }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        style={{ overflow: "hidden" }}
+      >
+        <span className="pipeline-desc">{desc}</span>
+      </motion.div>
+    </button>
+  );
+}
+
+/* ───── Code Terminal ─────────────────────────────────────── */
+const CODE_LINES = [
+  { num: 1,  tokens: [{ t: "keyword", v: "domain" }, { t: "plain", v: " " }, { t: "entity", v: "WorkerPool" }, { t: "plain", v: " {" }] },
+  { num: 2,  tokens: [{ t: "plain", v: "  " }, { t: "keyword", v: "state" }, { t: "plain", v: " {" }] },
+  { num: 3,  tokens: [{ t: "plain", v: "    " }, { t: "property", v: "desired" }, { t: "plain", v: ": int" }] },
+  { num: 4,  tokens: [{ t: "plain", v: "    " }, { t: "property", v: "actual" }, { t: "plain", v: ": int" }] },
+  { num: 5,  tokens: [{ t: "plain", v: "  }" }] },
+  { num: 6,  tokens: [] },
+  { num: 7,  tokens: [{ t: "plain", v: "  " }, { t: "keyword", v: "goal" }, { t: "plain", v: " " }, { t: "entity", v: "Stable" }, { t: "plain", v: " {" }] },
+  { num: 8,  tokens: [{ t: "plain", v: "    " }, { t: "keyword", v: "predicate" }, { t: "plain", v: " actual " }, { t: "operator", v: "==" }, { t: "plain", v: " desired" }] },
+  { num: 9,  tokens: [{ t: "plain", v: "  }" }] },
+  { num: 10, tokens: [] },
+  { num: 11, tokens: [{ t: "plain", v: "  " }, { t: "keyword", v: "transition" }, { t: "plain", v: " " }, { t: "entity", v: "ScaleUp" }, { t: "plain", v: " {" }] },
+  { num: 12, tokens: [{ t: "plain", v: "    " }, { t: "keyword", v: "step" }, { t: "plain", v: " {" }] },
+  { num: 13, tokens: [{ t: "plain", v: "      " }, { t: "keyword", v: "emit" }, { t: "plain", v: " " }, { t: "entity", v: "ProvisionWorker" }, { t: "plain", v: "()" }] },
+  { num: 14, tokens: [{ t: "plain", v: "    }" }] },
+  { num: 15, tokens: [{ t: "plain", v: "  }" }] },
+  { num: 16, tokens: [{ t: "plain", v: "}" }] },
+];
+
+type TokenType = "keyword" | "entity" | "property" | "operator" | "plain";
+const TOKEN_CLASS: Record<TokenType, string> = {
+  keyword:  "ct-keyword",
+  entity:   "ct-entity",
+  property: "ct-property",
+  operator: "ct-operator",
+  plain:    "",
+};
+
+function CodeTerminal({ onCopy, copied }: Readonly<{ onCopy: () => void; copied: boolean }>) {
+  return (
+    <div className="term-shell">
+      {/* Title bar */}
+      <div className="term-titlebar">
+        <span className="term-dot dot-red" />
+        <span className="term-dot dot-yellow" />
+        <span className="term-dot dot-green" />
+        <span className="term-filename">worker_pool.ved</span>
+        <button className="term-copy-btn" onClick={onCopy} aria-label="Copy code">
+          {copied ? (
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+          ) : (
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+          )}
+          <span>{copied ? "Copied" : "Copy"}</span>
+        </button>
+      </div>
+      {/* Code body */}
+      <div className="term-body">
+        <div className="term-gutter" aria-hidden="true">
+          {CODE_LINES.map((l) => <span key={l.num}>{l.num}</span>)}
+        </div>
+        <pre className="term-code">
+          <code>
+            {CODE_LINES.map((line) => (
+              <div key={line.num} className="term-line">
+                {line.tokens.length === 0 ? <>&nbsp;</> : line.tokens.map((tk, i) => (
+                  tk.t === "plain"
+                    ? <span key={`tk-${line.num}-${i}`}>{tk.v}</span>
+                    : <span key={`tk-${line.num}-${i}`} className={TOKEN_CLASS[tk.t as TokenType]}>{tk.v}</span>
+                ))}
+              </div>
+            ))}
+          </code>
+        </pre>
+      </div>
+    </div>
+  );
+}
+
+/* ───── Runtime Terminal ──────────────────────────────────── */
+const RUNTIME_LINES: { type: "dim" | "accent" | "success" | "plain"; text: string }[][] = [
+  [
+    { type: "dim",   text: "tick=1" },
+    { type: "plain", text: "  desired=3  actual=0  " },
+    { type: "dim",   text: "→" },
+    { type: "plain", text: "  " },
+    { type: "accent",text: "scheduling ScaleUp" },
+  ],
+  [{ type: "dim", text: "tick=2" }, { type: "plain", text: "  actual=1" }],
+  [{ type: "dim", text: "tick=3" }, { type: "plain", text: "  actual=2" }],
+  [
+    { type: "dim",     text: "tick=4" },
+    { type: "plain",   text: "  actual=3  " },
+    { type: "dim",     text: "→" },
+    { type: "plain",   text: "  " },
+    { type: "success", text: "goal Stable satisfied ✓" },
+  ],
+  [{ type: "plain", text: "" }],  // blank spacer before repeat
+];
+
+const RUNTIME_CLASS: Record<string, string> = {
+  dim:     "rt-dim",
+  accent:  "rt-accent",
+  success: "rt-success",
+  plain:   "",
+};
+
+function RuntimeTerminal() {
+  const [visibleCount, setVisibleCount] = useState(0);
+  const [loopKey, setLoopKey] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (visibleCount < RUNTIME_LINES.length) {
+      timerRef.current = setTimeout(() => setVisibleCount((c) => c + 1), 520);
+    } else {
+      // After showing all lines, wait 1.4 s then restart
+      timerRef.current = setTimeout(() => {
+        setLoopKey((k) => k + 1);
+        setVisibleCount(0);
+      }, 1400);
+    }
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, [visibleCount, loopKey]);
+
+  return (
+    <div className="term-shell runtime-shell">
+      {/* Title bar */}
+      <div className="term-titlebar">
+        <span className="term-dot dot-red" />
+        <span className="term-dot dot-yellow" />
+        <span className="term-dot dot-green" />
+        <span className="term-filename">runtime output</span>
+        <span className="rt-live-badge">● live</span>
+      </div>
+      {/* Output body */}
+      <div className="term-body rt-body">
+        <pre className="term-code rt-code">
+          <code key={loopKey}>
+            <AnimatePresence initial={false}>
+              {RUNTIME_LINES.slice(0, visibleCount).map((segments, li) => (
+                <motion.div
+                  key={`${loopKey}-${li}`}
+                  className="term-line"
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                >
+                  {segments.map((seg, si) =>
+                    seg.type === "plain"
+                      ? <span key={`seg-${loopKey}-${li}-${si}`}>{seg.text}</span>
+                      : <span key={`seg-${loopKey}-${li}-${si}`} className={RUNTIME_CLASS[seg.type]}>{seg.text}</span>
+                  )}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {/* Blinking cursor on last visible line */}
+            {visibleCount > 0 && visibleCount <= RUNTIME_LINES.length && (
+              <span className="rt-cursor" aria-hidden="true">▋</span>
+            )}
+          </code>
+        </pre>
+      </div>
+    </div>
+  );
+}
+
+/* ───── Project Card ──────────────────────────────────────── */
+type ProjStatus = "done" | "active" | "planned";
+
+function ProjectCard(props: Readonly<{
+  id: string;
+  name: string;
+  tag: string;
+  desc: string;
+  href: string;
+  isOpen: boolean;
+  onToggle: () => void;
+}>) {
+  const { name, tag, desc, href, isOpen: open, onToggle } = props;
+  return (
+    <div className={`proj-card${open ? " proj-card--open" : ""}`}>
+      <button
+        className="proj-card-header"
+        onClick={onToggle}
+        aria-expanded={open}
+      >
+        <div className="proj-card-meta">
+          <span className="proj-card-name">{name}</span>
+          <span className="proj-card-tag">{tag}</span>
+        </div>
+        <motion.div
+          className="proj-card-chevron"
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          aria-hidden="true"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </motion.div>
+      </button>
+
+      {/* Expandable body */}
+      <motion.div
+        className="proj-card-body"
+        initial={false}
+        animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        style={{ overflow: "hidden" }}
+      >
+        <p className="proj-card-desc">{desc}</p>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="proj-card-link"
+          tabIndex={open ? 0 : -1}
+        >
+          <span>View repository</span>
+          {/* Arrow icon — rotates to ↗ on hover via CSS */}
+          <svg className="proj-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 17L17 7" /><path d="M7 7h10v10" />
+          </svg>
+        </a>
+      </motion.div>
+    </div>
+  );
+}
+
+/* ───── Roadmap Row ───────────────────────────────────────── */
+const RDMAP_WIDTH: Record<ProjStatus, string> = {
+  done:    "100%",
+  active:  "52%",
+  planned: "0%",
+};
+const RDMAP_LABEL: Record<ProjStatus, string> = {
+  done:    "Done",
+  active:  "In progress",
+  planned: "Planned",
+};
+
+function RoadmapRow(props: Readonly<{
+  status: ProjStatus;
+  label: string;
+  note: string;
+  index: number;
+}>) {
+  const { status, label, note, index } = props;
+  return (
+    <motion.div
+      className={`rdmap-row rdmap-row--${status}`}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 }}
+    >
+      {/* Left meta */}
+      <div className="rdmap-meta">
+        <span className="rdmap-label">{label}</span>
+        <span className="rdmap-note">{note}</span>
+      </div>
+
+      {/* Bar track */}
+      <div className="rdmap-track">
+        <motion.div
+          className="rdmap-fill"
+          initial={{ width: "0%" }}
+          whileInView={{ width: RDMAP_WIDTH[status] }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 + index * 0.08 }}
+        />
+      </div>
+
+      {/* Status badge */}
+      <span className={`rdmap-badge rdmap-badge--${status}`}>{RDMAP_LABEL[status]}</span>
+    </motion.div>
+  );
+}
+
+/* ───── Accordion Group Wrappers ─────────────────────────── */
+
+const PROBLEM_ITEMS = [
+  { title: "Imperative scripts",             limitation: "Sequential, step-by-step scripts fail unpredictably halfway through, leaving systems in unknown partial states that require manual intervention.",              solution: "Ved uses declarative goals. The runtime continuously calculates and executes the safest path to equilibrium regardless of the starting state." },
+  { title: "Controller boilerplate",         limitation: "Developers spend countless hours writing redundant loops, error handling, and retry logic just to watch for simple state changes.",                                solution: "Ved\u2019s runtime intrinsically provides the observation and execution loop, letting you write only the exact domain logic and transition bounds." },
+  { title: "Configuration drift",            limitation: "Live systems drift from their declared configuration due to manual changes, edge cases, or silent failures, leading to unstable environments.",                   solution: "Ved constantly cross-references live actual state with declared desired state, actively scheduling transitions to repair deviations automatically." },
+  { title: "Non-reproducible execution timing", limitation: "Race conditions and asynchronous task scheduling cause intermittent, impossible-to-reproduce bugs in distributed networks.",                                solution: "Ved processes orchestration logic in strictly sequential, deterministic slices, making every system transition 100% reproducible and testable." },
+] as const;
+
+function ProblemAccordions() {
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  return (
+    <>
+      {PROBLEM_ITEMS.map((item) => (
+        <AccordionItem
+          key={item.title}
+          title={item.title}
+          limitation={item.limitation}
+          solution={item.solution}
+          isOpen={openKey === item.title}
+          onToggle={() => setOpenKey(openKey === item.title ? null : item.title)}
+        />
+      ))}
+    </>
+  );
+}
+
+const FEATURES_ITEMS = [
+  { title: "Persistent system state",        limitation: "The canonical representation of the domain logic.",            solution: "State definitions explicitly encode exactly what properties of a system determine its behavior, automatically versioned and schema-managed.",                                                                           labelA: "Concept:", labelB: "Purpose:" },
+  { title: "Stable operating goals",         limitation: "Expressions describing what a valid state looks like.",         solution: "Instead of writing imperative checks, you declare specific invariant rules (predicates). If any rule fails, the system knows it is out of equilibrium.",                                                          labelA: "Concept:", labelB: "Purpose:" },
+  { title: "Deterministic transition logic", limitation: "Strictly pure functions that map from state to state.",          solution: "Transitions encode safe pathways between states. They are recorded and fully replayable without any network or disk IO side-effects mutating them under the hood.",                                                labelA: "Concept:", labelB: "Purpose:" },
+  { title: "Structured authority boundaries",limitation: "Cryptographically enforced bounds on who can mutate state.",    solution: "Defines exact Role-Based limitations baked directly into the compiler, ensuring unauthorized transactions are dropped before they even reach the executor.",                                                       labelA: "Concept:", labelB: "Purpose:" },
+] as const;
+
+function FeaturesAccordions() {
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  return (
+    <>
+      {FEATURES_ITEMS.map((item) => (
+        <AccordionItem
+          key={item.title}
+          title={item.title}
+          limitation={item.limitation}
+          solution={item.solution}
+          labelA={item.labelA}
+          labelB={item.labelB}
+          isOpen={openKey === item.title}
+          onToggle={() => setOpenKey(openKey === item.title ? null : item.title)}
+        />
+      ))}
+    </>
+  );
+}
+
+const PROJECT_PKGS = [
+  { id: "runtime",  name: "ved-runtime",  tag: "Execution Engine",    desc: "The deterministic scheduler, interpreter, domain registry, and persistence layer. Implements gas-bounded slice execution, autonomous goal reconciliation, and quiescence detection.", href: "https://github.com/vedlanghq/ved-runtime" },
+  { id: "compiler", name: "ved-compiler", tag: "Language Frontend",   desc: "Lexer, parser, AST construction, semantic validation, and bytecode emission. Produces portable `.vedc` binary artefacts consumed directly by the runtime.",                            href: "https://github.com/vedlanghq/ved-compiler" },
+  { id: "cli",      name: "ved-cli",      tag: "Operational Tooling", desc: "The developer-facing command-line interface. Compiles, runs, inspects traces, and drives the runtime from the terminal. The canonical integration point for CI pipelines.",          href: "https://github.com/vedlanghq/ved-cli" },
+] as const;
+
+function ProjectCards() {
+  const [openId, setOpenId] = useState<string | null>(null);
+  return (
+    <div className="proj-cards">
+      {PROJECT_PKGS.map((pkg) => (
+        <ProjectCard
+          key={pkg.id}
+          id={pkg.id}
+          name={pkg.name}
+          tag={pkg.tag}
+          desc={pkg.desc}
+          href={pkg.href}
+          isOpen={openId === pkg.id}
+          onToggle={() => setOpenId(openId === pkg.id ? null : pkg.id)}
+        />
+      ))}
+    </div>
+  );
+}
+
+const FAQ_ITEMS: { question: string; answer: React.ReactNode }[] = [
+  { question: "What is Ved?", answer: <p>Ved is a deterministic control-plane programming language designed to help engineers build reliable, long-running distributed systems. It enables developers to describe desired system behaviour using structured state models, goals, and bounded execution logic.</p> },
+  { question: "What problem does Ved solve?", answer: <><p>Modern distributed systems are difficult to operate because orchestration logic is often:</p><ul className="brutalist-list check" style={{ marginTop: "1rem" }}><li>imperative</li><li>non-deterministic</li><li>difficult to reproduce</li><li>prone to configuration drift</li></ul><p style={{ marginTop: "1rem" }}>Ved introduces a deterministic execution model that helps systems converge toward stable operating conditions.</p></> },
+  { question: "How is Ved different from existing programming languages?", answer: <p>Ved focuses on orchestration behaviour rather than application logic. It provides built-in concepts such as persistent system state, convergence goals, structured authority boundaries, and replayable execution, which are not primary concerns in most general-purpose languages.</p> },
+  { question: "Is Ved intended to replace languages like Rust, Go, or Python?", answer: <p>No. Ved is intended to complement existing languages by governing system behaviour at the control-plane level. Application services and data-plane logic can continue to be implemented using traditional languages.</p> },
+  { question: "What does deterministic execution mean in Ved?", answer: <p>Deterministic execution means that given the same initial state and external inputs, the runtime will evolve the system in the same way every time. This enables reproducible debugging, predictable recovery, and improved operational reasoning.</p> },
+  { question: "What are goals in Ved?", answer: <p>Goals represent stable desired conditions for the system. The runtime continuously evaluates current state and executes transitions that help the system move toward satisfying these goals.</p> },
+  { question: "Can Ved interact with real infrastructure or external systems?", answer: <p>Yes. External interactions are modeled as explicit effects. These effects are isolated, recorded, and replayable, allowing the runtime to maintain deterministic behaviour while operating in unpredictable environments.</p> },
+  { question: "Is Ved suitable for building general application software?", answer: <p>Ved is primarily designed for control-plane orchestration and long-lived system coordination. It is not intended to replace traditional application frameworks.</p> },
+  { question: "Is Ved production ready?", answer: <p>Ved is currently in early design and prototyping stages. The project focuses on validating deterministic runtime semantics and convergence models before expanding toward broader production use.</p> },
+];
+
+function FAQGroup() {
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  return (
+    <div style={{ borderTop: "1px solid var(--border)" }}>
+      {FAQ_ITEMS.map((item) => (
+        <FAQItem
+          key={item.question}
+          question={item.question}
+          answer={item.answer}
+          isOpen={openKey === item.question}
+          onToggle={() => setOpenKey(openKey === item.question ? null : item.question)}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function Home() {
+
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -298,26 +710,7 @@ export default function Home() {
                 often implemented using...
               </p>
               <div className="accordion-group" style={{ margin: "2rem 0" }}>
-                <AccordionItem
-                  title="Imperative scripts"
-                  limitation="Sequential, step-by-step scripts fail unpredictably halfway through, leaving systems in unknown partial states that require manual intervention."
-                  solution="Ved uses declarative goals. The runtime continuously calculates and executes the safest path to equilibrium regardless of the starting state."
-                />
-                <AccordionItem
-                  title="Controller boilerplate"
-                  limitation="Developers spend countless hours writing redundant loops, error handling, and retry logic just to watch for simple state changes."
-                  solution="Ved's runtime intrinsically provides the observation and execution loop, letting you write only the exact domain logic and transition bounds."
-                />
-                <AccordionItem
-                  title="Configuration drift"
-                  limitation="Live systems drift from their declared configuration due to manual changes, edge cases, or silent failures, leading to unstable environments."
-                  solution="Ved constantly cross-references live actual state with declared desired state, actively scheduling transitions to repair deviations automatically."
-                />
-                <AccordionItem
-                  title="Non-reproducible execution timing"
-                  limitation="Race conditions and asynchronous task scheduling cause intermittent, impossible-to-reproduce bugs in distributed networks."
-                  solution="Ved processes orchestration logic in strictly sequential, deterministic slices, making every system transition 100% reproducible and testable."
-                />
+                <ProblemAccordions />
               </div>
               <p>
                 As systems grow, operational behaviour becomes harder to reason
@@ -345,34 +738,7 @@ export default function Home() {
             >
               <p>Ved programs define:</p>
               <div className="accordion-group" style={{ margin: "2rem 0" }}>
-                <AccordionItem
-                  title="Persistent system state"
-                  limitation="The canonical representation of the domain logic."
-                  solution="State definitions explicitly encode exactly what properties of a system determine its behavior, automatically versioned and schema-managed."
-                  labelA="Concept:"
-                  labelB="Purpose:"
-                />
-                <AccordionItem
-                  title="Stable operating goals"
-                  limitation="Expressions describing what a valid state looks like."
-                  solution="Instead of writing imperative checks, you declare specific invariant rules (predicates). If any rule fails, the system knows it is out of equilibrium."
-                  labelA="Concept:"
-                  labelB="Purpose:"
-                />
-                <AccordionItem
-                  title="Deterministic transition logic"
-                  limitation="Strictly pure functions that map from state to state."
-                  solution="Transitions encode safe pathways between states. They are recorded and fully replayable without any network or disk IO side-effects mutating them under the hood."
-                  labelA="Concept:"
-                  labelB="Purpose:"
-                />
-                <AccordionItem
-                  title="Structured authority boundaries"
-                  limitation="Cryptographically enforced bounds on who can mutate state."
-                  solution="Defines exact Role-Based limitations baked directly into the compiler, ensuring unauthorized transactions are dropped before they even reach the executor."
-                  labelA="Concept:"
-                  labelB="Purpose:"
-                />
+                <FeaturesAccordions />
               </div>
               <p>
                 The runtime continuously evaluates current conditions and drives
@@ -388,18 +754,30 @@ export default function Home() {
         <section className="execution-loop-section">
           <motion.div className="loop-container" {...fadeUp}>
             <h2>Deterministic execution loop</h2>
-            <div className="loop-track" style={{ flexWrap: "nowrap", fontSize: "clamp(0.65rem, 1.2vw, 1rem)", padding: "1.5rem", gap: "0.5rem 0.75rem", overflowX: "auto", whiteSpace: "nowrap" }}>
-              <span>observe state</span>
-              <span className="arrow">→</span>
-              <span>evaluate goals</span>
-              <span className="arrow">→</span>
-              <span>schedule transition</span>
-              <span className="arrow">→</span>
-              <span>persist mutation</span>
-              <span className="arrow">→</span>
-              <span>emit effects</span>
-              <span className="arrow">→</span>
-              <span>repeat</span>
+            <div className="pipeline-track">
+              {([
+                { num: "01", label: "Observe State",       desc: "Snapshot current domain state" },
+                { num: "02", label: "Evaluate Goals",      desc: "Check all predicate invariants" },
+                { num: "03", label: "Schedule Transition", desc: "Select the next safe state path" },
+                { num: "04", label: "Persist Mutation",    desc: "Write-ahead log before execution" },
+                { num: "05", label: "Emit Effects",        desc: "Dispatch recorded side-effects" },
+                { num: "06", label: "Repeat",              desc: "Deterministic loop continues" },
+              ] as const).flatMap((step, i, arr) => {
+                const nodes = [
+                  <PipelineStep key={step.num} num={step.num} label={step.label} desc={step.desc} />,
+                ];
+                if (i < arr.length - 1) {
+                  nodes.push(
+                    <div key={`c-${step.num}`} className="pipeline-connector" aria-hidden="true">
+                      <div className="pipeline-connector-line" />
+                      <svg className="pipeline-connector-arrow" viewBox="0 0 12 12" fill="none">
+                        <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                  );
+                }
+                return nodes;
+              })}
             </div>
             <p>
               Ved executes orchestration logic in discrete deterministic slices.
@@ -414,61 +792,7 @@ export default function Home() {
           <div className="two-col-grid align-top">
             <motion.div className="code-block-wrapper" {...fadeUp}>
               <h3>Example: self-stabilizing worker pool</h3>
-              <div
-                className="code-panel primary-code"
-                style={{ position: "relative" }}
-              >
-                <button
-                  onClick={handleCopy}
-                  style={{
-                    position: "absolute",
-                    top: "1rem",
-                    right: "1rem",
-                    background: "transparent",
-                    border: "1px solid var(--border)",
-                    color: copied ? "var(--text)" : "var(--text-muted)",
-                    padding: "0.25rem 0.75rem",
-                    fontSize: "0.75rem",
-                    fontFamily: "var(--font-mono)",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  {copied ? "Copied" : "Copy"}
-                </button>
-                <pre>
-                  <code>
-                    <span className="token-keyword">domain</span>{" "}
-                    <span className="token-entity">WorkerPool</span> {"{\n"}
-                    {"  "}
-                    <span className="token-keyword">state</span> {"{\n"}
-                    {"    "}
-                    <span className="token-property">desired</span>: int{"\n"}
-                    {"    "}
-                    <span className="token-property">actual</span>: int{"\n"}
-                    {"  }\n\n"}
-                    {"  "}
-                    <span className="token-keyword">goal</span>{" "}
-                    <span className="token-entity">Stable</span> {"{\n"}
-                    {"    "}
-                    <span className="token-keyword">predicate</span> actual{" "}
-                    <span className="token-operator">==</span> desired{"\n"}
-                    {"  }\n\n"}
-                    {"  "}
-                    <span className="token-keyword">transition</span>{" "}
-                    <span className="token-entity">ScaleUp</span> {"{\n"}
-                    {"    "}
-                    <span className="token-keyword">step</span> {"{\n"}
-                    {"      "}
-                    <span className="token-keyword">emit</span>{" "}
-                    <span className="token-entity">ProvisionWorker</span>()
-                    {"\n"}
-                    {"    }\n"}
-                    {"  }\n"}
-                    {"}"}
-                  </code>
-                </pre>
-              </div>
+              <CodeTerminal onCopy={handleCopy} copied={copied} />
               <p className="caption">
                 The runtime continuously reconciles actual system state with
                 declared goals.
@@ -485,96 +809,72 @@ export default function Home() {
               }}
             >
               <h3>Runtime behaviour</h3>
-              <div className="code-panel runtime-output">
-                <pre>
-                  <code>
-                    <span className="token-dim">tick=1</span> desired=3 actual=0{" "}
-                    <span className="token-dim">→</span>{" "}
-                    <span className="hl-accent">scheduling ScaleUp</span>
-                    {"\n"}
-                    <span className="token-dim">tick=2</span> actual=1{"\n"}
-                    <span className="token-dim">tick=3</span> actual=2{"\n"}
-                    <span className="token-dim">tick=4</span> actual=3{" "}
-                    <span className="token-dim">→</span>{" "}
-                    <span className="hl-success">goal Stable satisfied</span>
-                  </code>
-                </pre>
-              </div>
+              <RuntimeTerminal />
             </motion.div>
           </div>
         </section>
 
-        {/* ARCHITECTURE & ROADMAP */}
+        {/* ── PROJECT STRUCTURE ─────────────────────────── */}
         <section className="content-section">
           <div className="two-col-grid align-top">
+            {/* Left: static context */}
             <motion.div className="col-text" {...fadeUp}>
               <h3>Project structure</h3>
-              <ul className="brutalist-list" style={{ marginTop: "1rem" }}>
-                <li>
-                  <strong>ved-runtime</strong>{" "}
-                  <span
-                    style={{
-                      color: "var(--text-muted)",
-                      fontWeight: 400,
-                      marginLeft: "1ch",
-                    }}
-                  >
-                    — deterministic execution engine
-                  </span>
-                </li>
-                <li>
-                  <strong>ved-compiler</strong>{" "}
-                  <span
-                    style={{
-                      color: "var(--text-muted)",
-                      fontWeight: 400,
-                      marginLeft: "1ch",
-                    }}
-                  >
-                    — language frontend and semantic validation
-                  </span>
-                </li>
-                <li>
-                  <strong>ved-cli</strong>{" "}
-                  <span
-                    style={{
-                      color: "var(--text-muted)",
-                      fontWeight: 400,
-                      marginLeft: "1ch",
-                    }}
-                  >
-                    — operational tooling
-                  </span>
-                </li>
-              </ul>
+              <p style={{ marginBottom: "1.5rem" }}>
+                Ved is organized as a tightly-coupled workspace of three
+                purpose-built crates. Each crate owns a distinct layer of the
+                compilation and execution pipeline, with no cross-layer
+                dependencies leaking upward.
+              </p>
               <p>
-                Ved is being developed in public with a focus on validating
+                The project is developed in public with a focus on validating
                 deterministic orchestration semantics before distributed runtime
                 expansion.
               </p>
             </motion.div>
 
+            {/* Right: expandable component cards */}
             <motion.div
               className="col-text"
               {...fadeUp}
-              transition={{
-                delay: 0.1,
-                duration: 0.8,
-                ease: [0.16, 1, 0.3, 1] as const,
-              }}
+              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
             >
-              <h3>Development roadmap</h3>
-              <ul className="brutalist-list" style={{ marginTop: "1rem" }}>
-                <li>Deterministic scheduler prototype</li>
-                <li>Persistent state journal</li>
-                <li>Replayable execution model</li>
-                <li>Syntax and IR stabilization</li>
-                <li>Convergence analysis tooling</li>
-                <li>Distributed runtime research</li>
-              </ul>
+              <ProjectCards />
             </motion.div>
           </div>
         </section>
+
+        {/* ── DEVELOPMENT ROADMAP ───────────────────────── */}
+        <section className="content-section" style={{ background: "var(--bg-surface)" }}>
+          <motion.div {...fadeUp} style={{ maxWidth: "1600px", margin: "0 auto" }}>
+            <h3 style={{ marginBottom: "0.5rem" }}>Development roadmap</h3>
+            <p style={{ marginBottom: "3rem", fontSize: "1.1rem" }}>
+              A milestone-based view of the project&apos;s engineering progress.
+            </p>
+
+            {/* Legend */}
+            <div className="rdmap-legend">
+              <span className="rdmap-legend-item"><span className="rdmap-dot rdmap-dot--done" />Completed</span>
+              <span className="rdmap-legend-item"><span className="rdmap-dot rdmap-dot--active" />In progress</span>
+              <span className="rdmap-legend-item"><span className="rdmap-dot rdmap-dot--planned" />Planned</span>
+            </div>
+
+            {/* Chart */}
+            <div className="rdmap-chart">
+              {([
+                { status: "done",    label: "Deterministic scheduler prototype",  note: "Priority aging, starvation control, quiescence detection"  },
+                { status: "done",    label: "Persistent state journal",            note: "Snapshot / restore cycle, write-ahead log"                 },
+                { status: "active",  label: "Replayable execution model",          note: "Bytecode IR engine, slice resumption, trace hashing"       },
+                { status: "active",  label: "Syntax and IR stabilization",         note: "Parser hardening, canonical bytecode spec, `.vedc` format"  },
+                { status: "planned", label: "Convergence analysis tooling",        note: "Static goal reachability, oscillation detection"           },
+                { status: "planned", label: "Distributed runtime research",        note: "Multi-node domain federation, consensus primitives"         },
+              ] as const).map((row, i) => (
+                <RoadmapRow key={row.label} index={i} {...row} />
+              ))}
+            </div>
+          </motion.div>
+        </section>
+
 
         {/* FREQUENTLY ASKED QUESTIONS */}
         <section
@@ -595,122 +895,9 @@ export default function Home() {
             >
               Frequently Asked Questions
             </h2>
-            <div style={{ borderTop: "1px solid var(--border)" }}>
-              <FAQItem
-                question="What is Ved?"
-                answer={
-                  <p>
-                    Ved is a deterministic control-plane programming language
-                    designed to help engineers build reliable, long-running
-                    distributed systems. It enables developers to describe
-                    desired system behaviour using structured state models,
-                    goals, and bounded execution logic.
-                  </p>
-                }
-              />
-              <FAQItem
-                question="What problem does Ved solve?"
-                answer={
-                  <>
-                    <p>
-                      Modern distributed systems are difficult to operate
-                      because orchestration logic is often:
-                    </p>
-                    <ul
-                      className="brutalist-list check"
-                      style={{ marginTop: "1rem" }}
-                    >
-                      <li>imperative</li>
-                      <li>non-deterministic</li>
-                      <li>difficult to reproduce</li>
-                      <li>prone to configuration drift</li>
-                    </ul>
-                    <p style={{ marginTop: "1rem" }}>
-                      Ved introduces a deterministic execution model that helps
-                      systems converge toward stable operating conditions.
-                    </p>
-                  </>
-                }
-              />
-              <FAQItem
-                question="How is Ved different from existing programming languages?"
-                answer={
-                  <p>
-                    Ved focuses on orchestration behaviour rather than
-                    application logic. It provides built-in concepts such as
-                    persistent system state, convergence goals, structured
-                    authority boundaries, and replayable execution, which are
-                    not primary concerns in most general-purpose languages.
-                  </p>
-                }
-              />
-              <FAQItem
-                question="Is Ved intended to replace languages like Rust, Go, or Python?"
-                answer={
-                  <p>
-                    No. Ved is intended to complement existing languages by
-                    governing system behaviour at the control-plane level.
-                    Application services and data-plane logic can continue to be
-                    implemented using traditional languages.
-                  </p>
-                }
-              />
-              <FAQItem
-                question="What does deterministic execution mean in Ved?"
-                answer={
-                  <p>
-                    Deterministic execution means that given the same initial
-                    state and external inputs, the runtime will evolve the
-                    system in the same way every time. This enables reproducible
-                    debugging, predictable recovery, and improved operational
-                    reasoning.
-                  </p>
-                }
-              />
-              <FAQItem
-                question="What are goals in Ved?"
-                answer={
-                  <p>
-                    Goals represent stable desired conditions for the system.
-                    The runtime continuously evaluates current state and
-                    executes transitions that help the system move toward
-                    satisfying these goals.
-                  </p>
-                }
-              />
-              <FAQItem
-                question="Can Ved interact with real infrastructure or external systems?"
-                answer={
-                  <p>
-                    Yes. External interactions are modeled as explicit effects.
-                    These effects are isolated, recorded, and replayable,
-                    allowing the runtime to maintain deterministic behaviour
-                    while operating in unpredictable environments.
-                  </p>
-                }
-              />
-              <FAQItem
-                question="Is Ved suitable for building general application software?"
-                answer={
-                  <p>
-                    Ved is primarily designed for control-plane orchestration
-                    and long-lived system coordination. It is not intended to
-                    replace traditional application frameworks.
-                  </p>
-                }
-              />
-              <FAQItem
-                question="Is Ved production ready?"
-                answer={
-                  <p>
-                    Ved is currently in early design and prototyping stages. The
-                    project focuses on validating deterministic runtime
-                    semantics and convergence models before expanding toward
-                    broader production use.
-                  </p>
-                }
-              />
-            </div>
+            <FAQGroup />
+
+
           </motion.div>
         </section>
 
@@ -799,7 +986,7 @@ export default function Home() {
                 .split("")
                 .map((char, index) => (
                   <motion.span
-                    key={index}
+                    key={`tagline-${index}`}
                     variants={{
                       hidden: { display: "none" },
                       visible: { display: "inline" },
