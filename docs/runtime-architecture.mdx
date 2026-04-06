@@ -1,0 +1,81 @@
+---
+title: "Runtime Architecture"
+category: "5. Runtime Architecture"
+order: 507
+---
+
+# Runtime Architecture
+
+## Overview
+
+Ved runtime is a deterministic execution engine responsible for:
+
+- executing compiled bytecode
+- scheduling domain transitions
+- maintaining persistent state
+- ensuring reproducibility
+
+---
+
+## Design Principles
+
+The runtime is built around:
+
+- determinism
+- isolation
+- bounded execution
+- replayability
+
+---
+
+## High-Level Components
+
+Ved runtime consists of:
+
+1. Scheduler
+2. Interpreter
+3. Mailbox System
+4. State Store
+5. Journal
+6. Snapshot Manager
+
+---
+
+## Component Diagram
+
++------------------+
+| Scheduler |
++--------+---------+
+|
+v
++------------------+
+| Interpreter |
++--------+---------+
+|
++---------------+---------------+
+| |
+v v
+
++----------+ +-------------+ | Mailbox | | State Store | +----------+ +-------------+ | | +---------------+---------------+ | v +---------------+ | Journal | +---------------+ | v +---------------+ | Snapshot Mgr | +---------------+
+
+---
+
+## Execution Flow
+
+1. Scheduler selects message
+2. Interpreter executes transition
+3. State is updated
+4. Messages/effects are emitted
+5. Journal records execution
+6. Snapshot may be updated
+
+---
+
+## Determinism Enforcement
+
+Determinism is enforced at:
+
+- scheduling layer
+- interpreter execution
+- state mutation
+- persistence layer

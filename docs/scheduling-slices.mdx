@@ -6,4 +6,65 @@ order: 307
 
 # Scheduling Slices
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+Ved executes transitions in bounded units called **slices**.
+
+---
+
+## Purpose
+
+Slices ensure:
+
+- fairness
+- bounded execution
+- scheduler control
+
+---
+
+## Execution Model
+
+A transition runs:
+
+- until completion
+- or until slice limit reached
+
+---
+
+## Preemption
+
+If limit exceeded:
+
+- execution yields
+- scheduler resumes later
+
+---
+
+## Example
+
+```ved
+transition heavy_task {
+    step {
+        // long computation
+    }
+}
+```
+
+This may execute across multiple slices.
+
+---
+
+## Benefits
+
+- prevents blocking
+- enables fairness
+- supports large computations
+
+---
+
+## Determinism
+
+Slice boundaries are:
+
+- deterministic
+- consistent across runs

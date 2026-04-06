@@ -1,0 +1,60 @@
+---
+title: "Distributed Queue Simulation"
+category: "9. Examples"
+order: 910
+---
+
+# Distributed Queue Simulation
+
+## Problem
+
+Process tasks across multiple workers.
+
+---
+
+## Ved Approach
+
+_Model queue + workers as domains._
+
+---
+
+## Implementation
+
+```
+domain Queue {
+    state {
+        tasks: int
+    }
+
+    transition enqueue {
+        step {
+            tasks += 1
+        }
+    }
+}
+
+domain Worker {
+    transition process {
+        step {
+            if Queue.tasks > 0 {
+                Queue.tasks -= 1
+            }
+        }
+    }
+}
+```
+
+---
+
+## Behavior
+
+- workers consume tasks
+- queue stabilizes
+
+---
+
+## Summary
+
+Queue processing becomes:
+
+> coordinated state evolution

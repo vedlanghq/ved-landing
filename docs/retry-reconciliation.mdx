@@ -6,4 +6,76 @@ order: 903
 
 # Retry Reconciliation
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Problem
+
+Retry failed operations safely without duplication or inconsistency.
+
+Challenges:
+
+- retries may duplicate work
+- timing affects outcome
+- failure states unclear
+
+---
+
+## Ved Approach
+
+Model retry as convergence.
+
+---
+
+## Implementation
+
+```
+domain Task {
+    state {
+        completed: bool
+        retries: int
+    }
+
+    goal completed == true
+
+    transition execute {
+        step {
+            if !completed {
+                // attempt task
+                completed = try_execute()
+                retries += 1
+            }
+        }
+    }
+}
+
+```
+
+---
+
+## Behavior
+
+- Task retries until completed
+
+- Retries are deterministic
+
+- System stabilizes once goal satisfied
+
+---
+
+## Why This Matters
+
+Traditional retries:
+
+- timing-dependent
+- can cause duplication
+
+Ved:
+
+- deterministic retry logic
+- consistent behavior
+
+---
+
+## Summary
+
+Retries become:
+
+> convergence toward completion

@@ -1,0 +1,54 @@
+---
+title: "Failure Recovery Loop"
+category: "9. Examples"
+order: 908
+---
+
+# Failure Recovery Loop
+
+## Problem
+
+Recover from failure without manual intervention.
+
+---
+
+## Ved Approach
+
+_Model recovery as convergence._
+
+---
+
+## Implementation
+
+```
+domain Service {
+    state {
+        running: bool
+    }
+
+    goal running == true
+
+    transition restart {
+        step {
+            if !running {
+                running = start_service()
+            }
+        }
+    }
+}
+```
+
+---
+
+## Behavior
+
+- Service automatically restarts
+- System stabilizes
+
+---
+
+## Summary
+
+Recovery becomes:
+
+> continuous stabilization

@@ -1,0 +1,65 @@
+---
+title: "Journal"
+category: "5. Runtime Architecture"
+order: 511
+---
+
+# Journal
+
+## Overview
+
+The journal records all execution steps.
+
+It is an append-only log.
+
+---
+
+## Purpose
+
+Journal enables:
+
+- replay
+- debugging
+- recovery
+
+---
+
+## Entry Structure
+
+Each entry records:
+
+- selected message
+- transition executed
+- state changes
+
+---
+
+## Append Model
+
+`J = e1, e2, e3, ...`
+
+---
+
+## Replay
+
+State reconstruction:
+
+`state = replay(initial_state, journal)`
+
+---
+
+## Durability
+
+Journal must:
+
+- be written atomically
+- survive crashes
+
+---
+
+## Determinism
+
+Replay must produce:
+
+- identical state
+- identical execution trace

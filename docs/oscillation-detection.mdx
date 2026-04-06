@@ -1,0 +1,51 @@
+---
+title: "Oscillation Detection Example"
+category: "9. Examples"
+order: 909
+---
+
+# Oscillation Detection
+
+## Problem
+
+System repeatedly changes state without stabilizing.
+
+---
+
+## Ved Approach
+
+_Detect unstable convergence._
+
+---
+
+## Example Scenario
+
+```
+transition flip {
+    step {
+        flag = !flag
+    }
+}
+```
+
+---
+
+## Behavior
+
+- State never stabilizes
+- runtime detects oscillation
+
+---
+
+## Outcome
+
+- warning generated
+- system flagged unstable
+
+---
+
+## Summary
+
+Ved can detect:
+
+> non-converging system behavior

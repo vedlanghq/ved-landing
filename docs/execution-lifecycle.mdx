@@ -1,0 +1,103 @@
+---
+title: "Execution Lifecycle"
+category: "4. Execution Model"
+order: 405
+---
+
+# Execution Lifecycle
+
+## Overview
+
+Ved execution follows a continuous lifecycle driven by:
+
+- state evaluation
+- message processing
+- transition execution
+
+---
+
+## Lifecycle Phases
+
+Each cycle consists of:
+
+1. Observation
+2. Evaluation
+3. Scheduling
+4. Execution
+5. Persistence
+
+---
+
+## 1. Observation
+
+The runtime observes:
+
+- current state
+- incoming messages
+
+---
+
+## 2. Evaluation
+
+Goals are evaluated:
+
+`G(state) → true | false`
+
+If false:
+
+- transitions become eligible
+
+---
+
+## 3. Scheduling
+
+Scheduler selects next message:
+
+`select_next_message()`
+
+Based on deterministic ordering.
+
+---
+
+## 4. Execution
+
+Selected transition executes:
+
+- reads state
+- performs computation
+- mutates state
+- emits messages/effects
+
+---
+
+## 5. Persistence
+
+State changes are:
+
+- written to journal
+- optionally snapshot
+
+---
+
+## Continuous Loop
+
+observe → evaluate → schedule → execute → persist → repeat
+
+---
+
+## Termination
+
+Execution stops when:
+
+- no messages remain
+- all goals satisfied
+
+---
+
+## Example Flow
+
+1. Goal not satisfied
+2. Message triggers transition
+3. State updated
+4. Goal satisfied
+5. System stabilizes

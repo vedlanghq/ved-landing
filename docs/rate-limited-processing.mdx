@@ -1,0 +1,54 @@
+---
+title: "Rate Limited Processing"
+category: "9. Examples"
+order: 907
+---
+
+# Rate-Limited Processing
+
+## Problem
+
+Control processing rate to avoid overload.
+
+---
+
+## Ved Approach
+
+_Use state + transitions to enforce limits._
+
+---
+
+## Implementation
+
+```
+domain RateLimiter {
+    state {
+        processed: int
+    }
+
+    goal processed <= 10
+
+    transition process {
+        step {
+            if processed < 10 {
+                processed += 1
+            }
+        }
+    }
+}
+```
+
+---
+
+## Behavior
+
+- Processing stops at limit
+- System remains stable
+
+---
+
+## Summary
+
+Rate limiting becomes:
+
+> a state constraint, not a timing hack

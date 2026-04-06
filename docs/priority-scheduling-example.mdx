@@ -6,4 +6,58 @@ order: 905
 
 # Priority Scheduling Example
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Problem
+
+Ensure critical tasks execute before less important ones.
+
+Challenges:
+
+- starvation
+- unfair execution
+- inconsistent prioritization
+
+---
+
+## Ved Approach
+
+_Use deterministic priority scheduling._
+
+---
+
+## Implementation
+
+```
+emit Message {
+    target: HighPriority
+    priority: 1
+}
+
+emit Message {
+    target: LowPriority
+    priority: 5
+}
+```
+
+---
+
+## Behavior
+
+Scheduler processes:
+
+`HighPriority → LowPriority`
+
+---
+
+## Guarantees
+
+- deterministic ordering
+- fairness through aging
+- no starvation
+
+---
+
+## Summary
+
+Priority is:
+
+> predictable and enforceable

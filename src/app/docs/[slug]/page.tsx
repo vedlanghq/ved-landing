@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { TOC } from "./TOC";
 import Link from "next/link";
 import { Clock, Edit } from "lucide-react";
+import SearchHighlighter from "../SearchHighlighter";
+import { Suspense } from "react";
 
 export async function generateStaticParams() {
   const slugs = getDocSlugs();
@@ -96,6 +98,9 @@ export default async function DocPage({
     <>
       <main className="docs-content">
         <div className="docs-content-inner">
+          <Suspense fallback={null}>
+            <SearchHighlighter />
+          </Suspense>
           <article className="markdown-body">
             <MDXRemote 
               source={doc.content} 

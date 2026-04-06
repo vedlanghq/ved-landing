@@ -6,4 +6,96 @@ order: 301
 
 # Domains
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+A Domain is the fundamental unit of computation in Ved.
+
+It encapsulates:
+
+- state
+- transitions
+- goals
+- message handling
+
+A domain represents an independent control entity within the system.
+
+---
+
+## Properties
+
+A domain:
+
+- owns its state exclusively
+- executes transitions deterministically
+- communicates via message passing
+- cannot directly access other domains’ state
+
+---
+
+## Structure
+
+```
+domain Counter {
+    state {
+        count: int
+    }
+
+    transition increment {
+        step {
+            count += 1
+        }
+    }
+}
+```
+
+---
+
+## Execution Model
+
+### Each domain:
+
+- processes messages from its mailbox
+
+- evaluates transitions
+
+- mutates its state
+
+- emits messages or effects
+
+---
+
+## Isolation Guarantee
+
+Domains are strictly isolated:
+
+- no shared memory
+
+- no direct state mutation across domains
+
+All interaction must occur via:
+
+message → mailbox → transition
+
+---
+
+## Lifecycle
+
+A domain progresses through:
+
+1. initialization
+
+2. message processing
+
+3. transition execution
+
+4. convergence (goal satisfied)
+
+---
+
+## Multiple Domains
+
+Systems may contain multiple domains:
+
+- each with independent state
+
+- coordinated via messaging

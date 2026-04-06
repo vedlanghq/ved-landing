@@ -6,4 +6,111 @@ order: 503
 
 # Scheduler Design
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+The scheduler is the core of Ved runtime.
+
+It determines:
+
+- execution order
+- fairness
+- system progression
+
+---
+
+## Responsibilities
+
+The scheduler:
+
+- selects next message
+- enforces deterministic ordering
+- ensures fairness
+- manages execution slices
+
+---
+
+## Message Selection
+
+Messages are ordered using:
+
+`(priority, logical_time, domain_id, sequence_id)`
+
+---
+
+## Selection Algorithm
+
+```
+function select_next_message(queue):
+sort(queue, ordering_function)
+return queue.pop_min()
+```
+
+---
+
+## Priority Handling
+
+Priority influences execution order:
+
+`lower value → higher priority`
+
+_aging adjusts priority over time_
+
+---
+
+## Aging Mechanism
+
+To prevent starvation:
+
+```
+effective_priority = base_priority - aging_factor
+id="rt-aging"
+```
+
+---
+
+## Queue Structure
+
+Each domain maintains:
+
+- mailbox queue
+- pending message list
+
+Scheduler aggregates:
+
+- all domain queues
+
+---
+
+## Fairness Guarantees
+
+Scheduler ensures:
+
+- every domain gets execution opportunity
+- no indefinite postponement
+
+---
+
+## Slice Management
+
+Scheduler enforces:
+
+- instruction limits per slice
+- preemption and rescheduling
+
+---
+
+## Quiescence Detection
+
+Scheduler checks:
+
+`if all_queues_empty AND all_goals_satisfied: halt`
+
+---
+
+## Determinism Constraints
+
+Scheduler must:
+
+- avoid randomness
+- maintain stable ordering
+- use deterministic data structures

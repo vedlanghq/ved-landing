@@ -6,4 +6,77 @@ order: 904
 
 # Multi-Domain Coordination
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Problem
+
+Coordinate multiple system components safely.
+
+Challenges:
+
+- shared state conflicts
+- synchronization issues
+- race conditions
+
+---
+
+## Ved Approach
+
+_Use domains with message passing._
+
+---
+
+## Implementation
+
+```
+domain Producer {
+    transition produce {
+        step {
+            emit Message {
+                target: Consumer
+                payload: "data"
+            }
+        }
+    }
+}
+
+domain Consumer {
+    state {
+        received: int
+    }
+
+    transition consume {
+        step {
+            received += 1
+        }
+    }
+}
+```
+
+---
+
+## Behavior
+
+- Producer emits messages
+- Consumer processes messages
+- No shared state
+
+---
+
+## Why This Matters
+
+Traditional systems:
+
+- require locks
+- risk race conditions
+
+Ved:
+
+- message-based coordination
+- deterministic interaction
+
+---
+
+## Summary
+
+Coordination becomes:
+
+> explicit message flow instead of shared state

@@ -1,0 +1,56 @@
+---
+title: "State Store"
+category: "5. Runtime Architecture"
+order: 510
+---
+
+# State Store
+
+## Overview
+
+The state store maintains domain state.
+
+---
+
+## Properties
+
+State is:
+
+- isolated per domain
+- persistent
+- versioned
+
+---
+
+## Access
+
+State is accessed only via:
+
+- interpreter during transition execution
+
+---
+
+## Mutation
+
+State updates are:
+
+- atomic per slice
+- recorded in journal
+
+---
+
+## Storage Model
+
+State is stored as:
+
+- structured data
+- serialized representation
+
+---
+
+## Constraints
+
+State must be:
+
+- deterministic
+- serializable

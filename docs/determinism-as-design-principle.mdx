@@ -4,6 +4,166 @@ category: "2. Philosophy"
 order: 201
 ---
 
-# Determinism as Design Principle
+# Determinism as a Design Principle
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+Ved is built on a single foundational assumption:
+
+> A system must behave identically given identical inputs and state.
+
+Determinism is not an optimization.  
+It is a first-class design constraint.
+
+---
+
+## Why Determinism Matters
+
+Modern distributed systems exhibit nondeterministic behavior due to:
+
+- concurrency and race conditions
+- timing variability
+- external system interactions
+- unordered event processing
+
+This leads to:
+
+- irreproducible bugs
+- inconsistent debugging outcomes
+- unpredictable system evolution
+
+Ved eliminates these issues by enforcing deterministic execution semantics.
+
+---
+
+## Deterministic Execution Model
+
+Given:
+
+- initial state S₀
+- input sequence I
+
+Ved guarantees:
+
+execute(S₀, I) → identical execution trace → identical final state
+
+This implies:
+
+- reproducibility
+- replayability
+- causal traceability
+
+---
+
+## Sources of Nondeterminism (Eliminated)
+
+Ved explicitly removes:
+
+### 1. Unordered Execution
+
+All scheduling decisions are:
+
+- globally ordered
+- stable across runs
+
+---
+
+### 2. Implicit Time Dependencies
+
+Ved does not rely on:
+
+- wall-clock time
+- thread scheduling
+- system interrupts
+
+Instead, it uses:
+
+- logical clocks
+- deterministic scheduling
+
+---
+
+### 3. Shared Mutable State
+
+All state is:
+
+- domain-scoped
+- isolated
+- explicitly mutated
+
+---
+
+### 4. Implicit Side Effects
+
+External interactions must occur through:
+
+- explicit effect boundaries
+
+---
+
+## Deterministic Scheduling
+
+Message selection follows a strict ordering:
+
+(priority, logical_time, domain_id, sequence_id)
+
+This guarantees:
+
+- consistent execution order
+- reproducible traces
+
+---
+
+## Implications
+
+Determinism enables:
+
+### Debugging
+
+- exact replay of failures
+- step-by-step trace analysis
+
+---
+
+### Testing
+
+- identical results across runs
+- elimination of flaky tests
+
+---
+
+### Observability
+
+- causal reasoning over system evolution
+
+---
+
+## Trade-offs
+
+Determinism introduces constraints:
+
+- no implicit concurrency
+- strict scheduling discipline
+- explicit handling of effects
+
+These are deliberate trade-offs for:
+
+> predictability over convenience
+
+---
+
+## Summary
+
+Determinism in Ved is:
+
+- enforced at runtime
+- reflected in language design
+- validated through execution
+
+It transforms distributed systems from:
+
+> unpredictable processes
+
+into:
+
+> reproducible state machines

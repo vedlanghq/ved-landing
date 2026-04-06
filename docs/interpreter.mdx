@@ -1,0 +1,88 @@
+---
+title: "Interpreter"
+category: "5. Runtime Architecture"
+order: 508
+---
+
+# Interpreter
+
+## Overview
+
+The interpreter executes compiled Ved bytecode.
+
+It is responsible for:
+
+- executing transitions
+- mutating state
+- enforcing slice limits
+
+---
+
+## Execution Unit
+
+Interpreter runs:
+
+- one transition slice at a time
+
+---
+
+## Core Function
+
+`run_slice(domain, message) → SliceResult`
+
+---
+
+## SliceResult
+
+Possible outcomes:
+
+- Completed
+- Yielded
+- Error
+
+---
+
+## Execution Steps
+
+1. Load domain state
+2. Execute bytecode instructions
+3. Apply state mutations
+4. Emit messages/effects
+5. Return result
+
+---
+
+## Gas Limit
+
+Each slice is bounded by:
+
+- instruction count
+- execution budget
+
+---
+
+## Preemption
+
+If gas exhausted:
+
+- execution yields
+- scheduler resumes later
+
+---
+
+## Determinism
+
+Interpreter must:
+
+- execute instructions deterministically
+- avoid hidden state
+- ensure reproducible results
+
+---
+
+## State Mutation
+
+State changes are:
+
+- explicit
+- atomic per slice

@@ -6,4 +6,83 @@ order: 902
 
 # Worker Pool Scaling
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Problem
+
+Maintain a fixed number of workers in a distributed system.
+
+Challenges:
+
+- workers crash
+- external changes affect count
+- race conditions in scaling
+
+---
+
+## Ved Approach
+
+Define the desired state:
+
+`goal workers == 5`
+
+---
+
+## Implementation
+
+```
+domain WorkerPool {
+    state {
+        workers: int
+    }
+}
+
+goal workers == 5
+
+transition scale_up {
+    step {
+        if workers < 5 {
+            workers += 1
+        }
+    }
+}
+
+transition scale_down {
+    step {
+        if workers > 5 {
+            workers -= 1
+        }
+    }
+}
+```
+
+---
+
+## Behavior
+
+If workers `drop below 5` → `system scales up`
+
+If workers `exceed 5` → `system scales down`
+
+`System continuously stabilizes`
+
+---
+
+## Why This Matters
+
+Imperative approach:
+
+- requires manual checks
+- prone to race conditions
+
+Ved approach:
+
+- self-correcting
+- deterministic
+- continuously converging
+
+---
+
+## Summary
+
+Worker scaling becomes:
+
+> a convergence problem, not a control flow problem

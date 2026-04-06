@@ -6,4 +6,86 @@ order: 302
 
 # Persistent State
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+State in Ved is:
+
+> durable, deterministic, and domain-scoped
+
+Each domain maintains its own persistent state.
+
+---
+
+## Properties
+
+State is:
+
+- stored durably
+- recoverable via replay
+- isolated per domain
+- explicitly mutated
+
+---
+
+## Declaration
+
+```
+state {
+    count: int
+    active: bool
+}
+```
+
+---
+
+## Mutation
+
+State changes only occur inside transitions:
+
+```
+transition increment {
+    step {
+        count += 1
+    }
+}
+```
+
+---
+
+## Determinism Requirement
+
+State mutation must be:
+
+- deterministic
+
+- free of side effects
+
+---
+
+## Persistence Model
+
+State is persisted via:
+
+- append-only journal
+
+- periodic snapshots
+
+---
+
+## Replay
+
+State can be reconstructed:
+
+```
+initial_state + journal → current_state
+```
+
+---
+
+## Constraints
+
+State must avoid:
+
+- non-deterministic structures
+
+- implicit external dependencies

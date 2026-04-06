@@ -29,7 +29,7 @@ export default function ThemeToggle() {
         <span>
           <Sun size={14} />
         </span>
-        <span>Light</span>
+        <span className="mobile-hide">Light</span>
       </button>
     );
   }
@@ -42,7 +42,7 @@ export default function ThemeToggle() {
       >
         {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
       </span>
-      <span id="themeText">{theme === "dark" ? "Light" : "Dark"}</span>
+      <span id="themeText" className="mobile-hide">{theme === "dark" ? "Light" : "Dark"}</span>
     </button>
   );
 }

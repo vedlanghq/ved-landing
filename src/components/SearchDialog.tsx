@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
+import { Search, ChevronRight, FileText } from "lucide-react";
 
-export default function SearchDialog({ docs = [] }: { docs: any[] }) {
+export default function SearchDialog({ docs = [] }: Readonly<{ docs: any[] }>) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
@@ -23,40 +23,84 @@ export default function SearchDialog({ docs = [] }: { docs: any[] }) {
     return () => globalThis.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const filteredDocs = docs.filter((doc) => {
-    if (!searchQuery.trim()) return true;
+  const stripMarkdown = (text: string) => {
+    if (!text) return "";
+    return text
+      .replaceAll(/^(-\s*?|\*\s*?|_\s*?){3,}\s*$/gm, "") // rules
+      .replaceAll(/<[^>]*>/g, "") // html
+      .replaceAll(/^[=-]{2,}\s*$/gm, "") // setext
+      .replaceAll(/^#+\s+/gm, "") // atx headers
+      .replaceAll(/(\*\*|__)(.*?)\1/g, "$2") // bold
+      .replaceAll(/(\*|_)(.*?)\1/g, "$2") // italic
+      .replaceAll(/~~(.*?)~~/g, "$1") // strikethrough
+      .replaceAll(/`([^`]+)`/g, "$1") // inline code
+      .replaceAll(/```[\s\S]*?```/g, "") // code blocks
+      .replaceAll(/^\s*>+\s+/gm, "") // blockquotes
+      .replaceAll(/\[([^\]]+)\]\([^)]+\)/g, "$1") // links
+      .replaceAll(/!\[([^\]]*)\]\([^)]+\)/g, "$1") // images
+      .replaceAll(/\n+/g, " ") // newlines
+      .replaceAll(/\s+/g, " ") // spaces
+      .trim();
+  };
+
+  const searchResults = docs
+    .map((doc) => {
+      if (!searchQuery.trim()) return { doc, snippet: null, matches: true };
+      try {
+        const escapedQuery = searchQuery.trim().replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
+        const regex = new RegExp(`(${escapedQuery})`, "gi");
+
+        const titleMatch = regex.test(doc.meta?.title || "");
+        const slugMatch = regex.test(doc.slug || "");
+        const catMatch = regex.test(doc.meta?.category || "");
+
+        // Execute on clean content to get pristine snippet
+        const content = stripMarkdown(doc.content || "");
+        regex.lastIndex = 0; // reset
+        const match = regex.exec(content);
+
+        // If matched by metadata but not content, fallback
+        if (titleMatch || slugMatch || catMatch || match) {
+          let snippet = doc.meta?.description ? stripMarkdown(doc.meta.description) : null;
+          if (match) {
+            const index = match.index;
+            const start = Math.max(0, index - 40);
+            const end = Math.min(content.length, index + match[0].length + 40);
+            snippet = content.slice(start, end);
+            if (start > 0) snippet = "..." + snippet;
+            if (end < content.length) snippet = snippet + "...";
+          }
+          return { doc, snippet, matches: true };
+        }
+        return { doc, snippet: null, matches: false };
+      } catch (e) {
+        const normalizedQuery = searchQuery.toLowerCase();
+        const title = doc.meta?.title?.toLowerCase() || "";
+        const fallbackMatch = title.includes(normalizedQuery) || (doc.slug || "").toLowerCase().includes(normalizedQuery);
+        return { doc, snippet: null, matches: fallbackMatch };
+      }
+    })
+    .filter((res) => res.matches);
+
+  const highlightSnippet = (text: string) => {
+    if (!searchQuery.trim()) return text;
     try {
-      // Split search query into individual terms for multi-word matching
-      const terms = searchQuery
-        .trim()
-        .split(/\s+/)
-        .map(term => term.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&')) // Escape safely
-        .filter(term => term.length > 0);
-
-      if (terms.length === 0) return true;
-
-      // Compile a regex for each word typed
-      const regexes = terms.map(term => new RegExp(term, 'i'));
-
-      const title = doc.meta?.title || "";
-      const slug = doc.slug || "";
-      const category = doc.meta?.category || "";
-      const description = doc.meta?.description || "";
-      const content = doc.content || "";
-
-      // Concatenate all extractable data into one searchable payload
-      const searchableText = `${title} ${slug} ${category} ${description} ${content}`;
-
-      // Ensure every word the user typed exists SOMEWHERE in this page
-      return regexes.every(regex => regex.test(searchableText));
-      
-    } catch (e) {
-      // Extreme Fallback
-      const normalizedQuery = searchQuery.toLowerCase();
-      const title = doc.meta?.title?.toLowerCase() || "";
-      return title.includes(normalizedQuery) || (doc.slug || "").toLowerCase().includes(normalizedQuery);
+      const escapedQuery = searchQuery.trim().replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
+      const regex = new RegExp(`(${escapedQuery})`, "gi");
+      const parts = text.split(regex);
+      return parts.map((part, i) =>
+        regex.test(part) ? (
+          <mark key={i} className="search-highlight">
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      );
+    } catch {
+      return text;
     }
-  });
+  };
 
   return (
     <>
@@ -74,17 +118,22 @@ export default function SearchDialog({ docs = [] }: { docs: any[] }) {
           color: "var(--text-muted)",
           cursor: "pointer",
           fontSize: "0.9rem",
+          transition: "all 0.2s ease"
         }}
+        onMouseOver={e => e.currentTarget.style.borderColor = "var(--accent)"}
+        onMouseOut={e => e.currentTarget.style.borderColor = "var(--border)"}
       >
         <Search size={16} />
-        <span>Search Documentation</span>
+        <span className="mobile-hide">Search Documentation</span>
         <kbd
+          className="mobile-hide"
           style={{
             background: "var(--bg-base)",
             padding: "0.1rem 0.4rem",
             borderRadius: "4px",
             fontSize: "0.8rem",
             marginLeft: "1rem",
+            border: "1px solid var(--border)"
           }}
         >
           ⌘K
@@ -99,25 +148,27 @@ export default function SearchDialog({ docs = [] }: { docs: any[] }) {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            backdropFilter: "blur(4px)",
+            backgroundColor: "rgba(0,0,0,0.6)",
+            backdropFilter: "blur(6px)",
             zIndex: 9999,
             display: "flex",
             justifyContent: "center",
             alignItems: "flex-start",
-            paddingTop: "10vh",
+            paddingTop: "12vh",
+            paddingLeft: "1rem",
+            paddingRight: "1rem"
           }}
           onClick={() => setIsOpen(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: "var(--bg-base)",
+              background: "var(--bg-surface)",
               border: "1px solid var(--border)",
               borderRadius: "8px",
               width: "100%",
-              maxWidth: "600px",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              maxWidth: "650px",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
               display: "flex",
               flexDirection: "column",
               overflow: "hidden",
@@ -125,18 +176,19 @@ export default function SearchDialog({ docs = [] }: { docs: any[] }) {
           >
             <div
               style={{
-                padding: "1rem",
+                padding: "1.25rem",
                 borderBottom: "1px solid var(--border)",
                 display: "flex",
                 alignItems: "center",
-                gap: "0.5rem",
+                gap: "1rem",
+                background: "var(--bg-base)"
               }}
             >
-              <Search size={20} color="var(--text-muted)" />
+              <Search size={22} color="var(--accent)" />
               <input
                 autoFocus
                 type="text"
-                placeholder="Find something..."
+                placeholder="Search commands, syntax, and concepts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 style={{
@@ -146,16 +198,19 @@ export default function SearchDialog({ docs = [] }: { docs: any[] }) {
                   outline: "none",
                   color: "var(--text-main)",
                   fontSize: "1.1rem",
+                  fontFamily: "inherit"
                 }}
               />
               <kbd
+                className="mobile-hide"
                 style={{
-                  background: "var(--shape-1)",
+                  background: "var(--bg-surface)",
                   padding: "0.2rem 0.5rem",
                   borderRadius: "4px",
                   fontSize: "0.8rem",
                   color: "var(--text-muted)",
                   border: "1px solid var(--border)",
+                  fontFamily: "'JetBrains Mono', monospace"
                 }}
               >
                 ESC
@@ -163,80 +218,103 @@ export default function SearchDialog({ docs = [] }: { docs: any[] }) {
             </div>
 
             <div
-              style={{ maxHeight: "400px", overflowY: "auto", padding: "1rem" }}
+              style={{ maxHeight: "50vh", overflowY: "auto", padding: "1rem" }}
             >
-              {filteredDocs.length > 0 ? (
+              {searchResults.length > 0 ? (
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "column",
-                    gap: "0.5rem",
                   }}
                 >
                   <div
                     style={{
-                      fontSize: "0.8rem",
+                      fontSize: "0.75rem",
                       textTransform: "uppercase",
                       color: "var(--text-muted)",
-                      marginBottom: "0.5rem",
-                      letterSpacing: "0.05em",
+                      marginBottom: "0.75rem",
+                      letterSpacing: "0.1em",
+                      fontWeight: 600,
+                      paddingLeft: "0.5rem"
                     }}
                   >
-                    Results
+                    Documentation
                   </div>
-                  {filteredDocs.map((doc) => (
+                  {searchResults.map(({ doc, snippet }) => (
                     <button
                       key={doc.slug}
                       onClick={() => {
-                        router.push(`/docs/${doc.slug}`);
+                        const q = searchQuery.trim() ? `?query=${encodeURIComponent(searchQuery.trim())}` : "";
+                        router.push(`/docs/${doc.slug}${q}`);
                         setIsOpen(false);
                       }}
                       style={{
                         display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
+                        flexDirection: "column",
+                        gap: "0.5rem",
                         padding: "1rem",
-                        background: "var(--shape-1)",
+                        background: "transparent",
                         border: "1px solid transparent",
                         borderRadius: "6px",
                         cursor: "pointer",
                         textAlign: "left",
                         color: "var(--text-main)",
-                        transition: "all 0.2s",
+                        transition: "all 0.15s ease",
                       }}
-                      onMouseOver={(e) => (
-                        (e.currentTarget.style.borderColor = "var(--accent)"),
-                        (e.currentTarget.style.background =
-                          "var(--bg-surface-hover)")
-                      )}
-                      onMouseOut={(e) => (
-                        (e.currentTarget.style.borderColor = "transparent"),
-                        (e.currentTarget.style.background = "var(--shape-1)")
-                      )}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.borderColor = "var(--accent)";
+                        e.currentTarget.style.background = "var(--shape-1)";
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.borderColor = "transparent";
+                        e.currentTarget.style.background = "transparent";
+                      }}
                     >
-                      <span style={{ fontWeight: 500 }}>
-                        {doc.meta?.title || doc.slug}
-                      </span>
-                      <span
-                        style={{
-                          color: "var(--text-muted)",
-                          fontSize: "0.8rem",
-                        }}
-                      >
-                        Documentation
-                      </span>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <FileText size={16} color="var(--text-muted)" />
+                          <span style={{ fontWeight: 600, fontSize: "1rem", color: "var(--accent)" }}>
+                            {highlightSnippet(doc.meta?.title || doc.slug)}
+                          </span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", color: "var(--text-muted)", fontSize: "0.8rem" }}>
+                          <span style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>{doc.meta?.category || "Index"}</span>
+                          <ChevronRight size={14} />
+                        </div>
+                      </div>
+
+                      {snippet && (
+                        <div 
+                           style={{ 
+                             fontSize: "0.85rem", 
+                             color: "var(--text-muted)", 
+                             lineHeight: 1.5,
+                             fontFamily: "'JetBrains Mono', monospace",
+                             opacity: 0.9,
+                             paddingLeft: "1.5rem"
+                           }}
+                        >
+                          {highlightSnippet(snippet)}
+                        </div>
+                      )}
                     </button>
                   ))}
                 </div>
               ) : (
                 <div
                   style={{
-                    padding: "2rem",
+                    padding: "3rem",
                     textAlign: "center",
-                    color: "var(--text-muted)",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "1rem"
                   }}
                 >
-                  No results found for &quot;{searchQuery}"
+                  <Search size={32} color="var(--border)" />
+                  <div style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
+                    No results found for <span style={{ color: "var(--text-main)", fontWeight: 600 }}>&quot;{searchQuery}&quot;</span>
+                  </div>
                 </div>
               )}
             </div>

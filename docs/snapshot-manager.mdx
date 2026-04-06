@@ -1,0 +1,67 @@
+---
+title: "Snapshot Manager"
+category: "5. Runtime Architecture"
+order: 512
+---
+
+# Snapshot Manager
+
+## Overview
+
+Snapshots capture system state at a point in time.
+
+---
+
+## Purpose
+
+Snapshots enable:
+
+- faster recovery
+- bounded replay time
+
+---
+
+## Snapshot Model
+
+`state_snapshot + journal_tail → current_state`
+
+---
+
+## Creation
+
+Snapshots are:
+
+- periodic
+- triggered by runtime policy
+
+---
+
+## Consistency
+
+Snapshots must be:
+
+- atomic
+- consistent with journal
+
+---
+
+## Recovery
+
+On restart:
+
+1. load snapshot
+2. replay journal tail
+
+---
+
+## Trade-offs
+
+Frequent snapshots:
+
+- faster recovery
+- higher overhead
+
+Infrequent snapshots:
+
+- slower recovery
+- lower overhead

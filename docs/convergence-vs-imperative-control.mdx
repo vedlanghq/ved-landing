@@ -6,4 +6,137 @@ order: 202
 
 # Convergence vs Imperative Control
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+Traditional programming models rely on imperative execution:
+
+do A → do B → do C
+
+Ved introduces a different paradigm:
+
+> Define the desired state. Let the system converge to it.
+
+---
+
+## Imperative Control Model
+
+In imperative orchestration:
+
+- execution order is fixed
+- success depends on timing
+- failures require retries
+
+Example:
+
+create resource wait configure resource retry if failed
+
+Problems:
+
+- fragile ordering
+- race conditions
+- drift over time
+
+---
+
+## Convergence Model
+
+Ved expresses systems as:
+
+- desired state (goals)
+- transition rules
+
+Execution becomes:
+
+while not goal_satisfied: apply transitions
+
+---
+
+## Formal View
+
+Let:
+
+- S = current state
+- G(S) = goal predicate
+
+Then:
+
+Sₙ₊₁ = T(Sₙ) until G(S) = true
+
+---
+
+## Key Differences
+
+| Aspect           | Imperative       | Ved                 |
+| ---------------- | ---------------- | ------------------- |
+| Execution        | Sequential       | Iterative           |
+| Failure handling | Explicit retries | Natural convergence |
+| State drift      | Common           | Self-correcting     |
+| Debugging        | Temporal         | State-based         |
+
+---
+
+## Example: Worker Scaling
+
+### Imperative
+
+if workers < 5: add worker
+
+### Ved
+
+goal workers == 5
+
+transition scale_up: if workers < 5: workers += 1
+
+The system continuously stabilizes.
+
+---
+
+## Convergence Properties
+
+### Idempotency
+
+Transitions can be applied repeatedly without breaking state.
+
+---
+
+### Stability
+
+System reaches a fixed point where:
+
+G(S) = true
+
+---
+
+### Self-Healing
+
+If external changes occur:
+
+- goals become unsatisfied
+- transitions re-trigger
+
+---
+
+## Challenges
+
+Convergence requires:
+
+- well-defined goals
+- non-conflicting transitions
+- bounded state evolution
+
+---
+
+## Summary
+
+Ved replaces:
+
+> step-by-step execution
+
+with:
+
+> continuous stabilization
+
+This aligns control-plane programming with:
+
+- control theory
+- distributed reconciliation systems

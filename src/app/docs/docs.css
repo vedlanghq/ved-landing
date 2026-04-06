@@ -15,7 +15,7 @@
   border-right: 1px solid var(--border);
   background: var(--bg-surface);
   z-index: 10;
-  height: 100%;
+  grid-column: 1; /* force it into first column */
 }
 
 .docs-sidebar h3 {
@@ -62,6 +62,8 @@
 .docs-content {
   background: transparent;
   padding: 4rem 6rem;
+  min-width: 0; /* prevents grid blowout */
+  grid-column: 2; /* force it into middle column */
 }
 
 .docs-content-inner {
@@ -126,6 +128,10 @@
   justify-content: space-between;
 }
 
+.docs-sidebar-backdrop {
+  display: none;
+}
+
 @media (max-width: 1200px) {
   .docs-layout {
     grid-template-columns: 280px minmax(0, 1fr);
@@ -155,12 +161,42 @@
     display: flex;
   }
   .docs-sidebar {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    display: none;
+    position: fixed;
+    top: 73px;
+    left: 0;
+    width: 280px;
+    height: calc(100vh - 73px);
+    z-index: 100;
+    border-right: 1px solid var(--border);
+    background: var(--bg-surface);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: block; /* always block but hidden via opacity */
   }
   .docs-sidebar.open {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+  }
+  .docs-sidebar-backdrop {
+    display: block;
+    position: fixed;
+    top: 73px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 73px);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 90;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  .docs-sidebar-backdrop.open {
+    opacity: 1;
+    visibility: visible;
   }
   .docs-sidebar h3 {
     display: none;
@@ -254,7 +290,7 @@
   margin-bottom: 2rem;
   white-space: nowrap;
 }
-.markdown-body th, 
+.markdown-body th,
 .markdown-body td {
   border: 1px solid var(--border);
   padding: 0.75rem 1rem;
@@ -278,7 +314,9 @@
   border-radius: 8px;
   flex: 1;
   text-decoration: none;
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
 }
 .docs-pagination-link:hover {
   border-color: var(--accent);
@@ -309,5 +347,340 @@
 @media (max-width: 768px) {
   .docs-pagination {
     flex-direction: column;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DOCS HOME  (dh-*)
+═══════════════════════════════════════════════════════════ */
+
+/* Widen the content column on the homepage so the stacked
+   cards have breathing room. The sidebar is still present. */
+.dh-home {
+  max-width: none;
+  padding-top: 0;
+  overflow: hidden;
+}
+
+.dh-content-span {
+  grid-column: 2 / -1 !important; /* Spans across middle and TOC columns */
+  padding-top: 0 !important; /* Overrides default .docs-content top padding */
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.dh-hero {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3.5rem;
+}
+
+.dh-eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.dh-hero-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--text-main);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  white-space: normal;
+  word-wrap: break-word; /* force text to wrap within container */
+}
+
+.dh-hero-sub {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 60ch;
+  margin-bottom: 0;
+}
+
+/* ── Tabs root ────────────────────────────────────────────── */
+.dh-tabs-root {
+  perspective: 1000px;
+  margin-bottom: 4rem;
+}
+
+/* ── Spring-pill tab bar ──────────────────────────────────── */
+.dh-tab-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.dh-tab-btn {
+  position: relative;
+  padding: 0.45rem 1.1rem;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: color 0.15s ease;
+}
+
+.dh-tab-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 9999px;
+}
+
+/* Spring pill — animated by framer-motion layoutId */
+.dh-active-pill {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--text-main);
+  display: block;
+}
+
+.dh-tab-label {
+  position: relative;
+  font-family: "Inter", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+
+.dh-tab-btn--active .dh-tab-label {
+  color: var(--bg-base);
+}
+
+/* ── Stacked card container ───────────────────────────────── */
+.dh-stack-container {
+  position: relative;
+  width: 100%;
+  /* Height accommodates the tallest card + fan-out breathing room */
+  height: 380px;
+}
+
+.dh-stack-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Card shell ───────────────────────────────────────────── */
+.dh-card {
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+/* ── Card header (left half) ──────────────────────────────── */
+.dh-card-header {
+  padding: 2.5rem;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.dh-chip {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+}
+
+.dh-card-header h2 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.dh-card-header p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── Tile grid (right half) ───────────────────────────────── */
+.dh-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Let each row fill half the card height */
+}
+
+.dh-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  text-decoration: none;
+  transition: background 0.15s ease;
+  /* Remove right border on even tiles (right column) */
+}
+
+.dh-tile:nth-child(even) {
+  border-right: none;
+}
+
+/* Remove bottom border on last row */
+.dh-tile:nth-last-child(-n + 2) {
+  border-bottom: none;
+}
+
+.dh-tile:hover {
+  background: var(--bg-surface-hover, var(--shape-1));
+}
+
+.dh-tile-num {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.dh-tile-title {
+  font-family: "Inter", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.dh-tile:hover .dh-tile-title {
+  color: var(--accent);
+}
+
+.dh-tile-desc {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.dh-tile code {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78em;
+  color: var(--accent);
+  background: transparent;
+  padding: 0;
+}
+
+/* ── Quick-links strip ────────────────────────────────────── */
+.dh-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-top: 1rem;
+}
+
+.dh-strip-link {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 1rem 1.75rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  border-right: 1px solid var(--border);
+  text-decoration: none;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+  white-space: nowrap;
+}
+
+.dh-strip-link:last-child {
+  border-right: none;
+}
+
+.dh-strip-link:hover {
+  color: var(--text-main);
+  background: var(--shape-1);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .dh-card {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 380px;
+  }
+  .dh-card-header {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 2rem;
+  }
+  .dh-stack-container {
+    height: 560px;
+  }
+}
+
+@media (max-width: 600px) {
+  .dh-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .dh-tile:nth-child(even) {
+    border-right: none;
+  }
+  .dh-tile {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .dh-tile:last-child {
+    border-bottom: none;
+  }
+  .dh-tab-bar {
+    gap: 0.15rem;
+  }
+  .dh-tab-btn {
+    padding: 0.38rem 0.85rem;
+  }
+  .dh-tab-label {
+    font-size: 0.72rem;
+  }
+  .dh-stack-container {
+    height: 800px;
+  }
+  .dh-strip {
+    flex-direction: column;
+  }
+  .dh-strip-link {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .dh-strip-link:last-child {
+    border-bottom: none;
   }
 }

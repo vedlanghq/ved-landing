@@ -6,4 +6,138 @@ order: 203
 
 # Authority & Isolation Thinking
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+Ved enforces strict boundaries between system components through:
+
+- domain isolation
+- explicit authority
+
+---
+
+## The Problem
+
+In traditional systems:
+
+- components access shared state
+- responsibilities overlap
+- side effects are implicit
+
+This leads to:
+
+- unpredictable behavior
+- tight coupling
+- security risks
+
+---
+
+## Domain Isolation
+
+A domain is:
+
+> a self-contained unit of state and behavior
+
+Properties:
+
+- owns its state
+- cannot directly mutate other domains
+- communicates via messages
+
+---
+
+## Authority Model
+
+Each domain has:
+
+- a defined scope of control
+- explicit permissions
+
+Authority determines:
+
+- what state can be modified
+- what effects can be emitted
+
+---
+
+## Communication Model
+
+All interaction occurs through:
+
+`message → mailbox → transition`
+
+No:
+
+- shared memory
+- implicit references
+
+---
+
+## Benefits
+
+### Modularity
+
+Domains are:
+
+- independent
+- composable
+
+---
+
+### Safety
+
+Isolation prevents:
+
+- unintended mutations
+- cascading failures
+
+---
+
+### Observability
+
+Message flow defines:
+
+- system behavior
+- causal relationships
+
+---
+
+## Example
+
+Bad (shared state):
+
+`global_count += 1`
+
+Ved:
+
+```
+domain Counter { state { count: int }
+
+transition increment: count += 1 }
+```
+
+---
+
+## Authority Boundaries
+
+Domains cannot:
+
+- mutate external state directly
+- bypass messaging
+
+This ensures:
+
+> structural correctness of system interactions
+
+---
+
+## Summary
+
+Ved treats system design as:
+
+> a set of isolated, interacting authorities
+
+This enforces:
+
+- discipline
+- safety
+- clarity

@@ -6,4 +6,82 @@ order: 303
 
 # Transitions
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+A Transition defines how a domain evolves its state.
+
+It is the only mechanism through which state can change.
+
+---
+
+## Structure
+
+```
+transition increment {
+    step {
+    count += 1
+    }
+}
+```
+
+---
+
+## Properties
+
+Transitions are:
+
+- deterministic
+
+- bounded (limited execution)
+
+- side-effect controlled
+
+---
+
+## Execution
+
+A transition:
+
+1. reads current state
+
+2. performs computation
+
+3. updates state
+
+4. optionally emits messages
+
+---
+
+## Bounded Execution
+
+Transitions execute in slices:
+
+- limited by gas / instruction count
+
+- may yield and resume
+
+---
+
+## Determinism Constraints
+
+Transitions must not depend on:
+
+- system time
+
+- randomness
+
+- external mutable state
+
+---
+
+## Example
+
+```
+transition scale_up {
+    step {
+        if workers < 5 {
+            workers += 1
+        }
+    }
+}
+```

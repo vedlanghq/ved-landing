@@ -8,7 +8,9 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="logo" style={{ margin: 0 }}>
-              <span className="logo-dot"></span> Ved
+              <Link href="/" style={{ cursor: "pointer", display: "inline-block", color: "inherit", textDecoration: "none" }}>
+                Ved
+              </Link>
             </div>
             <p className="footer-tagline">Deterministic execution down to the instruction.</p>
           </div>

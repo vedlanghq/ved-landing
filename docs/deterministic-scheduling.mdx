@@ -6,4 +6,193 @@ order: 402
 
 # Deterministic Scheduling
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+Ved executes programs using a deterministic scheduler.
+
+The scheduler is responsible for:
+
+- selecting the next unit of work
+- enforcing execution order
+- ensuring fairness
+- maintaining reproducibility
+
+---
+
+## Core Principle
+
+> Given identical state and inputs, the scheduler must make identical decisions.
+
+This guarantees:
+
+- identical execution traces
+- reproducible system behavior
+
+---
+
+## Execution Units
+
+The scheduler operates on messages.
+
+Each scheduling step:
+
+1. selects a message
+2. invokes a transition in the target domain
+3. executes a bounded slice
+4. updates state and queues
+
+---
+
+## Scheduling Loop
+
+The runtime follows a deterministic loop:
+
+`while not quiescent: m = select_next_message() execute_transition(m) persist_state()`
+
+---
+
+## Message Ordering
+
+Messages are ordered using a total ordering function:
+
+`(priority, logical_time, domain_id, sequence_id)`
+
+Lower values are selected first.
+
+---
+
+## Ordering Properties
+
+The ordering must be:
+
+- total (no ambiguity)
+- stable (consistent across runs)
+- deterministic (no randomness)
+
+---
+
+## Tie-Breaking
+
+If messages share the same priority:
+
+1. logical clock is compared
+2. domain ID is used
+3. sequence ID ensures uniqueness
+
+---
+
+## Logical Time
+
+Ved uses logical clocks instead of wall-clock time.
+
+Logical time:
+
+- increments per scheduling step
+- defines causal ordering
+- ensures replay consistency
+
+---
+
+## Domain Scheduling
+
+Each domain processes messages from its mailbox.
+
+Properties:
+
+- single-threaded execution per domain
+- no concurrent state mutation
+- deterministic message handling
+
+---
+
+## Scheduling Slices
+
+Execution is divided into slices:
+
+- bounded by instruction count (gas)
+- preemptible
+- resumable
+
+---
+
+## Preemption
+
+If a transition exceeds its slice:
+
+- execution yields
+- remaining work is rescheduled
+
+This ensures:
+
+- fairness
+- system responsiveness
+
+---
+
+## Fairness
+
+Scheduler guarantees:
+
+- no domain starvation
+- bounded progress
+
+Mechanisms include:
+
+- priority aging
+- queue depth awareness
+
+---
+
+## Quiescence Detection
+
+The system reaches quiescence when:
+
+`all mailboxes are empty AND all goals are satisfied`
+
+At this point:
+
+- execution halts
+- system is stable
+
+---
+
+## Example
+
+Mailbox state:
+
+`[ m1(p=2), m2(p=1), m3(p=2) ]`
+
+Sorted order:
+
+`m2 → m1 → m3`
+
+Execution proceeds in this order.
+
+---
+
+## Determinism Guarantees
+
+Scheduler ensures:
+
+- identical message selection order
+- identical transition execution
+- identical final state
+
+---
+
+## Failure Handling
+
+Failures are handled via:
+
+- replay from journal
+- re-execution of deterministic steps
+
+---
+
+## Constraints
+
+To preserve determinism:
+
+- no random scheduling
+- no parallel state mutation
+- no wall-clock dependencies

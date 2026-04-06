@@ -1,0 +1,76 @@
+---
+title: "Message Lifecycle"
+category: "4. Execution Model"
+order: 406
+---
+
+# Message Lifecycle
+
+## Overview
+
+Messages drive execution in Ved.
+
+Every state change is triggered by:
+
+> message → transition
+
+---
+
+## Lifecycle Stages
+
+1. Emission
+2. Queueing
+3. Scheduling
+4. Processing
+
+---
+
+## 1. Emission
+
+Messages are emitted by:
+
+- transitions
+- system initialization
+
+---
+
+## 2. Queueing
+
+Messages enter domain mailbox:
+
+- FIFO-like structure
+- ordered by scheduler
+
+---
+
+## 3. Scheduling
+
+Scheduler selects message based on:
+
+(priority, logical_time, domain_id, sequence_id)
+
+---
+
+## 4. Processing
+
+Selected message:
+
+- triggers transition
+- updates state
+- may emit new messages
+
+---
+
+## Properties
+
+Messages are:
+
+- deterministic
+- ordered
+- isolated
+
+---
+
+## Example
+
+`emit → mailbox → scheduler → transition → emit`

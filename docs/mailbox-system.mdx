@@ -1,0 +1,70 @@
+---
+title: "Mailbox System"
+category: "5. Runtime Architecture"
+order: 509
+---
+
+# Mailbox System
+
+## Overview
+
+The mailbox system manages inter-domain communication.
+
+Each domain has its own mailbox.
+
+---
+
+## Structure
+
+Mailbox is:
+
+- a queue of messages
+- ordered deterministically
+
+---
+
+## Operations
+
+Mailbox supports:
+
+- enqueue (emit message)
+- dequeue (scheduler selection)
+
+---
+
+## Message Format
+
+Each message includes:
+
+- source domain
+- target domain
+- payload
+- priority
+- sequence ID
+
+---
+
+## Isolation
+
+Mailboxes enforce:
+
+- no shared memory
+- explicit communication
+
+---
+
+## Backpressure
+
+System must handle:
+
+- large message volumes
+- queue growth
+
+---
+
+## Determinism
+
+Message insertion order is:
+
+- deterministic
+- reproducible

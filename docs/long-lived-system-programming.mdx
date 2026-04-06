@@ -6,4 +6,105 @@ order: 204
 
 # Long-Lived System Programming
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+Ved is designed for systems that:
+
+- run continuously
+- evolve over time
+- maintain persistent state
+
+---
+
+## Traditional Model Limitation
+
+Most programs assume:
+
+- short execution
+- stateless behavior
+- restart safety
+
+Control planes violate all three.
+
+---
+
+## Long-Lived Systems
+
+Examples:
+
+- infrastructure controllers
+- schedulers
+- orchestration engines
+
+Characteristics:
+
+- persistent state
+- continuous execution
+- external interaction
+
+---
+
+## Ved Approach
+
+Ved treats systems as:
+
+> continuously evolving state machines
+
+---
+
+## Persistent State
+
+State is:
+
+- durable
+- versioned
+- recoverable
+
+---
+
+## Execution Continuity
+
+Execution does not "restart":
+
+- it resumes
+- it converges
+
+---
+
+## Failure Handling
+
+Failures are handled through:
+
+- replay
+- re-convergence
+
+---
+
+## State Evolution
+
+State must support:
+
+- schema evolution
+- incremental updates
+
+---
+
+## Design Implications
+
+Developers must think in terms of:
+
+- stability
+- convergence
+- long-term correctness
+
+---
+
+## Summary
+
+Ved is not for:
+
+> short-lived computation
+
+It is for:
+
+> systems that must remain correct over time

@@ -1,0 +1,58 @@
+---
+title: "Quiescence and Convergence"
+category: "4. Execution Model"
+order: 408
+---
+
+# Quiescence and Convergence
+
+## Overview
+
+Ved systems aim to reach a stable state called quiescence.
+
+---
+
+## Quiescence Definition
+
+System is quiescent when:
+
+mailboxes are empty AND all goals are satisfied
+
+---
+
+## Convergence Process
+
+System evolves:
+
+`S₀ → S₁ → S₂ → ... → Sₙ`
+
+Until:
+
+`G(Sₙ) = true`
+
+---
+
+## Stability
+
+Once quiescent:
+
+- no further transitions occur
+- system remains stable
+
+---
+
+## Re-activation
+
+If external changes occur:
+
+- goals may break
+- system resumes execution
+
+---
+
+## Oscillation
+
+If system oscillates:
+
+- goals repeatedly break
+- runtime may detect instability

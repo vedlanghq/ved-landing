@@ -6,4 +6,78 @@ order: 304
 
 # Goals
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+A Goal defines the desired stable condition of a domain.
+
+Execution continues until all goals are satisfied.
+
+---
+
+## Structure
+
+```
+ved
+goal workers == 5
+```
+
+---
+
+## Semantics
+
+A goal is:
+
+- a predicate over state
+
+- evaluated continuously
+
+---
+
+## Execution Model
+
+If goal is not satisfied:
+
+- transitions are scheduled
+
+- system continues evolving
+
+---
+
+## Fixed Point
+
+A domain is stable when:
+
+```
+G(state) = true
+```
+
+---
+
+## Multiple Goals
+
+Domains may define multiple goals:
+
+```
+goal workers >= 5
+goal queue_empty == true
+```
+
+All must be satisfied.
+
+---
+
+## Example
+
+```
+goal count == 10
+```
+
+---
+
+## Properties
+
+Goals are:
+
+- declarative
+
+- independent of execution order

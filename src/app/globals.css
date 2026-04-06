@@ -59,6 +59,22 @@
   color: var(--selection-text);
 }
 
+mark,
+.search-highlight {
+  background: var(--accent);
+  color: var(--selection-text);
+  padding: 0.1rem 0.2rem;
+  border-radius: 2px;
+  font-weight: 600;
+  transition: all 0.5s ease;
+}
+
+.search-highlight.fade-out {
+  background-color: transparent;
+  color: inherit;
+  font-weight: inherit;
+}
+
 html {
   background-color: var(--bg-base);
   color: var(--text-main);
@@ -424,58 +440,22 @@ footer {
   background: var(--text-muted);
 }
 
-/* Mobile Menu */
-.mobile-menu-btn {
+/* Mobile Docs Hub Toggle */
+.docs-mobile-header-btn {
   display: none;
   background: transparent;
   border: none;
   color: var(--text-main);
   cursor: pointer;
+  padding: 0;
+  margin-right: 0.25rem;
 }
 
 @media (max-width: 768px) {
-  .mobile-menu-btn {
-    display: block;
-    position: relative;
-    z-index: 105; /* Must sit securely above sidebar overlay to fire close toggle */
-  }
-
-  .mobile-backdrop {
-    display: none; /* Hide default, show via .open on mobile */
-  }
-
-  .mobile-backdrop.open {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
-    z-index: 100;
-  }
-
-  .nav-links {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 300px;
-    max-width: 80vw;
-    height: 100vh;
-    background: var(--bg-surface);
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 6rem 2.5rem 2rem 2.5rem;
-    border-right: 1px solid var(--border);
-    transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 102; /* Higher than header, lower than menu button */
-    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.1);
-  }
-
-  .nav-links.open {
-    transform: translateX(0);
+  .docs-mobile-header-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -949,8 +929,6 @@ footer {
   color: var(--text-main);
 }
 
-
-
 .proj-card-desc {
   font-size: 1rem;
   line-height: 1.65;
@@ -973,7 +951,9 @@ footer {
   border-bottom: 1px solid var(--border);
   padding-bottom: 0.1em;
   margin-bottom: 1.2rem;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .proj-card-link:hover {
@@ -1014,9 +994,17 @@ footer {
   border-radius: 50%;
   flex-shrink: 0;
 }
-.rdmap-dot--done    { background: #10b981; }
-.rdmap-dot--active  { background: var(--accent); }
-.rdmap-dot--planned { background: var(--border); border: 1px solid var(--text-muted); box-sizing: border-box; }
+.rdmap-dot--done {
+  background: #10b981;
+}
+.rdmap-dot--active {
+  background: var(--accent);
+}
+.rdmap-dot--planned {
+  background: var(--border);
+  border: 1px solid var(--text-muted);
+  box-sizing: border-box;
+}
 
 .rdmap-chart {
   display: flex;
@@ -1087,17 +1075,26 @@ footer {
 }
 
 /* Fill colour by status */
-.rdmap-row--done   .rdmap-fill { background: #10b981; }
+.rdmap-row--done .rdmap-fill {
+  background: #10b981;
+}
 .rdmap-row--active .rdmap-fill {
   background: linear-gradient(90deg, var(--accent), #60a5fa);
   /* Subtle shimmer pulse */
   animation: rdmap-pulse 2.5s ease-in-out infinite;
 }
-.rdmap-row--planned .rdmap-fill { display: none; }
+.rdmap-row--planned .rdmap-fill {
+  display: none;
+}
 
 @keyframes rdmap-pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 
 .rdmap-badge {
@@ -1112,9 +1109,20 @@ footer {
   flex-shrink: 0;
 }
 
-.rdmap-badge--done    { color: #10b981; border-color: #10b981; background: rgba(16,185,129,0.08); }
-.rdmap-badge--active  { color: var(--accent); border-color: var(--accent); background: rgba(59,130,246,0.08); }
-.rdmap-badge--planned { color: var(--text-muted); border-color: var(--border); }
+.rdmap-badge--done {
+  color: #10b981;
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.08);
+}
+.rdmap-badge--active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(59, 130, 246, 0.08);
+}
+.rdmap-badge--planned {
+  color: var(--text-muted);
+  border-color: var(--border);
+}
 
 /* ── Terminal Shell (shared by both panels) ─────────────────── */
 .term-shell {
@@ -1144,9 +1152,15 @@ footer {
   border-radius: 50%;
   flex-shrink: 0;
 }
-.dot-red    { background: #ff5f57; }
-.dot-yellow { background: #ffbd2e; }
-.dot-green  { background: #28ca42; }
+.dot-red {
+  background: #ff5f57;
+}
+.dot-yellow {
+  background: #ffbd2e;
+}
+.dot-green {
+  background: #28ca42;
+}
 
 .term-filename {
   font-family: "JetBrains Mono", monospace;
@@ -1169,7 +1183,9 @@ footer {
   font-size: 0.68rem;
   cursor: pointer;
   border-radius: 3px;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
   line-height: 1;
 }
 .term-copy-btn:hover {
@@ -1221,15 +1237,23 @@ footer {
 
 /* ── Code Editor token colours ──────────────────────────────── */
 /* These read from the theme CSS variables so dark/light both work */
-.ct-keyword  { color: var(--token-keyword);  font-weight: 700; }
-.ct-entity   { color: var(--token-entity);   font-weight: 700; }
-.ct-property { color: var(--token-property); }
-.ct-operator { color: var(--token-operator); }
-
-
+.ct-keyword {
+  color: var(--token-keyword);
+  font-weight: 700;
+}
+.ct-entity {
+  color: var(--token-entity);
+  font-weight: 700;
+}
+.ct-property {
+  color: var(--token-property);
+}
+.ct-operator {
+  color: var(--token-operator);
+}
 
 .rt-body {
-  min-height: 8rem;   /* Starts small; grows as lines appear */
+  min-height: 8rem; /* Starts small; grows as lines appear */
   align-items: flex-start;
 }
 
@@ -1241,9 +1265,18 @@ footer {
 }
 
 /* Output token colours */
-.rt-dim     { color: var(--text-muted); opacity: 0.55; }
-.rt-accent  { color: var(--accent); font-weight: 700; }
-.rt-success { color: #10b981; font-weight: 700; }
+.rt-dim {
+  color: var(--text-muted);
+  opacity: 0.55;
+}
+.rt-accent {
+  color: var(--accent);
+  font-weight: 700;
+}
+.rt-success {
+  color: #10b981;
+  font-weight: 700;
+}
 
 /* Blinking block cursor */
 .rt-cursor {
@@ -1255,8 +1288,13 @@ footer {
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 /* Live badge */
@@ -1273,8 +1311,13 @@ footer {
 }
 
 @keyframes pulse-badge {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.55; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
 }
 
 /* ── Keep old token classes alive (used elsewhere) */
@@ -1353,6 +1396,10 @@ footer {
 
   .nav-links {
     gap: 1rem;
+  }
+
+  .mobile-hide {
+    display: none !important;
   }
 
   .two-col-grid {

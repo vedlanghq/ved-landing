@@ -1,50 +1,61 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import ThemeToggle from "@/app/ThemeToggle";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
+
+import { Home } from "lucide-react";
 
 export default function Header({ searchSlot }: { searchSlot?: React.ReactNode }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isDocsPage = pathname?.startsWith("/docs");
 
   return (
     <header className="main-header">
       <nav className="main-nav">
-        <Link href="/" className="logo">
-          <span className="logo-dot"></span> Ved
-        </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          {isDocsPage && (
+            <button
+              className="docs-mobile-header-btn"
+              onClick={() => globalThis.dispatchEvent(new CustomEvent("toggleDocsSidebar"))}
+              aria-label="Toggle Docs Sidebar"
+            >
+              <FaBars size={20} />
+            </button>
+          )}
+          <Link href="/" className="logo">
+            Ved
+          </Link>
+        </div>
 
-        {/* Mobile Hamburger Icon */}
-        <button
-          className="mobile-menu-btn"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle Navigation"
-        >
-          {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-        </button>
-
-        <div 
-          className={`mobile-backdrop ${isMenuOpen ? "open" : ""}`} 
-          onClick={() => setIsMenuOpen(false)} 
-          role="presentation"
-        />
-        <div className={`nav-links ${isMenuOpen ? "open" : ""}`}>
-          <Link href="/#vision" onClick={() => setIsMenuOpen(false)}>
-            Vision
-          </Link>
-          <Link href="/#features" onClick={() => setIsMenuOpen(false)}>
-            Features
-          </Link>
-          <Link
-            href="/docs"
-            onClick={() => setIsMenuOpen(false)}
-            style={{ fontWeight: 600, color: "var(--accent)" }}
-          >
-            Docs
-          </Link>
+        <div className="nav-links">
+          {!isDocsPage ? (
+            <Link
+              href="/docs"
+              style={{ fontWeight: 600, color: "var(--accent)", textTransform: "uppercase" }}
+            >
+              Docs
+            </Link>
+          ) : (
+            <Link
+              href="/docs"
+              title="Docs Home"
+              style={{ 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center",
+                color: "var(--text-muted)",
+                transition: "color 0.2s ease"
+              }}
+              onMouseOver={e => e.currentTarget.style.color = "var(--accent)"}
+              onMouseOut={e => e.currentTarget.style.color = "var(--text-muted)"}
+            >
+              <Home size={20} />
+            </Link>
+          )}
           {searchSlot && (
-            <div style={{ marginLeft: "1rem", display: "flex", alignItems: "center" }}>
+            <div className="header-search-slot">
               {searchSlot}
             </div>
           )}

@@ -1,0 +1,74 @@
+---
+title: "Self-Healing Configuration Drift"
+category: "9. Examples"
+order: 906
+---
+
+# Self-Healing Configuration Drift
+
+## Problem
+
+System configuration drifts over time due to:
+
+- manual changes
+- external systems
+- partial failures
+
+---
+
+## Ved Approach
+
+_Define desired configuration as a goal._
+
+---
+
+## Implementation
+
+```
+domain Config {
+    state {
+        replicas: int
+    }
+
+    goal replicas == 3
+
+    transition reconcile {
+        step {
+            if replicas < 3 {
+                replicas += 1
+            }
+            if replicas > 3 {
+                replicas -= 1
+            }
+        }
+    }
+}
+```
+
+---
+
+## Behavior
+
+- Any drift is automatically corrected
+- System converges back to desired state
+
+---
+
+## Why This Matters
+
+Traditional systems:
+
+- detect drift late
+- require manual fixes
+
+Ved:
+
+- continuously enforces correctness
+
+---
+
+## Summary
+
+Configuration becomes:
+
+> self-correcting by design

@@ -6,4 +6,64 @@ order: 306
 
 # Message Passing
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+All inter-domain communication in Ved occurs via messages.
+
+---
+
+## Structure
+
+A message contains:
+
+- source domain
+- target domain
+- payload
+- priority
+
+---
+
+## Flow
+
+emit → mailbox → scheduler → transition
+
+---
+
+## Example
+
+```ved
+emit Message {
+    target: Worker
+    payload: "start"
+}
+```
+
+---
+
+## Properties
+
+Messages are:
+
+- ordered deterministically
+
+- processed sequentially per domain
+
+---
+
+## Mailbox
+
+Each domain has a mailbox:
+
+- queue of incoming messages
+
+- processed by scheduler
+
+---
+
+## Isolation
+
+Messages enforce:
+
+- no shared state
+
+- explicit communication

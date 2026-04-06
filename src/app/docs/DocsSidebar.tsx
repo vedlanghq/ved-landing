@@ -19,6 +19,13 @@ export default function DocsSidebar({
     setIsOpen(false);
   }, [pathname]);
 
+  // Listen to remote toggles from the global Header component
+  useEffect(() => {
+    const handleToggle = () => setIsOpen((prev) => !prev);
+    globalThis.addEventListener("toggleDocsSidebar", handleToggle);
+    return () => globalThis.removeEventListener("toggleDocsSidebar", handleToggle);
+  }, []);
+
   // Group by category
   const groupedDocs: Record<string, typeof docs> = {};
   let activeCategory = "";
@@ -55,23 +62,13 @@ export default function DocsSidebar({
 
   return (
     <>
-      <button className="docs-mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
-        Menu
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          {isOpen ? (
-            <path d="M18 6L6 18M6 6l12 12" />
-          ) : (
-            <path d="M4 12h16M4 6h16M4 18h16" />
-          )}
-        </svg>
-      </button>
+      {/* Backdrop overlay for mobile */}
+      <div 
+        className={`docs-sidebar-backdrop ${isOpen ? "open" : ""}`} 
+        onClick={() => setIsOpen(false)} 
+        role="presentation"
+        aria-hidden="true"
+      />
 
       <aside className={`docs-sidebar ${isOpen ? "open" : ""}`}>
         <div

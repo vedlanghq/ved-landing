@@ -6,4 +6,68 @@ order: 305
 
 # Effects
 
-_This section is currently being expanded. Check back soon for the full documentation._
+## Overview
+
+Effects represent interactions with external systems.
+
+They are the only way Ved interacts with the outside world.
+
+---
+
+## Examples
+
+- API calls
+- database writes
+- infrastructure changes
+
+---
+
+## Structure
+
+```ved
+effect send_email {
+payload { message: string }
+}
+```
+
+---
+
+## Execution Boundary
+
+Effects:
+
+- are isolated from core logic
+
+- may introduce nondeterminism
+
+---
+
+## Determinism Strategy
+
+Ved ensures:
+
+- effect invocation is deterministic
+
+- effect result handling must be controlled
+
+---
+
+## Idempotency
+
+Effects should be:
+
+- idempotent
+
+- retry-safe
+
+---
+
+## Example
+
+```
+transition notify {
+    step {
+        emit send_email("Done")
+    }
+}
+```

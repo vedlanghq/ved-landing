@@ -1,0 +1,58 @@
+---
+title: "Concurrency Model"
+category: "4. Execution Model"
+order: 407
+---
+
+# Concurrency Model
+
+## Overview
+
+Ved does not use traditional concurrency.
+
+Instead, it uses:
+
+> deterministic interleaving of execution
+
+---
+
+## Key Idea
+
+Only one transition executes at a time globally.
+
+---
+
+## Why?
+
+This ensures:
+
+- no race conditions
+- deterministic state evolution
+
+---
+
+## Parallelism vs Determinism
+
+Ved prioritizes:
+
+- predictability  
+  over
+- raw parallel execution
+
+---
+
+## Domain Isolation
+
+Each domain:
+
+- executes independently
+- but scheduled globally
+
+---
+
+## Effect Handling
+
+External effects may introduce concurrency:
+
+- handled outside deterministic core
+- results reintegrated deterministically
