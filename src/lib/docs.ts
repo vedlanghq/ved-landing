@@ -60,8 +60,15 @@ export function getAllDocs() {
     .map((slug) => getDocBySlug(slug))
     .filter((doc): doc is NonNullable<typeof doc> => doc !== null);
 
-  // Sort docs by order if present in frontmatter
+  // Sort docs by category first, then by order
   return docs.sort((a, b) => {
+    const catA = a?.meta.category || "";
+    const catB = b?.meta.category || "";
+
+    if (catA !== catB) {
+      return catA.localeCompare(catB, undefined, { numeric: true });
+    }
+
     const orderA = a?.meta.order || 999;
     const orderB = b?.meta.order || 999;
     return orderA - orderB;

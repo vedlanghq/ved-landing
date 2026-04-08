@@ -10,7 +10,7 @@ order: 202
 
 Traditional programming models rely on imperative execution:
 
-do A → do B → do C
+`do A → do B → do C`
 
 Ved introduces a different paradigm:
 
@@ -28,7 +28,7 @@ In imperative orchestration:
 
 Example:
 
-create resource wait configure resource retry if failed
+`create resource wait configure resource retry if failed`
 
 Problems:
 
@@ -47,7 +47,7 @@ Ved expresses systems as:
 
 Execution becomes:
 
-while not goal_satisfied: apply transitions
+` while not goal_satisfied: apply transitions `
 
 ---
 
@@ -66,12 +66,14 @@ Sₙ₊₁ = T(Sₙ) until G(S) = true
 
 ## Key Differences
 
+```text
 | Aspect           | Imperative       | Ved                 |
 | ---------------- | ---------------- | ------------------- |
 | Execution        | Sequential       | Iterative           |
 | Failure handling | Explicit retries | Natural convergence |
 | State drift      | Common           | Self-correcting     |
 | Debugging        | Temporal         | State-based         |
+```
 
 ---
 

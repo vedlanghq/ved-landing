@@ -75,8 +75,8 @@ export default function DocsSidebar({
           className="docs-sidebar-inner"
           style={{
             position: "sticky",
-            top: "73px",
-            height: "calc(100vh - 73px)",
+            top: "81.111px",
+            height: "calc(100vh / 0.9 - 81.111px)",
             overflowY: "auto",
             padding: "2rem 2rem",
           }}

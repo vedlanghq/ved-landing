@@ -3,8 +3,11 @@
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr) 250px;
 
-  margin-top: 73px; /* offset fixed header */
-  min-height: calc(100vh - 73px);
+  /* Global 10% Reduction (Requires 10% compensation offset 73 / 0.9 = 81.111px) */
+  zoom: 0.9;
+  margin-top: 81.111px; /* offset fixed header */
+  min-height: calc(100vh / 0.9 - 81.111px);
+  
   width: 100%;
   max-width: none;
   background-color: transparent;
@@ -73,8 +76,8 @@
 
 .docs-toc {
   position: sticky;
-  top: 73px;
-  height: calc(100vh - 73px);
+  top: 81.111px;
+  height: calc(100vh / 0.9 - 81.111px);
   padding: 4rem 2rem;
   overflow-y: auto;
   z-index: 10;
@@ -162,10 +165,10 @@
   }
   .docs-sidebar {
     position: fixed;
-    top: 73px;
+    top: 81.111px;
     left: 0;
     width: 280px;
-    height: calc(100vh - 73px);
+    height: calc(100vh / 0.9 - 81.111px);
     z-index: 100;
     border-right: 1px solid var(--border);
     background: var(--bg-surface);
@@ -182,10 +185,10 @@
   .docs-sidebar-backdrop {
     display: block;
     position: fixed;
-    top: 73px;
+    top: 81.111px;
     left: 0;
     width: 100%;
-    height: calc(100vh - 73px);
+    height: calc(100vh / 0.9 - 81.111px);
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
