@@ -33,7 +33,7 @@ export default function LintingSystem() {
             className="grid-column"
           >
             <h2>Idiomatic Robustness</h2>
-            <p>Linting isn't a stylistic suggestion in Ved. It's a proactive defense against emergent chaos. Lints catch antipatterns that cause systemic failures rather than local crashes.</p>
+            <p>Linting isn&apos;t a stylistic suggestion in Ved. It&apos;s a proactive defense against emergent chaos. Lints catch antipatterns that cause systemic failures rather than local crashes.</p>
           </motion.div>
         </div>
       </section>

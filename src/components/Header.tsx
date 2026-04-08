@@ -7,7 +7,7 @@ import { FaBars } from "react-icons/fa";
 
 import { Home } from "lucide-react";
 
-export default function Header({ searchSlot }: { searchSlot?: React.ReactNode }) {
+export default function Header({ searchSlot }: Readonly<{ searchSlot?: React.ReactNode }>) {
   const pathname = usePathname();
   const isDocsPage = pathname?.startsWith("/docs");
 

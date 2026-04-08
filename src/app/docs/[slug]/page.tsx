@@ -113,14 +113,14 @@ export default async function DocPage({
             {prevDoc ? (
               <Link href={`/docs/${prevDoc.slug}`} className="docs-pagination-link prev">
                 <span className="docs-pagination-label">Previous</span>
-                <span className="docs-pagination-title">{prevDoc.meta?.title || prevDoc.slug}</span>
+                <span className="docs-pagination-title">{prevDoc.meta?.title as string || prevDoc.slug}</span>
               </Link>
             ) : <div className="docs-pagination-empty"></div>}
 
             {nextDoc ? (
               <Link href={`/docs/${nextDoc.slug}`} className="docs-pagination-link next">
                 <span className="docs-pagination-label">Next</span>
-                <span className="docs-pagination-title">{nextDoc.meta?.title || nextDoc.slug}</span>
+                <span className="docs-pagination-title">{nextDoc.meta?.title as string || nextDoc.slug}</span>
               </Link>
             ) : <div className="docs-pagination-empty"></div>}
           </div>

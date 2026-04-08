@@ -31,7 +31,7 @@ export default function SearchDialog({ docs = [] }: Readonly<{ docs: any[] }>) {
       .replaceAll(/^[=-]{2,}\s*$/gm, "") // setext
       .replaceAll(/^#+\s+/gm, "") // atx headers
       .replaceAll(/(\*\*|__)(.*?)\1/g, "$2") // bold
-      .replaceAll(/(\*|_)(.*?)\1/g, "$2") // italic
+      .replaceAll(/(\*|)(.*?)\1/g, "$2") // italic
       .replaceAll(/~~(.*?)~~/g, "$1") // strikethrough
       .replaceAll(/`([^`]+)`/g, "$1") // inline code
       .replaceAll(/```[\s\S]*?```/g, "") // code blocks
@@ -121,7 +121,9 @@ export default function SearchDialog({ docs = [] }: Readonly<{ docs: any[] }>) {
           transition: "all 0.2s ease"
         }}
         onMouseOver={e => e.currentTarget.style.borderColor = "var(--accent)"}
+        onFocus={e => e.currentTarget.style.borderColor = "var(--accent)"}
         onMouseOut={e => e.currentTarget.style.borderColor = "var(--border)"}
+        onBlur={e => e.currentTarget.style.borderColor = "var(--border)"}
       >
         <Search size={16} />
         <span className="mobile-hide">Search Documentation</span>
@@ -156,9 +158,15 @@ export default function SearchDialog({ docs = [] }: Readonly<{ docs: any[] }>) {
             alignItems: "flex-start",
             paddingTop: "12vh",
             paddingLeft: "1rem",
-            paddingRight: "1rem"
+            paddingRight: "1rem",
+            border: "none",
+            background: "none",
+            padding: "0",
+            cursor: "default"
           }}
           onClick={() => setIsOpen(false)}
+          onKeyDown={(e) => e.key === "Escape" && setIsOpen(false)}
+          aria-label="Close search dialog"
         >
           <div
             onClick={(e) => e.stopPropagation()}
@@ -265,7 +273,15 @@ export default function SearchDialog({ docs = [] }: Readonly<{ docs: any[] }>) {
                         e.currentTarget.style.borderColor = "var(--accent)";
                         e.currentTarget.style.background = "var(--shape-1)";
                       }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "var(--accent)";
+                        e.currentTarget.style.background = "var(--shape-1)";
+                      }}
                       onMouseOut={(e) => {
+                        e.currentTarget.style.borderColor = "transparent";
+                        e.currentTarget.style.background = "transparent";
+                      }}
+                      onBlur={(e) => {
                         e.currentTarget.style.borderColor = "transparent";
                         e.currentTarget.style.background = "transparent";
                       }}

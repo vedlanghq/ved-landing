@@ -6,50 +6,76 @@ order: 904
 
 # Multi-Domain Coordination
 
-## Problem
+## The Problem: The Evil of Shared Memory
 
-Coordinate multiple system components safely.
+In standard distributed systems, if an App Server needs to wait for a Database to finish booting before it starts, developers usually rely on a shared database lock or rigid, synchronous API calls (e.g., the App constantly pinging `db.getStatus()` and blocking the thread until it replies).
 
-Challenges:
+This creates **tight coupling**. If the Database takes too long, the App Server's thread times out and crashes. If they try to share a memory state, you risk deadlocks (where both systems are stuck waiting for each other forever).
 
-- shared state conflicts
-- synchronization issues
-- race conditions
+Ved enforces **ADR-002: Absolute Rejection of Shared Mutable State**. Domains cannot read each other's memory. They coordinate through asynchronous **Mailboxes** and **Choreography**.
 
----
+## Example: Booting an App that Depends on a Database
 
-## Ved Approach
+Here is how Ved coordinates two isolated domains (a Database Provisioner and an App Provisioner) using message passing:
 
-_Use domains with message passing._
+```ved
+// DOMAIN 1: The Database
+domain DatabaseProvisioner {
+  state {
+    status: string // "pending" or "ready"
+  }
 
----
+  goal DBIsReady {
+    predicate status == "ready"
+  }
 
-## Implementation
-
-```
-domain Producer {
-    transition produce {
-        step {
-            emit Message {
-                target: Consumer
-                payload: "data"
-            }
-        }
+  transition BootDB {
+    step {
+      if status == "pending" {
+        emit Infra.CreatePostgres()
+        // Once created, broadcast the event to the cluster
+        emit Broadcast(Event::DatabaseReady)
+        status = "ready"
+      }
     }
+  }
 }
 
-domain Consumer {
-    state {
-        received: int
-    }
+// DOMAIN 2: The Application
+domain AppProvisioner {
+  state {
+    db_ready: bool
+    app_status: string
+  }
 
-    transition consume {
-        step {
-            received += 1
-        }
+  goal AppIsLive {
+    predicate db_ready == true && app_status == "running"
+  }
+
+  // Mailbox Handler: Listens for external events
+  on Event::DatabaseReady {
+    db_ready = true
+  }
+
+  transition BootApp {
+    step {
+      // It mathematically CANNOT boot until the mailbox receives the DB event
+      if db_ready == true && app_status != "running" {
+        emit Infra.StartAppContainer()
+        app_status = "running"
+      }
     }
+  }
 }
 ```
+
+## How it Executes (The Control Loop)
+
+1.  **Independent Ticks:** Both domains boot up and run on completely isolated CPU slices. They do not share threads.
+2.  **The Waiting Game:** `AppProvisioner` evaluates its goal (`AppIsLive`). It is `false`. It checks its transitions. Because `db_ready` is `false`, the `BootApp` transition is blocked. The App Domain safely goes to sleep, consuming zero CPU.
+3.  **The Catalyst:** `DatabaseProvisioner` evaluates its goal, triggers `BootDB`, creates the database, and emits the `DatabaseReady` event to the cluster's message broker. It reaches its goal and goes to sleep.
+4.  **The Mailbox Delivery:** The runtime delivers the `DatabaseReady` event to the `AppProvisioner`'s mailbox.
+5.  **The Cascade:** The App Domain wakes up, processes its mailbox (`on Event::DatabaseReady`), updates its internal state (`db_ready = true`), and re-evaluates. Suddenly, the `BootApp` transition unlocks! It executes, starts the app, and finally reaches its stable goal.
 
 ---
 
@@ -72,6 +98,26 @@ Ved:
 
 - message-based coordination
 - deterministic interaction
+
+---
+
+## Key Takeaways
+
+### 1. Deadlock Immunity
+
+Because domains never share memory or wait on synchronous network calls, **deadlocks are mathematically impossible**. The App domain isn't holding a thread open waiting for the DB; it is completely asleep. It only wakes up when the mailbox has mail.
+
+### 2. Decoupled Blast Radiuses
+
+If the `DatabaseProvisioner` domain crashes due to a weird hardware fault right after it emits the event, the `AppProvisioner` domain doesn't care. It already got the message. The App boots successfully while the runtime automatically reboots the DB domain in the background. In a tightly coupled Python script, if the DB function crashes, the whole script exits, and the App never boots.
+
+### 3. Eventual Consistency as a Superpower
+
+Most developers are terrified of "Eventual Consistency" (the idea that system A knows something, but system B won't find out for a few milliseconds). Ved leans into it. The `AppProvisioner` doesn't actually know if the database is currently running; it only knows that _its internal state_ says `db_ready = true`. This forces developers to design highly resilient systems that can handle being out of sync temporarily.
+
+### 4. Safe "Scale-Out" Architecture
+
+Because these domains don't share memory, they don't even have to live on the same physical server. The Ved runtime could execute the Database domain on a server in Tokyo and the App domain on a server in Mumbai. The logic remains 100% identical. The runtime handles the cross-border message delivery. You write the code for a single machine, and the runtime scales it globally for free.
 
 ---
 

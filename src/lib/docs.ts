@@ -11,7 +11,7 @@ function sanitizeSlug(input: string): string {
   // Lowercase and replace any sequence of non-alphanumeric/hyphen characters with a single hyphen
   const normalized = withoutExtension
     .toLowerCase()
-    .replaceAll(/[^a-z0-9\-]+/g, "-")
+    .replaceAll(/[^a-z0-9-]+/g, "-")
     .replaceAll(/^-+|-+$/g, "");
   return normalized;
 }

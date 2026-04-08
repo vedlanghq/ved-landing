@@ -91,7 +91,13 @@ export function CookieConsent() {
           onMouseOver={(e) =>
             (e.currentTarget.style.backgroundColor = "var(--bg-glass)")
           }
+           onFocus={(e) =>
+            (e.currentTarget.style.backgroundColor = "var(--bg-glass)")
+          }
           onMouseOut={(e) =>
+            (e.currentTarget.style.backgroundColor = "transparent")
+          }
+           onBlur={(e) =>
             (e.currentTarget.style.backgroundColor = "transparent")
           }
         >
@@ -113,7 +119,15 @@ export function CookieConsent() {
             e.currentTarget.style.backgroundColor = "transparent";
             e.currentTarget.style.color = "var(--text-main)";
           }}
+          onFocus={(e) => {
+            e.currentTarget.style.backgroundColor = "transparent";
+            e.currentTarget.style.color = "var(--text-main)";
+          }}
           onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = "var(--text-main)";
+            e.currentTarget.style.color = "var(--bg-base)";
+          }}
+          onBlur={(e) => {
             e.currentTarget.style.backgroundColor = "var(--text-main)";
             e.currentTarget.style.color = "var(--bg-base)";
           }}

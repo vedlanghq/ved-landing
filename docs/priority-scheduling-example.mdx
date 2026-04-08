@@ -6,37 +6,67 @@ order: 905
 
 # Priority Scheduling Example
 
-## Problem
+## The Problem: "Noisy Neighbors" and Queue Starvation
 
-Ensure critical tasks execute before less important ones.
+In a standard system (like a Node.js server or a Kubernetes cluster), if you start a massive background task—like generating a monthly billing report or rotating 100GB of log files—it consumes almost all available CPU threads.
 
-Challenges:
+If a critical emergency happens during that time—say, an auto-scaling alert because user traffic just spiked 500%—the emergency alert gets stuck at the back of the line. The CPU is too busy rotating logs to boot up new servers. This is called **Queue Starvation**, and it is one of the leading causes of cascading failures in cloud outages.
 
-- starvation
-- unfair execution
-- inconsistent prioritization
+## The Code: Priority Scheduling in Ved
 
----
+In Ved, you don't manage threads manually. You simply assign semantic priorities (`critical`, `high`, `normal`, `low`, `background`) to your Transitions, and the runtime's deterministic scheduler handles the rest.
 
-## Ved Approach
+```ved
+// DOMAIN 1: The heavy background task
+domain LogRotator {
+  state {
+    logs_processed: int
+  }
 
-_Use deterministic priority scheduling._
+  goal LogsCleaned {
+    predicate logs_processed >= 1000000
+  }
 
----
-
-## Implementation
-
-```
-emit Message {
-    target: HighPriority
-    priority: 1
+  // Marked as low priority
+  @priority(background)
+  transition CompressLogs {
+    step {
+      // Process a small batch
+      logs_processed += 100
+      emit Disk.CompressBatch()
+    }
+  }
 }
 
-emit Message {
-    target: LowPriority
-    priority: 5
+// DOMAIN 2: The critical auto-scaler
+domain EmergencyScaler {
+  state {
+    traffic_surge: bool
+    capacity_met: bool
+  }
+
+  goal TrafficHandled {
+    predicate traffic_surge == false || capacity_met == true
+  }
+
+  // Marked as critical priority
+  @priority(critical)
+  transition InjectCapacity {
+    step {
+      emit Cloud.ProvisionEmergencyServers()
+      capacity_met = true
+    }
+  }
 }
 ```
+
+## How it Executes (The Control Loop)
+
+1.  **The Heavy Lifting:** The system is quiet, so the Scheduler gives 100% of the CPU to the `LogRotator`. It starts running the `CompressLogs` transition.
+2.  **The "Gas" Limit:** Crucially, Ved does not let `CompressLogs` run forever. Execution is broken into "slices" (measured in instruction gas). After processing a batch of 100 logs, the `CompressLogs` transition exhausts its slice and is mathematically **forced to yield the CPU** back to the Scheduler.
+3.  **The Emergency:** During that microsecond pause, an external monitoring tool fires an event: `traffic_surge = true`.
+4.  **The Preemption:** The Scheduler looks at the queue. It sees `CompressLogs` (background) and `InjectCapacity` (critical). It instantly preempts the background task.
+5.  **The Resolution:** The `EmergencyScaler` runs, boots the servers, and reaches its goal. Only after the critical task returns to sleep does the Scheduler allow the `LogRotator` to resume its work.
 
 ---
 
@@ -53,6 +83,25 @@ Scheduler processes:
 - deterministic ordering
 - fairness through aging
 - no starvation
+
+---
+
+## Key Takeaways
+
+### 1. Mathematical Guarantee Against Starvation
+
+In typical programming, to prevent a heavy task from hogging the thread, a developer has to manually sprinkle `await` or `sleep()` commands throughout their loop to artificially yield the CPU. If they forget, the system freezes.
+Ved removes human error. Because of the "Gas" model, execution slices are bounded natively. The runtime _will_ pause your code, check for emergencies, and resume it. A rogue script literally cannot freeze the system.
+
+### 2. Graceful Degradation Built-In
+
+During a massive cloud outage, the first thing SREs (Site Reliability Engineers) do is SSH into servers and manually kill background cron jobs to free up CPU for recovery efforts.
+Ved automates this. Because tasks are semantically tagged, if the system is under extreme duress, the Scheduler just starves the `background` tasks. The system naturally and gracefully degrades, sacrificing non-essential work to keep the critical control plane alive.
+
+### 3. Synergy with Swappable Schedulers
+
+Earlier, we noted in the docs that Ved allows "Swappable Schedulers" (like Energy-Aware or Cost-Aware schedulers). Priority tags make this incredibly powerful.
+If your cluster detects that AWS Spot Instance prices have surged 10x, your custom Cost-Aware Scheduler can instantly decide: _"Halt all `low` and `background` transitions. Only run `high` and `critical` transitions until prices drop."_ You can orchestrate massive financial optimizations without changing a single line of your actual application logic.
 
 ---
 

@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import GithubSlugger from "github-slugger";
 
-export function TOC({ content }: { content: string }) {
+export function TOC({ content }: Readonly<{ content: string }>) {
   const [activeId, setActiveId] = useState<string>("");
-  const [headings, setHeadings] = useState<{ id: string; text: string; level: number }[]>([]);
 
-  useEffect(() => {
+  const headings = useMemo(() => {
     // Process markdown string into headings
     const regex = /^(#{2,3})\s+(.+)$/gm;
     const items = [];
@@ -20,7 +19,7 @@ export function TOC({ content }: { content: string }) {
       const id = slugger.slug(text);
       items.push({ id, text, level });
     }
-    setHeadings(items);
+    return items;
   }, [content]);
 
   useEffect(() => {
@@ -72,7 +71,13 @@ export function TOC({ content }: { content: string }) {
                 onMouseOver={(e) => {
                   if (!isActive) e.currentTarget.style.color = "var(--text-main)";
                 }}
+                onFocus={(e) => {
+                  if (!isActive) e.currentTarget.style.color = "var(--text-main)";
+                }}
                 onMouseOut={(e) => {
+                  if (!isActive) e.currentTarget.style.color = "var(--text-muted)";
+                }}
+                onBlur={(e) => {
                   if (!isActive) e.currentTarget.style.color = "var(--text-muted)";
                 }}
               >

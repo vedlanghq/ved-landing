@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 const structure = {
   "1. Introduction": [
@@ -63,7 +63,12 @@ const structure = {
     { title: "Worker Pool Scaling", slug: "worker-pool-scaling" },
     { title: "Retry Reconciliation", slug: "retry-reconciliation" },
     { title: "Multi-Domain Coordination", slug: "multi-domain-coordination" },
-    { title: "Priority Scheduling Example", slug: "priority-scheduling-example" }
+    { title: "Priority Scheduling Example", slug: "priority-scheduling-example" },
+    { title: "Self Healing Configuration Drift", slug: "self-healing-configuration-drift" },
+    { title: "Rate Limited Processing", slug: "rate-limited-processing" },
+    { title: "Failure Recovery Loop", slug: "failure-recovery-loop" },
+    { title: "Oscillation Detection", slug: "oscillation-detection" },
+    { title: "Distributed Queue Simulation", slug: "distributed-queue-simulation" }
   ],
   "10. Advanced Topics": [
     { title: "Distributed Runtime Vision", slug: "distributed-runtime-vision" },
@@ -81,8 +86,8 @@ const structure = {
   ]
 };
 
-const docsDir = path.join(__dirname, 'docs');
-if (!fs.existsSync(docsDir)) fs.mkdirSync(docsDir);
+const docsDir = join(__dirname, 'docs');
+if (!existsSync(docsDir)) mkdirSync(docsDir);
 
 let orderMultiplier = 1;
 for (const [category, pages] of Object.entries(structure)) {
@@ -99,7 +104,7 @@ order: ${order}
 
 *This section is currently being expanded. Check back soon for the full documentation.*
 `;
-    fs.writeFileSync(path.join(docsDir, `${page.slug}.md`), content);
+    writeFileSync(join(docsDir, `${page.slug}.md`), content);
     pageIndex++;
   }
   orderMultiplier++;
