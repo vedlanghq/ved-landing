@@ -27,7 +27,7 @@ export default function SearchDialog({ docs = [] }: Readonly<{ docs: any[] }>) {
     if (!text) return "";
     return text
       .replaceAll(/^(-\s*?|\*\s*?|_\s*?){3,}\s*$/gm, "") // rules
-      .replaceAll(/<[^>]*>/g, "") // html
+      .replaceAll(/[<>]/g, "") // html-significant chars
       .replaceAll(/^[=-]{2,}\s*$/gm, "") // setext
       .replaceAll(/^#+\s+/gm, "") // atx headers
       .replaceAll(/(\*\*|__)(.*?)\1/g, "$2") // bold
