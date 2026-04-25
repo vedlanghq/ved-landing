@@ -787,33 +787,6 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* CODE BLOCK & RUNTIME SIMULATION */}
-        <section className="code-split-section">
-          <div className="two-col-grid align-top">
-            <motion.div className="code-block-wrapper" {...fadeUp}>
-              <h3>Example: self-stabilizing worker pool</h3>
-              <CodeTerminal onCopy={handleCopy} copied={copied} />
-              <p className="caption">
-                The runtime continuously reconciles actual system state with
-                declared goals.
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="code-block-wrapper"
-              {...fadeUp}
-              transition={{
-                delay: 0.15,
-                duration: 0.8,
-                ease: [0.16, 1, 0.3, 1] as const,
-              }}
-            >
-              <h3>Runtime behaviour</h3>
-              <RuntimeTerminal />
-            </motion.div>
-          </div>
-        </section>
-
         {/* ── PROJECT STRUCTURE ─────────────────────────── */}
         <section className="content-section">
           <div className="two-col-grid align-top">

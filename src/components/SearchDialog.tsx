@@ -4,7 +4,17 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Search, ChevronRight, FileText } from "lucide-react";
 
-export default function SearchDialog({ docs = [] }: Readonly<{ docs: any[] }>) {
+type DocType = {
+  slug?: string;
+  content?: string;
+  meta?: {
+    title?: string;
+    category?: string;
+    description?: string;
+  };
+};
+
+export default function SearchDialog({ docs = [] }: Readonly<{ docs: DocType[] }>) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
@@ -290,7 +300,7 @@ export default function SearchDialog({ docs = [] }: Readonly<{ docs: any[] }>) {
                         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                           <FileText size={16} color="var(--text-muted)" />
                           <span style={{ fontWeight: 600, fontSize: "1rem", color: "var(--accent)" }}>
-                            {highlightSnippet(doc.meta?.title || doc.slug)}
+                            {highlightSnippet(doc.meta?.title || doc.slug || "")}
                           </span>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: "0.25rem", color: "var(--text-muted)", fontSize: "0.8rem" }}>

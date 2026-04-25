@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import VedLogo from "./VedLogo";
 
 export default function Footer() {
   return (
@@ -8,9 +9,7 @@ export default function Footer() {
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="logo" style={{ margin: 0 }}>
-              <Link href="/" style={{ cursor: "pointer", display: "inline-block", color: "inherit", textDecoration: "none" }}>
-                Ved
-              </Link>
+              <VedLogo fontSize={15} />
             </div>
             <p className="footer-tagline">Deterministic execution down to the instruction.</p>
           </div>
@@ -30,6 +29,7 @@ export default function Footer() {
 
           <div className="footer-column">
             <h3>Project</h3>
+            <Link href="/whitepaper">Whitepaper</Link>
             <a href="https://github.com/vedlanghq" target="_blank" rel="noopener noreferrer">Github</a>
             <span className="disabled-link">Community</span>
           </div>

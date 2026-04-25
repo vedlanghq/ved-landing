@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "@/app/ThemeToggle";
 import { FaBars } from "react-icons/fa";
-
 import { Home } from "lucide-react";
+import VedLogo from "./VedLogo";
 
 export default function Header({ searchSlot }: Readonly<{ searchSlot?: React.ReactNode }>) {
   const pathname = usePathname();
@@ -24,20 +24,15 @@ export default function Header({ searchSlot }: Readonly<{ searchSlot?: React.Rea
               <FaBars size={20} />
             </button>
           )}
-          <Link href="/" className="logo">
-            Ved
-          </Link>
+          <div style={{ width: "20px", minWidth: "20px", height: "40px", overflow: "visible", position: "relative" }}>
+            <div style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)" }}>
+              <VedLogo className="logo" fontSize={10} />
+            </div>
+          </div>
         </div>
 
         <div className="nav-links">
-          {!isDocsPage ? (
-            <Link
-              href="/docs"
-              style={{ fontWeight: 600, color: "var(--accent)", textTransform: "uppercase" }}
-            >
-              Docs
-            </Link>
-          ) : (
+          {isDocsPage ? (
             <Link
               href="/docs"
               title="Docs Home"
@@ -52,6 +47,13 @@ export default function Header({ searchSlot }: Readonly<{ searchSlot?: React.Rea
               onMouseOut={e => e.currentTarget.style.color = "var(--text-muted)"}
             >
               <Home size={20} />
+            </Link>
+          ) : (
+            <Link
+              href="/docs"
+              style={{ fontWeight: 600, color: "var(--accent)", textTransform: "uppercase" }}
+            >
+              Docs
             </Link>
           )}
           {searchSlot && (

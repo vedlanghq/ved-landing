@@ -1,192 +1,180 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import BackgroundShapes from "@/components/BackgroundShapes";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { AccordionItem } from "@/components/AccordionItem";
+
+const LINT_CATEGORIES = [
+  { title: "Unbounded Retry Loops", desc: "Ved flags retries on best-effort networks without strict upper limits or backoff guarantees." },
+  { title: "State Domain Mishandling", desc: "Catches confusion between transient cache states and fatal persistent storage bounds." },
+  { title: "Non-idempotent Cross-Boundary Payloads", desc: "Warns when emitting network IO that isn't guaranteed to be idempotent across failure boundaries." },
+  { title: "Implicit Authority Downgrades", desc: "Flags when high-authority domains pass unsanitized references down to lower scopes." }
+];
+
+function LintCategoryAccordions() {
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  return (
+    <>
+      {LINT_CATEGORIES.map((item) => (
+        <AccordionItem
+          key={item.title}
+          title={item.title}
+          solution={item.desc}
+          labelB="Lint target:"
+          isOpen={openKey === item.title}
+          onToggle={() => setOpenKey(openKey === item.title ? null : item.title)}
+        />
+      ))}
+    </>
+  );
+}
 
 export default function LintingSystem() {
+  const fadeUp = {
+    initial: { opacity: 0, y: 40 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-100px" },
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
+  };
+
+  const staggerContainer = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  };
+
+  const itemFade = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
+  };
+
   return (
-    <main className="page-container">
+    <>
       <BackgroundShapes />
+      <Header />
       
-      <section className="hero-section">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="hero-content"
-        >
-          <div className="label">Ved Diagnostics</div>
-          <h1 className="hero-title">Lints for Control <br/>Plane Idioms</h1>
-          <p className="hero-subtitle">
-            Not just formatting. Static analysis tailored for distributed execution and robustness.
-          </p>
-        </motion.div>
-      </section>
+      <main>
+        <section className="hero-section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '100px' }}>
+          <div style={{ width: '100%' }}>
+            <motion.div
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+              className="hero-text"
+              style={{ textAlign: 'center', margin: '0 auto', maxWidth: '1200px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+            >
+              <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "2rem", fontWeight: 600 }}>Ved Diagnostics</motion.div>
+              <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(3.5rem, 7vw, 6rem)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '100%', padding: '0 1rem', wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}>
+                Lints for control plane idioms.
+              </motion.h1>
 
-      <section className="content-section alternate-bg">
-        <div className="layout-single">
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            viewport={{ once: true }}
-            className="grid-column"
-          >
-            <h2>Idiomatic Robustness</h2>
-            <p>Linting isn&apos;t a stylistic suggestion in Ved. It&apos;s a proactive defense against emergent chaos. Lints catch antipatterns that cause systemic failures rather than local crashes.</p>
-          </motion.div>
-        </div>
-      </section>
+              <motion.p className="sub-text" variants={itemFade} style={{ margin: '2.5rem auto 0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', maxWidth: '800px', color: 'var(--text-muted)', lineHeight: 1.6, padding: '0 1rem' }}>
+                Not just formatting. Static analysis tailored for distributed execution and robustness.
+              </motion.p>
+            </motion.div>
+          </div>
+        </section>
 
-      <section className="content-section">
-        <div className="layout-grid">
-          <motion.div className="grid-column">
-             <h2>Actionable Lints</h2>
-             <ul className="elegant-list">
-               <li>Unbounded retry loops on best-effort networks.</li>
-               <li>Mishandling transient vs. fatal state domains.</li>
-               <li>Submitting non-idempotent payloads across failure boundaries.</li>
-               <li>Implicit authority downgrades.</li>
-             </ul>
-          </motion.div>
+        <section className="content-section" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
+          <div className="two-col-grid">
+            <motion.div className="col-text" {...fadeUp}>
+              <h2>Idiomatic Robustness</h2>
+            </motion.div>
 
-          <motion.div className="grid-column">
-             <h2>Auto-Remediation</h2>
-             <p>Where possible, `ved fmt` and `ved fix` apply standardized, community-proven transformations to code. The objective is frictionless compliance with distributed system best practices.</p>
-             <div className="code-block" style={{ marginTop: '2rem' }}>
-               <code>ved fix --apply --all</code>
-             </div>
+            <motion.div
+              className="col-text"
+              {...fadeUp}
+              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <p>
+                Linting isn&apos;t a stylistic suggestion in Ved. It&apos;s a proactive defense against emergent chaos. Lints catch antipatterns that cause systemic failures rather than local crashes.
+              </p>
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="content-section">
+          <div className="two-col-grid">
+            <motion.div className="col-text" {...fadeUp}>
+              <h2>Actionable Lints</h2>
+            </motion.div>
+
+            <motion.div
+              className="col-text"
+              {...fadeUp}
+              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="accordion-group" style={{ margin: "1rem 0" }}>
+                <LintCategoryAccordions />
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="content-section" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
+          <div className="two-col-grid">
+            <motion.div className="col-text" {...fadeUp}>
+              <h2>Auto-Remediation</h2>
+            </motion.div>
+
+            <motion.div
+              className="col-text"
+              {...fadeUp}
+              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <p>
+                Where possible, `ved fmt` and `ved fix` apply standardized, community-proven transformations to code. The objective is frictionless compliance with distributed system best practices.
+              </p>
+              <div className="command-breakdown" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
+                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', textAlign: 'center' }}>
+                    <code style={{ color: 'var(--accent)', fontWeight: 600, fontSize: '1.1rem' }}>ved fix</code>
+                  </div>
+                  <div style={{ padding: '1rem', color: 'var(--text-muted)' }}>
+                    Executes the deterministic static analysis engine.
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
+                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', textAlign: 'center' }}>
+                    <code style={{ color: 'var(--text-main)', fontSize: '1.1rem' }}>--apply</code>
+                  </div>
+                  <div style={{ padding: '1rem', color: 'var(--text-muted)' }}>
+                    Automatically resolves safe structural violations.
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
+                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', textAlign: 'center' }}>
+                    <code style={{ color: 'var(--text-main)', fontSize: '1.1rem' }}>--all</code>
+                  </div>
+                  <div style={{ padding: '1rem', color: 'var(--text-muted)' }}>
+                    Traverses all domain boundaries and goal configurations.
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        <section className="content-section" style={{ textAlign: "center" }}>
+          <motion.div {...fadeUp} style={{ maxWidth: "600px", margin: "0 auto" }}>
+            <h2>The Developer Experience</h2>
+            <p style={{ fontSize: "1.2rem", color: "var(--text-muted)", margin: "1.5rem 0" }}>
+              Read about how the CLI unifies all diagnostic tools into a single, cohesive interface.
+            </p>
+            <Link href="/cli" className="btn btn-primary">
+              CLI UX Philosophy
+            </Link>
           </motion.div>
-        </div>
-      </section>
-      
-      <section className="cta-section">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2>The Developer Experience</h2>
-          <p>Read about how the CLI unifies all diagnostic tools into a single, cohesive interface.</p>
-          <Link href="/cli" className="button primary">CLI UX Philosophy</Link>
-        </motion.div>
-      </section>
-      
-      <style jsx>{`
-        /* Reused simple layout classes inline to respect scope */
-        .page-container {
-          min-height: 100vh;
-          padding-top: 120px;
-          color: var(--fg);
-        }
-        .hero-section {
-          min-height: 60vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          padding: 0 2rem;
-          position: relative;
-        }
-        .hero-content { max-width: 800px; z-index: 10; }
-        .label {
-          font-size: 0.85rem;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: var(--accent);
-          margin-bottom: 2rem;
-        }
-        .hero-title {
-          font-size: clamp(3rem, 6vw, 5rem);
-          line-height: 1.1;
-          letter-spacing: -0.04em;
-          margin-bottom: 1.5rem;
-        }
-        .hero-subtitle {
-          font-size: clamp(1.2rem, 2vw, 1.5rem);
-          color: var(--fg-muted);
-          line-height: 1.4;
-          margin-bottom: 2rem;
-        }
-        .content-section {
-          padding: 8rem 2rem;
-          border-top: 1px solid var(--border);
-        }
-        .alternate-bg { background: rgba(255, 255, 255, 0.02); }
-        .layout-grid {
-          max-width: 1200px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 6rem;
-        }
-        .layout-single { max-width: 1200px; margin: 0 auto; }
-        .grid-column h2, .layout-single h2 {
-          font-size: 2.5rem;
-          letter-spacing: -0.02em;
-          margin-bottom: 1.5rem;
-        }
-        .grid-column p, .layout-single p {
-          color: var(--fg-muted);
-          line-height: 1.7;
-          margin-bottom: 1.5rem;
-          font-size: 1.15rem;
-        }
-        .elegant-list {
-          list-style: none;
-          padding: 0;
-          margin: 2rem 0;
-        }
-        .elegant-list li {
-          padding-left: 1.5rem;
-          position: relative;
-          margin-bottom: 1.5rem;
-          color: var(--fg-muted);
-          font-size: 1.1rem;
-        }
-        .elegant-list li::before {
-          content: "—";
-          position: absolute;
-          left: 0;
-          color: var(--accent);
-        }
-        .code-block {
-          background: #111;
-          color: #f8f8f2;
-          padding: 1.5rem;
-          border-radius: 8px;
-          border: 1px solid var(--border);
-          font-family: monospace;
-          margin: 2rem 0;
-        }
-        .cta-section {
-          padding: 10rem 2rem;
-          text-align: center;
-          border-top: 1px solid var(--border);
-        }
-        .cta-section h2 {
-          font-size: 3rem;
-          letter-spacing: -0.03em;
-          margin-bottom: 1rem;
-        }
-        .button {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.5rem;
-          padding: 1rem 2.5rem;
-          margin-top: 2rem;
-          border-radius: 999px;
-          font-weight: 500;
-          text-decoration: none;
-          background: var(--fg);
-          color: var(--bg);
-          transition: transform 0.2s ease;
-        }
-        .button:hover { transform: translateY(-2px); }
-        @media (max-width: 768px) {
-          .layout-grid { grid-template-columns: 1fr; gap: 4rem; }
-        }
-      `}</style>
-    </main>
+        </section>
+
+      </main>
+
+      <Footer />
+    </>
   );
 }

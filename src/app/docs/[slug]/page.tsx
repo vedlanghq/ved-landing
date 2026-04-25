@@ -1,5 +1,6 @@
 import { getDocBySlug, getDocSlugs, getAllDocs } from "@/lib/docs";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import { notFound } from "next/navigation";
 import { TOC } from "./TOC";
@@ -105,7 +106,7 @@ export default async function DocPage({
             <MDXRemote 
               source={doc.content} 
               components={getComponents(doc)} 
-              options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }} 
+              options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug] } }} 
             />
           </article>
           
