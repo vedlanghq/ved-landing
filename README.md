@@ -1,15 +1,15 @@
-# ved-landing
+# Lexum-landing
 
-Marketing landing page and documentation entry point for the Ved programming language.
+Marketing landing page and documentation entry point for the Lexum programming language.
 
-This project contains the public website used to introduce Ved, explain its
+This project contains the public website used to introduce Lexum, explain its
 execution model, and provide links to core repositories and documentation.
 
 The site is built with Next.js.
 
 ## Purpose
 
-- Present the high-level vision and positioning of Ved
+- Present the high-level vision and positioning of Lexum
 - Provide structured documentation navigation
 - Offer quick access to runtime, compiler, and CLI repositories
 - Serve as the primary public entry point for new users

@@ -1,19 +1,21 @@
 "use client";
 import Link from "next/link";
-import VedLogo from "./VedLogo";
+import LexumLogo from "./LexumLogo";
 
 export default function Footer() {
   return (
-    <footer className="ved-footer">
+    <footer className="Lexum-footer">
       <div className="footer-content">
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="logo" style={{ margin: 0 }}>
-              <VedLogo fontSize={15} />
+              <LexumLogo fontSize={15} />
             </div>
-            <p className="footer-tagline">Deterministic execution down to the instruction.</p>
+            <p className="footer-tagline">
+              Deterministic execution down to the instruction.
+            </p>
           </div>
-          
+
           <div className="footer-column">
             <h3>Diagnostics</h3>
             <Link href="/errors">Error Taxonomy</Link>
@@ -30,40 +32,52 @@ export default function Footer() {
           <div className="footer-column">
             <h3>Project</h3>
             <Link href="/whitepaper">Whitepaper</Link>
-            <a href="https://github.com/vedlanghq" target="_blank" rel="noopener noreferrer">Github</a>
+            <a
+              href="https://github.com/lexumhq"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Github
+            </a>
             <span className="disabled-link">Community</span>
           </div>
         </div>
 
         <div className="footer-bottom">
           <div className="footer-text">
-            &copy; {new Date().getFullYear()} Ved Programming Language.
+            &copy; {new Date().getFullYear()} Lexum Programming Language.
           </div>
         </div>
       </div>
 
       <style jsx>{`
-        .ved-footer {
+        .Lexum-footer {
           border-top: 1px solid var(--border);
           padding: 8rem 2rem 4rem;
-          background: var(--bg);
-          color: var(--fg);
+          background: var(--bg-surface);
+          color: var(--text-main);
+          overflow: hidden;
         }
         .footer-content {
           max-width: 1200px;
           margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
         }
         .footer-grid {
-          display: grid;
-          grid-template-columns: 2fr 1fr 1fr 1fr;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
           gap: 4rem;
           margin-bottom: 6rem;
         }
         .footer-brand {
+          flex: 1 1 300px;
           padding-right: 2rem;
         }
         .logo {
-          font-size: 3rem;
+          font-size: 1.5rem;
           font-weight: 700;
           letter-spacing: -0.04em;
           margin-bottom: 1rem !important;
@@ -79,8 +93,8 @@ export default function Footer() {
           display: inline-block;
         }
         .footer-tagline {
-          font-size: 1.25rem;
-          color: var(--fg-muted);
+          font-size: 1.1rem;
+          color: var(--text-muted);
           line-height: 1.4;
           max-width: 90%;
         }
@@ -88,22 +102,26 @@ export default function Footer() {
           display: flex;
           flex-direction: column;
           gap: 1.25rem;
+          flex: 1 1 150px;
+          min-width: 150px;
         }
         .footer-column h3 {
           font-size: 0.85rem;
           text-transform: uppercase;
           letter-spacing: 0.1em;
-          color: var(--fg-muted);
+          color: var(--text-muted);
           opacity: 0.8;
           margin-bottom: 0.5rem;
           font-weight: 600;
         }
         .footer-column a {
-          color: var(--fg);
+          color: var(--text-main);
           text-decoration: none;
-          font-size: 1.2rem;
+          font-size: 1.1rem;
           font-weight: 500;
-          transition: color 0.2s ease, transform 0.2s ease;
+          transition:
+            color 0.2s ease,
+            transform 0.2s ease;
           display: inline-block;
           width: fit-content;
         }
@@ -112,9 +130,9 @@ export default function Footer() {
           transform: translateX(4px);
         }
         .disabled-link {
-          font-size: 1.2rem;
+          font-size: 1.1rem;
           font-weight: 500;
-          color: var(--fg);
+          color: var(--text-main);
           opacity: 0.3;
           cursor: not-allowed;
           display: inline-block;
@@ -125,23 +143,15 @@ export default function Footer() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          font-size: 1.1rem;
-          color: var(--fg-muted);
+          font-size: 1rem;
+          color: var(--text-muted);
+          flex-wrap: wrap;
+          gap: 1.5rem;
         }
         @media (max-width: 968px) {
-          .footer-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-          }
           .footer-brand {
-            grid-column: 1 / -1;
+            flex: 1 1 100%;
             padding-right: 0;
-          }
-        }
-        @media (max-width: 600px) {
-          .footer-grid {
-            grid-template-columns: 1fr;
-            gap: 3rem;
           }
         }
       `}</style>

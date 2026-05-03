@@ -8,11 +8,11 @@ order: 402
 
 When building self-stabilizing control systems, not all outages are created equal. A background log-rotation task failing is less relevant than the primary database proxy going offline.
 
-Because Ved uses a **Deterministic Scheduler**, it needs mathematical rules to decide what action to compute first when an environment experiences catastrophic drift (such as a region-wide networking failure).
+Because Lexum uses a **Deterministic Scheduler**, it needs mathematical rules to decide what action to compute first when an environment experiences catastrophic drift (such as a region-wide networking failure).
 
 ## The Priority Levels
 
-Ved provides 5 native priority levels that can be attached to any Goal or Transition:
+Lexum provides 5 native priority levels that can be attached to any Goal or Transition:
 
 1. **`critical`**: Immediate preemption. Drops whatever the runtime is currently doing and schedules this logic over all other slices. Reserved for failovers, emergency state locks, and severe system health violations.
 2. **`high`**: High aggression scheduling. Scheduled immediately after any currently executing `critical` slices.
@@ -22,13 +22,13 @@ Ved provides 5 native priority levels that can be attached to any Goal or Transi
 
 ## Preemption & Interruption
 
-Because Ved breaks Transitions into discrete Execution Slices, it implements **Yield-on-Slice Preemption**.
+Because Lexum breaks Transitions into discrete Execution Slices, it implements **Yield-on-Slice Preemption**.
 
-If Domain `DataCleaner` is currently executing a `low` priority task, it is not brutally interrupted mid-computation. Instead, the runtime waits for the current 5-millisecond Slice to finish. At the boundary—before the next slice begins—the Ved scheduler identifies a new `critical` event, snapshots `DataCleaner`'s state safely, and hands the CPU over to the critical Domain.
+If Domain `DataCleaner` is currently executing a `low` priority task, it is not brutally interrupted mid-computation. Instead, the runtime waits for the current 5-millisecond Slice to finish. At the boundary - before the next slice begins - the Lexum scheduler identifies a new `critical` event, snapshots `DataCleaner`'s state safely, and hands the CPU over to the critical Domain.
 
 ## Handling Priority Conflicts
 
-If two Goals at the exact same priority level trigger simultaneously, Ved cannot pick one "at random", as this breaches core reproducibility guarantees.
+If two Goals at the exact same priority level trigger simultaneously, Lexum cannot pick one "at random", as this breaches core reproducibility guarantees.
 
 Instead, the Scheduler uses a mathematical **Deterministic Arbitration Tie-Breaker**:
 

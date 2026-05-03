@@ -389,40 +389,7 @@ nav {
   }
 }
 
-/* Footer Container */
-footer {
-  background-color: var(--bg-surface);
-  border-top: 1px solid var(--border);
-  padding: 3rem 2rem;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.footer-links {
-  display: flex;
-  gap: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 500;
-}
-
-.footer-links a {
-  transition: color 0.1s;
-}
-
-.footer-links a:hover {
-  color: var(--text-main);
-}
+/* Footer styles removed to prevent conflict with Footer.tsx */
 
 ::-webkit-scrollbar {
   width: 10px;

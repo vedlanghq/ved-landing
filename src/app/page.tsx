@@ -12,7 +12,7 @@ function AccordionItem({
   limitation,
   solution,
   labelA = "The limit:",
-  labelB = "The Ved approach:",
+  labelB = "The Lexum approach:",
   isOpen,
   onToggle,
 }: Readonly<{
@@ -110,7 +110,9 @@ function FAQItem({
     <motion.div
       style={{ borderBottom: "1px solid var(--border)" }}
       initial={false}
-      animate={{ backgroundColor: isOpen ? "var(--bg-surface-hover)" : "transparent" }}
+      animate={{
+        backgroundColor: isOpen ? "var(--bg-surface-hover)" : "transparent",
+      }}
       transition={{ duration: 0.2 }}
     >
       <button
@@ -149,7 +151,16 @@ function FAQItem({
             marginLeft: "1rem",
           }}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d="M12 5v14M5 12h14" />
           </svg>
         </motion.div>
@@ -160,7 +171,14 @@ function FAQItem({
         style={{ overflow: "hidden", padding: "0 1rem" }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div style={{ paddingBottom: "1.5rem", color: "var(--text-muted)", fontSize: "1.1rem", lineHeight: 1.6 }}>
+        <div
+          style={{
+            paddingBottom: "1.5rem",
+            color: "var(--text-muted)",
+            fontSize: "1.1rem",
+            lineHeight: 1.6,
+          }}
+        >
           {answer}
         </div>
       </motion.div>
@@ -188,7 +206,12 @@ function PipelineStep({
         aria-hidden="true"
       >
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <path
+            d="M6 1v10M1 6h10"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+          />
         </svg>
       </motion.div>
 
@@ -214,19 +237,91 @@ function PipelineStep({
 
 /* ───── Code Terminal ─────────────────────────────────────── */
 const CODE_LINES = [
-  { num: 1,  tokens: [{ t: "keyword", v: "domain" }, { t: "plain", v: " " }, { t: "entity", v: "WorkerPool" }, { t: "plain", v: " {" }] },
-  { num: 2,  tokens: [{ t: "plain", v: "  " }, { t: "keyword", v: "state" }, { t: "plain", v: " {" }] },
-  { num: 3,  tokens: [{ t: "plain", v: "    " }, { t: "property", v: "desired" }, { t: "plain", v: ": int" }] },
-  { num: 4,  tokens: [{ t: "plain", v: "    " }, { t: "property", v: "actual" }, { t: "plain", v: ": int" }] },
-  { num: 5,  tokens: [{ t: "plain", v: "  }" }] },
-  { num: 6,  tokens: [] },
-  { num: 7,  tokens: [{ t: "plain", v: "  " }, { t: "keyword", v: "goal" }, { t: "plain", v: " " }, { t: "entity", v: "Stable" }, { t: "plain", v: " {" }] },
-  { num: 8,  tokens: [{ t: "plain", v: "    " }, { t: "keyword", v: "predicate" }, { t: "plain", v: " actual " }, { t: "operator", v: "==" }, { t: "plain", v: " desired" }] },
-  { num: 9,  tokens: [{ t: "plain", v: "  }" }] },
+  {
+    num: 1,
+    tokens: [
+      { t: "keyword", v: "domain" },
+      { t: "plain", v: " " },
+      { t: "entity", v: "WorkerPool" },
+      { t: "plain", v: " {" },
+    ],
+  },
+  {
+    num: 2,
+    tokens: [
+      { t: "plain", v: "  " },
+      { t: "keyword", v: "state" },
+      { t: "plain", v: " {" },
+    ],
+  },
+  {
+    num: 3,
+    tokens: [
+      { t: "plain", v: "    " },
+      { t: "property", v: "desired" },
+      { t: "plain", v: ": int" },
+    ],
+  },
+  {
+    num: 4,
+    tokens: [
+      { t: "plain", v: "    " },
+      { t: "property", v: "actual" },
+      { t: "plain", v: ": int" },
+    ],
+  },
+  { num: 5, tokens: [{ t: "plain", v: "  }" }] },
+  { num: 6, tokens: [] },
+  {
+    num: 7,
+    tokens: [
+      { t: "plain", v: "  " },
+      { t: "keyword", v: "goal" },
+      { t: "plain", v: " " },
+      { t: "entity", v: "Stable" },
+      { t: "plain", v: " {" },
+    ],
+  },
+  {
+    num: 8,
+    tokens: [
+      { t: "plain", v: "    " },
+      { t: "keyword", v: "predicate" },
+      { t: "plain", v: " actual " },
+      { t: "operator", v: "==" },
+      { t: "plain", v: " desired" },
+    ],
+  },
+  { num: 9, tokens: [{ t: "plain", v: "  }" }] },
   { num: 10, tokens: [] },
-  { num: 11, tokens: [{ t: "plain", v: "  " }, { t: "keyword", v: "transition" }, { t: "plain", v: " " }, { t: "entity", v: "ScaleUp" }, { t: "plain", v: " {" }] },
-  { num: 12, tokens: [{ t: "plain", v: "    " }, { t: "keyword", v: "step" }, { t: "plain", v: " {" }] },
-  { num: 13, tokens: [{ t: "plain", v: "      " }, { t: "keyword", v: "emit" }, { t: "plain", v: " " }, { t: "entity", v: "ProvisionWorker" }, { t: "plain", v: "()" }] },
+  {
+    num: 11,
+    tokens: [
+      { t: "plain", v: "  " },
+      { t: "keyword", v: "transition" },
+      { t: "plain", v: " " },
+      { t: "entity", v: "ScaleUp" },
+      { t: "plain", v: " {" },
+    ],
+  },
+  {
+    num: 12,
+    tokens: [
+      { t: "plain", v: "    " },
+      { t: "keyword", v: "step" },
+      { t: "plain", v: " {" },
+    ],
+  },
+  {
+    num: 13,
+    tokens: [
+      { t: "plain", v: "      " },
+      { t: "keyword", v: "emit" },
+      { t: "plain", v: " " },
+      { t: "entity", v: "ProvisionWorker" },
+      { t: "plain", v: "()" },
+    ],
+  },
   { num: 14, tokens: [{ t: "plain", v: "    }" }] },
   { num: 15, tokens: [{ t: "plain", v: "  }" }] },
   { num: 16, tokens: [{ t: "plain", v: "}" }] },
@@ -234,14 +329,17 @@ const CODE_LINES = [
 
 type TokenType = "keyword" | "entity" | "property" | "operator" | "plain";
 const TOKEN_CLASS: Record<TokenType, string> = {
-  keyword:  "ct-keyword",
-  entity:   "ct-entity",
+  keyword: "ct-keyword",
+  entity: "ct-entity",
   property: "ct-property",
   operator: "ct-operator",
-  plain:    "",
+  plain: "",
 };
 
-function CodeTerminal({ onCopy, copied }: Readonly<{ onCopy: () => void; copied: boolean }>) {
+function CodeTerminal({
+  onCopy,
+  copied,
+}: Readonly<{ onCopy: () => void; copied: boolean }>) {
   return (
     <div className="term-shell">
       {/* Title bar */}
@@ -249,12 +347,39 @@ function CodeTerminal({ onCopy, copied }: Readonly<{ onCopy: () => void; copied:
         <span className="term-dot dot-red" />
         <span className="term-dot dot-yellow" />
         <span className="term-dot dot-green" />
-        <span className="term-filename">worker_pool.ved</span>
-        <button className="term-copy-btn" onClick={onCopy} aria-label="Copy code">
+        <span className="term-filename">worker_pool.lexum</span>
+        <button
+          className="term-copy-btn"
+          onClick={onCopy}
+          aria-label="Copy code"
+        >
           {copied ? (
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
           ) : (
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="9" y="9" width="13" height="13" rx="2" />
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+            </svg>
           )}
           <span>{copied ? "Copied" : "Copy"}</span>
         </button>
@@ -262,17 +387,30 @@ function CodeTerminal({ onCopy, copied }: Readonly<{ onCopy: () => void; copied:
       {/* Code body */}
       <div className="term-body">
         <div className="term-gutter" aria-hidden="true">
-          {CODE_LINES.map((l) => <span key={l.num}>{l.num}</span>)}
+          {CODE_LINES.map((l) => (
+            <span key={l.num}>{l.num}</span>
+          ))}
         </div>
         <pre className="term-code">
           <code>
             {CODE_LINES.map((line) => (
               <div key={line.num} className="term-line">
-                {line.tokens.length === 0 ? <>&nbsp;</> : line.tokens.map((tk, i) => (
-                  tk.t === "plain"
-                    ? <span key={`tk-${line.num}-${i}`}>{tk.v}</span>
-                    : <span key={`tk-${line.num}-${i}`} className={TOKEN_CLASS[tk.t as TokenType]}>{tk.v}</span>
-                ))}
+                {line.tokens.length === 0 ? (
+                  <>&nbsp;</>
+                ) : (
+                  line.tokens.map((tk, i) =>
+                    tk.t === "plain" ? (
+                      <span key={`tk-${line.num}-${i}`}>{tk.v}</span>
+                    ) : (
+                      <span
+                        key={`tk-${line.num}-${i}`}
+                        className={TOKEN_CLASS[tk.t as TokenType]}
+                      >
+                        {tk.v}
+                      </span>
+                    ),
+                  )
+                )}
               </div>
             ))}
           </code>
@@ -283,31 +421,40 @@ function CodeTerminal({ onCopy, copied }: Readonly<{ onCopy: () => void; copied:
 }
 
 /* ───── Runtime Terminal ──────────────────────────────────── */
-const RUNTIME_LINES: { type: "dim" | "accent" | "success" | "plain"; text: string }[][] = [
+const RUNTIME_LINES: {
+  type: "dim" | "accent" | "success" | "plain";
+  text: string;
+}[][] = [
   [
-    { type: "dim",   text: "tick=1" },
+    { type: "dim", text: "tick=1" },
     { type: "plain", text: "  desired=3  actual=0  " },
-    { type: "dim",   text: "→" },
+    { type: "dim", text: "→" },
     { type: "plain", text: "  " },
-    { type: "accent",text: "scheduling ScaleUp" },
+    { type: "accent", text: "scheduling ScaleUp" },
   ],
-  [{ type: "dim", text: "tick=2" }, { type: "plain", text: "  actual=1" }],
-  [{ type: "dim", text: "tick=3" }, { type: "plain", text: "  actual=2" }],
   [
-    { type: "dim",     text: "tick=4" },
-    { type: "plain",   text: "  actual=3  " },
-    { type: "dim",     text: "→" },
-    { type: "plain",   text: "  " },
+    { type: "dim", text: "tick=2" },
+    { type: "plain", text: "  actual=1" },
+  ],
+  [
+    { type: "dim", text: "tick=3" },
+    { type: "plain", text: "  actual=2" },
+  ],
+  [
+    { type: "dim", text: "tick=4" },
+    { type: "plain", text: "  actual=3  " },
+    { type: "dim", text: "→" },
+    { type: "plain", text: "  " },
     { type: "success", text: "goal Stable satisfied ✓" },
   ],
-  [{ type: "plain", text: "" }],  // blank spacer before repeat
+  [{ type: "plain", text: "" }], // blank spacer before repeat
 ];
 
 const RUNTIME_CLASS: Record<string, string> = {
-  dim:     "rt-dim",
-  accent:  "rt-accent",
+  dim: "rt-dim",
+  accent: "rt-accent",
   success: "rt-success",
-  plain:   "",
+  plain: "",
 };
 
 function RuntimeTerminal() {
@@ -325,7 +472,9 @@ function RuntimeTerminal() {
         setVisibleCount(0);
       }, 1400);
     }
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
   }, [visibleCount, loopKey]);
 
   return (
@@ -352,16 +501,25 @@ function RuntimeTerminal() {
                   transition={{ duration: 0.25, ease: "easeOut" }}
                 >
                   {segments.map((seg, si) =>
-                    seg.type === "plain"
-                      ? <span key={`seg-${loopKey}-${li}-${si}`}>{seg.text}</span>
-                      : <span key={`seg-${loopKey}-${li}-${si}`} className={RUNTIME_CLASS[seg.type]}>{seg.text}</span>
+                    seg.type === "plain" ? (
+                      <span key={`seg-${loopKey}-${li}-${si}`}>{seg.text}</span>
+                    ) : (
+                      <span
+                        key={`seg-${loopKey}-${li}-${si}`}
+                        className={RUNTIME_CLASS[seg.type]}
+                      >
+                        {seg.text}
+                      </span>
+                    ),
                   )}
                 </motion.div>
               ))}
             </AnimatePresence>
             {/* Blinking cursor on last visible line */}
             {visibleCount > 0 && visibleCount <= RUNTIME_LINES.length && (
-              <span className="rt-cursor" aria-hidden="true">▋</span>
+              <span className="rt-cursor" aria-hidden="true">
+                ▋
+              </span>
             )}
           </code>
         </pre>
@@ -370,18 +528,20 @@ function RuntimeTerminal() {
   );
 }
 
-/* ───── Project Card ──────────────────────────────────────── */
+/* ───── Project Card ─────────────────────────────────────── */
 type ProjStatus = "done" | "active" | "planned";
 
-function ProjectCard(props: Readonly<{
-  id: string;
-  name: string;
-  tag: string;
-  desc: string;
-  href: string;
-  isOpen: boolean;
-  onToggle: () => void;
-}>) {
+function ProjectCard(
+  props: Readonly<{
+    id: string;
+    name: string;
+    tag: string;
+    desc: string;
+    href: string;
+    isOpen: boolean;
+    onToggle: () => void;
+  }>,
+) {
   const { name, tag, desc, href, isOpen: open, onToggle } = props;
   return (
     <div className={`proj-card${open ? " proj-card--open" : ""}`}>
@@ -400,7 +560,16 @@ function ProjectCard(props: Readonly<{
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           aria-hidden="true"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d="M6 9l6 6 6-6" />
           </svg>
         </motion.div>
@@ -424,8 +593,19 @@ function ProjectCard(props: Readonly<{
         >
           <span>View repository</span>
           {/* Arrow icon — rotates to ↗ on hover via CSS */}
-          <svg className="proj-card-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M7 17L17 7" /><path d="M7 7h10v10" />
+          <svg
+            className="proj-card-arrow"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M7 17L17 7" />
+            <path d="M7 7h10v10" />
           </svg>
         </a>
       </motion.div>
@@ -435,22 +615,24 @@ function ProjectCard(props: Readonly<{
 
 /* ───── Roadmap Row ───────────────────────────────────────── */
 const RDMAP_WIDTH: Record<ProjStatus, string> = {
-  done:    "100%",
-  active:  "52%",
+  done: "100%",
+  active: "52%",
   planned: "0%",
 };
 const RDMAP_LABEL: Record<ProjStatus, string> = {
-  done:    "Done",
-  active:  "In progress",
+  done: "Done",
+  active: "In progress",
   planned: "Planned",
 };
 
-function RoadmapRow(props: Readonly<{
-  status: ProjStatus;
-  label: string;
-  note: string;
-  index: number;
-}>) {
+function RoadmapRow(
+  props: Readonly<{
+    status: ProjStatus;
+    label: string;
+    note: string;
+    index: number;
+  }>,
+) {
   const { status, label, note, index } = props;
   return (
     <motion.div
@@ -458,7 +640,11 @@ function RoadmapRow(props: Readonly<{
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 }}
+      transition={{
+        duration: 0.55,
+        ease: [0.16, 1, 0.3, 1],
+        delay: index * 0.08,
+      }}
     >
       {/* Left meta */}
       <div className="rdmap-meta">
@@ -473,12 +659,18 @@ function RoadmapRow(props: Readonly<{
           initial={{ width: "0%" }}
           whileInView={{ width: RDMAP_WIDTH[status] }}
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 + index * 0.08 }}
+          transition={{
+            duration: 0.9,
+            ease: [0.16, 1, 0.3, 1],
+            delay: 0.15 + index * 0.08,
+          }}
         />
       </div>
 
       {/* Status badge */}
-      <span className={`rdmap-badge rdmap-badge--${status}`}>{RDMAP_LABEL[status]}</span>
+      <span className={`rdmap-badge rdmap-badge--${status}`}>
+        {RDMAP_LABEL[status]}
+      </span>
     </motion.div>
   );
 }
@@ -486,10 +678,34 @@ function RoadmapRow(props: Readonly<{
 /* ───── Accordion Group Wrappers ─────────────────────────── */
 
 const PROBLEM_ITEMS = [
-  { title: "Imperative scripts",             limitation: "Sequential, step-by-step scripts fail unpredictably halfway through, leaving systems in unknown partial states that require manual intervention.",              solution: "Ved uses declarative goals. The runtime continuously calculates and executes the safest path to equilibrium regardless of the starting state." },
-  { title: "Controller boilerplate",         limitation: "Developers spend countless hours writing redundant loops, error handling, and retry logic just to watch for simple state changes.",                                solution: "Ved\u2019s runtime intrinsically provides the observation and execution loop, letting you write only the exact domain logic and transition bounds." },
-  { title: "Configuration drift",            limitation: "Live systems drift from their declared configuration due to manual changes, edge cases, or silent failures, leading to unstable environments.",                   solution: "Ved constantly cross-references live actual state with declared desired state, actively scheduling transitions to repair deviations automatically." },
-  { title: "Non-reproducible execution timing", limitation: "Race conditions and asynchronous task scheduling cause intermittent, impossible-to-reproduce bugs in distributed networks.",                                solution: "Ved processes orchestration logic in strictly sequential, deterministic slices, making every system transition 100% reproducible and testable." },
+  {
+    title: "Imperative scripts",
+    limitation:
+      "Sequential, step-by-step scripts fail unpredictably halfway through, leaving systems in unknown partial states that require manual intervention.",
+    solution:
+      "Lexum uses declarative goals. The runtime continuously calculates and executes the safest path to equilibrium regardless of the starting state.",
+  },
+  {
+    title: "Controller boilerplate",
+    limitation:
+      "Developers spend countless hours writing redundant loops, error handling, and retry logic just to watch for simple state changes.",
+    solution:
+      "Lexum\u2019s runtime intrinsically provides the observation and execution loop, letting you write only the exact domain logic and transition bounds.",
+  },
+  {
+    title: "Configuration drift",
+    limitation:
+      "Live systems drift from their declared configuration due to manual changes, edge cases, or silent failures, leading to unstable environments.",
+    solution:
+      "Lexum constantly cross-references live actual state with declared desired state, actively scheduling transitions to repair deviations automatically.",
+  },
+  {
+    title: "Non-reproducible execution timing",
+    limitation:
+      "Race conditions and asynchronous task scheduling cause intermittent, impossible-to-reproduce bugs in distributed networks.",
+    solution:
+      "Lexum processes orchestration logic in strictly sequential, deterministic slices, making every system transition 100% reproducible and testable.",
+  },
 ] as const;
 
 function ProblemAccordions() {
@@ -503,7 +719,9 @@ function ProblemAccordions() {
           limitation={item.limitation}
           solution={item.solution}
           isOpen={openKey === item.title}
-          onToggle={() => setOpenKey(openKey === item.title ? null : item.title)}
+          onToggle={() =>
+            setOpenKey(openKey === item.title ? null : item.title)
+          }
         />
       ))}
     </>
@@ -511,10 +729,38 @@ function ProblemAccordions() {
 }
 
 const FEATURES_ITEMS = [
-  { title: "Persistent system state",        limitation: "The canonical representation of the domain logic.",            solution: "State definitions explicitly encode exactly what properties of a system determine its behavior, automatically versioned and schema-managed.",                                                                           labelA: "Concept:", labelB: "Purpose:" },
-  { title: "Stable operating goals",         limitation: "Expressions describing what a valid state looks like.",         solution: "Instead of writing imperative checks, you declare specific invariant rules (predicates). If any rule fails, the system knows it is out of equilibrium.",                                                          labelA: "Concept:", labelB: "Purpose:" },
-  { title: "Deterministic transition logic", limitation: "Strictly pure functions that map from state to state.",          solution: "Transitions encode safe pathways between states. They are recorded and fully replayable without any network or disk IO side-effects mutating them under the hood.",                                                labelA: "Concept:", labelB: "Purpose:" },
-  { title: "Structured authority boundaries",limitation: "Cryptographically enforced bounds on who can mutate state.",    solution: "Defines exact Role-Based limitations baked directly into the compiler, ensuring unauthorized transactions are dropped before they even reach the executor.",                                                       labelA: "Concept:", labelB: "Purpose:" },
+  {
+    title: "Persistent system state",
+    limitation: "The canonical representation of the domain logic.",
+    solution:
+      "State definitions explicitly encode exactly what properties of a system determine its behavior, automatically versioned and schema-managed.",
+    labelA: "Concept:",
+    labelB: "Purpose:",
+  },
+  {
+    title: "Stable operating goals",
+    limitation: "Expressions describing what a valid state looks like.",
+    solution:
+      "Instead of writing imperative checks, you declare specific invariant rules (predicates). If any rule fails, the system knows it is out of equilibrium.",
+    labelA: "Concept:",
+    labelB: "Purpose:",
+  },
+  {
+    title: "Deterministic transition logic",
+    limitation: "Strictly pure functions that map from state to state.",
+    solution:
+      "Transitions encode safe pathways between states. They are recorded and fully replayable without any network or disk IO side-effects mutating them under the hood.",
+    labelA: "Concept:",
+    labelB: "Purpose:",
+  },
+  {
+    title: "Structured authority boundaries",
+    limitation: "Cryptographically enforced bounds on who can mutate state.",
+    solution:
+      "Defines exact Role-Based limitations baked directly into the compiler, ensuring unauthorized transactions are dropped before they even reach the executor.",
+    labelA: "Concept:",
+    labelB: "Purpose:",
+  },
 ] as const;
 
 function FeaturesAccordions() {
@@ -530,7 +776,9 @@ function FeaturesAccordions() {
           labelA={item.labelA}
           labelB={item.labelB}
           isOpen={openKey === item.title}
-          onToggle={() => setOpenKey(openKey === item.title ? null : item.title)}
+          onToggle={() =>
+            setOpenKey(openKey === item.title ? null : item.title)
+          }
         />
       ))}
     </>
@@ -538,9 +786,27 @@ function FeaturesAccordions() {
 }
 
 const PROJECT_PKGS = [
-  { id: "runtime",  name: "ved-runtime",  tag: "Execution Engine",    desc: "The deterministic scheduler, interpreter, domain registry, and persistence layer. Implements gas-bounded slice execution, autonomous goal reconciliation, and quiescence detection.", href: "https://github.com/vedlanghq/ved-runtime" },
-  { id: "compiler", name: "ved-compiler", tag: "Language Frontend",   desc: "Lexer, parser, AST construction, semantic validation, and bytecode emission. Produces portable `.vedc` binary artefacts consumed directly by the runtime.",                            href: "https://github.com/vedlanghq/ved-compiler" },
-  { id: "cli",      name: "ved-cli",      tag: "Operational Tooling", desc: "The developer-facing command-line interface. Compiles, runs, inspects traces, and drives the runtime from the terminal. The canonical integration point for CI pipelines.",          href: "https://github.com/vedlanghq/ved-cli" },
+  {
+    id: "runtime",
+    name: "Lexum-runtime",
+    tag: "Execution Engine",
+    desc: "The deterministic scheduler, interpreter, domain registry, and persistence layer. Implements gas-bounded slice execution, autonomous goal reconciliation, and quiescence detection.",
+    href: "https://github.com/lexumhq/lexum-runtime",
+  },
+  {
+    id: "compiler",
+    name: "Lexum-compiler",
+    tag: "Language Frontend",
+    desc: "Lexer, parser, AST construction, semantic validation, and bytecode emission. Produces portable `.lexc` binary artefacts consumed directly by the runtime.",
+    href: "https://github.com/lexumhq/lexum-compiler",
+  },
+  {
+    id: "cli",
+    name: "Lexum-cli",
+    tag: "Operational Tooling",
+    desc: "The developer-facing command-line interface. Compiles, runs, inspects traces, and drives the runtime from the terminal. The canonical integration point for CI pipelines.",
+    href: "https://github.com/lexumhq/lexum-cli",
+  },
 ] as const;
 
 function ProjectCards() {
@@ -564,15 +830,115 @@ function ProjectCards() {
 }
 
 const FAQ_ITEMS: { question: string; answer: React.ReactNode }[] = [
-  { question: "What is Ved?", answer: <p>Ved is a deterministic control-plane programming language designed to help engineers build reliable, long-running distributed systems. It enables developers to describe desired system behaviour using structured state models, goals, and bounded execution logic.</p> },
-  { question: "What problem does Ved solve?", answer: <><p>Modern distributed systems are difficult to operate because orchestration logic is often:</p><ul className="brutalist-list check" style={{ marginTop: "1rem" }}><li>imperative</li><li>non-deterministic</li><li>difficult to reproduce</li><li>prone to configuration drift</li></ul><p style={{ marginTop: "1rem" }}>Ved introduces a deterministic execution model that helps systems converge toward stable operating conditions.</p></> },
-  { question: "How is Ved different from existing programming languages?", answer: <p>Ved focuses on orchestration behaviour rather than application logic. It provides built-in concepts such as persistent system state, convergence goals, structured authority boundaries, and replayable execution, which are not primary concerns in most general-purpose languages.</p> },
-  { question: "Is Ved intended to replace languages like Rust, Go, or Python?", answer: <p>No. Ved is intended to complement existing languages by governing system behaviour at the control-plane level. Application services and data-plane logic can continue to be implemented using traditional languages.</p> },
-  { question: "What does deterministic execution mean in Ved?", answer: <p>Deterministic execution means that given the same initial state and external inputs, the runtime will evolve the system in the same way every time. This enables reproducible debugging, predictable recovery, and improved operational reasoning.</p> },
-  { question: "What are goals in Ved?", answer: <p>Goals represent stable desired conditions for the system. The runtime continuously evaluates current state and executes transitions that help the system move toward satisfying these goals.</p> },
-  { question: "Can Ved interact with real infrastructure or external systems?", answer: <p>Yes. External interactions are modeled as explicit effects. These effects are isolated, recorded, and replayable, allowing the runtime to maintain deterministic behaviour while operating in unpredictable environments.</p> },
-  { question: "Is Ved suitable for building general application software?", answer: <p>Ved is primarily designed for control-plane orchestration and long-lived system coordination. It is not intended to replace traditional application frameworks.</p> },
-  { question: "Is Ved production ready?", answer: <p>Ved is currently in early design and prototyping stages. The project focuses on validating deterministic runtime semantics and convergence models before expanding toward broader production use.</p> },
+  {
+    question: "What is Lexum?",
+    answer: (
+      <p>
+        Lexum is a deterministic control-plane programming language designed to
+        help engineers build reliable, long-running distributed systems. It
+        enables developers to describe desired system behaviour using structured
+        state models, goals, and bounded execution logic.
+      </p>
+    ),
+  },
+  {
+    question: "What problem does Lexum solve?",
+    answer: (
+      <>
+        <p>
+          Modern distributed systems are difficult to operate because
+          orchestration logic is often:
+        </p>
+        <ul className="brutalist-list check" style={{ marginTop: "1rem" }}>
+          <li>imperative</li>
+          <li>non-deterministic</li>
+          <li>difficult to reproduce</li>
+          <li>prone to configuration drift</li>
+        </ul>
+        <p style={{ marginTop: "1rem" }}>
+          Lexum introduces a deterministic execution model that helps systems
+          converge toward stable operating conditions.
+        </p>
+      </>
+    ),
+  },
+  {
+    question: "How is Lexum different from existing programming languages?",
+    answer: (
+      <p>
+        Lexum focuses on orchestration behaviour rather than application logic.
+        It provides built-in concepts such as persistent system state,
+        convergence goals, structured authority boundaries, and replayable
+        execution, which are not primary concerns in most general-purpose
+        languages.
+      </p>
+    ),
+  },
+  {
+    question:
+      "Is Lexum intended to replace languages like Rust, Go, or Python?",
+    answer: (
+      <p>
+        No. Lexum is intended to complement existing languages by governing
+        system behaviour at the control-plane level. Application services and
+        data-plane logic can continue to be implemented using traditional
+        languages.
+      </p>
+    ),
+  },
+  {
+    question: "What does deterministic execution mean in Lexum?",
+    answer: (
+      <p>
+        Deterministic execution means that given the same initial state and
+        external inputs, the runtime will evolve the system in the same way
+        every time. This enables reproducible debugging, predictable recovery,
+        and improved operational reasoning.
+      </p>
+    ),
+  },
+  {
+    question: "What are goals in Lexum?",
+    answer: (
+      <p>
+        Goals represent stable desired conditions for the system. The runtime
+        continuously evaluates current state and executes transitions that help
+        the system move toward satisfying these goals.
+      </p>
+    ),
+  },
+  {
+    question:
+      "Can Lexum interact with real infrastructure or external systems?",
+    answer: (
+      <p>
+        Yes. External interactions are modeled as explicit effects. These
+        effects are isolated, recorded, and replayable, allowing the runtime to
+        maintain deterministic behaviour while operating in unpredictable
+        environments.
+      </p>
+    ),
+  },
+  {
+    question: "Is Lexum suitable for building general application software?",
+    answer: (
+      <p>
+        Lexum is primarily designed for control-plane orchestration and
+        long-lived system coordination. It is not intended to replace
+        traditional application frameworks.
+      </p>
+    ),
+  },
+  {
+    question: "Is Lexum production ready?",
+    answer: (
+      <p>
+        Lexum is currently in early design and prototyping stages. The project
+        focuses on validating deterministic runtime semantics and convergence
+        models before expanding toward broader production use.
+      </p>
+    ),
+  },
 ];
 
 function FAQGroup() {
@@ -585,7 +951,9 @@ function FAQGroup() {
           question={item.question}
           answer={item.answer}
           isOpen={openKey === item.question}
-          onToggle={() => setOpenKey(openKey === item.question ? null : item.question)}
+          onToggle={() =>
+            setOpenKey(openKey === item.question ? null : item.question)
+          }
         />
       ))}
     </div>
@@ -593,7 +961,6 @@ function FAQGroup() {
 }
 
 export default function Home() {
-
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -660,7 +1027,7 @@ export default function Home() {
               </motion.h1>
 
               <motion.p className="sub-text" variants={itemFade}>
-                Ved is a declarative systems programming language for building
+                Lexum is a declarative systems programming language for building
                 reliable control planes that continuously stabilize complex
                 software environments.
               </motion.p>
@@ -675,7 +1042,7 @@ export default function Home() {
                   Explore Development Experience
                 </Link>
                 <a
-                  href="https://github.com/vedlanghq"
+                  href="https://github.com/lexumhq"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-secondary"
@@ -720,11 +1087,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* VED IDEA SECTION */}
+        {/* Lexum IDEA SECTION */}
         <section id="features" className="content-section">
           <div className="two-col-grid">
             <motion.div className="col-text" {...fadeUp}>
-              <h2>Ved treats system behaviour as a program.</h2>
+              <h2>Lexum treats system behaviour as a program.</h2>
             </motion.div>
 
             <motion.div
@@ -736,7 +1103,7 @@ export default function Home() {
                 ease: [0.16, 1, 0.3, 1] as const,
               }}
             >
-              <p>Ved programs define:</p>
+              <p>Lexum programs define:</p>
               <div className="accordion-group" style={{ margin: "2rem 0" }}>
                 <FeaturesAccordions />
               </div>
@@ -755,34 +1122,79 @@ export default function Home() {
           <motion.div className="loop-container" {...fadeUp}>
             <h2>Deterministic execution loop</h2>
             <div className="pipeline-track">
-              {([
-                { num: "01", label: "Observe State",       desc: "Snapshot current domain state" },
-                { num: "02", label: "Evaluate Goals",      desc: "Check all predicate invariants" },
-                { num: "03", label: "Schedule Transition", desc: "Select the next safe state path" },
-                { num: "04", label: "Persist Mutation",    desc: "Write-ahead log before execution" },
-                { num: "05", label: "Emit Effects",        desc: "Dispatch recorded side-effects" },
-                { num: "06", label: "Repeat",              desc: "Deterministic loop continues" },
-              ] as const).flatMap((step, i, arr) => {
+              {(
+                [
+                  {
+                    num: "01",
+                    label: "Observe State",
+                    desc: "Snapshot current domain state",
+                  },
+                  {
+                    num: "02",
+                    label: "Evaluate Goals",
+                    desc: "Check all predicate invariants",
+                  },
+                  {
+                    num: "03",
+                    label: "Schedule Transition",
+                    desc: "Select the next safe state path",
+                  },
+                  {
+                    num: "04",
+                    label: "Persist Mutation",
+                    desc: "Write-ahead log before execution",
+                  },
+                  {
+                    num: "05",
+                    label: "Emit Effects",
+                    desc: "Dispatch recorded side-effects",
+                  },
+                  {
+                    num: "06",
+                    label: "Repeat",
+                    desc: "Deterministic loop continues",
+                  },
+                ] as const
+              ).flatMap((step, i, arr) => {
                 const nodes = [
-                  <PipelineStep key={step.num} num={step.num} label={step.label} desc={step.desc} />,
+                  <PipelineStep
+                    key={step.num}
+                    num={step.num}
+                    label={step.label}
+                    desc={step.desc}
+                  />,
                 ];
                 if (i < arr.length - 1) {
                   nodes.push(
-                    <div key={`c-${step.num}`} className="pipeline-connector" aria-hidden="true">
+                    <div
+                      key={`c-${step.num}`}
+                      className="pipeline-connector"
+                      aria-hidden="true"
+                    >
                       <div className="pipeline-connector-line" />
-                      <svg className="pipeline-connector-arrow" viewBox="0 0 12 12" fill="none">
-                        <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <svg
+                        className="pipeline-connector-arrow"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                      >
+                        <path
+                          d="M2 6h8M6 2l4 4-4 4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
-                    </div>
+                    </div>,
                   );
                 }
                 return nodes;
               })}
             </div>
             <p>
-              Ved executes orchestration logic in discrete deterministic slices.
-              External side-effects are recorded and replayable, enabling
-              reproducible debugging and crash-safe recovery.
+              Lexum executes orchestration logic in discrete deterministic
+              slices. External side-effects are recorded and replayable,
+              enabling reproducible debugging and crash-safe recovery.
             </p>
           </motion.div>
         </section>
@@ -794,7 +1206,7 @@ export default function Home() {
             <motion.div className="col-text" {...fadeUp}>
               <h3>Project structure</h3>
               <p style={{ marginBottom: "1.5rem" }}>
-                Ved is organized as a tightly-coupled workspace of three
+                Lexum is organized as a tightly-coupled workspace of three
                 purpose-built crates. Each crate owns a distinct layer of the
                 compilation and execution pipeline, with no cross-layer
                 dependencies leaking upward.
@@ -810,7 +1222,11 @@ export default function Home() {
             <motion.div
               className="col-text"
               {...fadeUp}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
+              transition={{
+                delay: 0.1,
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1] as const,
+              }}
             >
               <ProjectCards />
             </motion.div>
@@ -818,8 +1234,14 @@ export default function Home() {
         </section>
 
         {/* ── DEVELOPMENT ROADMAP ───────────────────────── */}
-        <section className="content-section" style={{ background: "var(--bg-surface)" }}>
-          <motion.div {...fadeUp} style={{ maxWidth: "1600px", margin: "0 auto" }}>
+        <section
+          className="content-section"
+          style={{ background: "var(--bg-surface)" }}
+        >
+          <motion.div
+            {...fadeUp}
+            style={{ maxWidth: "1600px", margin: "0 auto" }}
+          >
             <h3 style={{ marginBottom: "0.5rem" }}>Development roadmap</h3>
             <p style={{ marginBottom: "3rem", fontSize: "1.1rem" }}>
               A milestone-based view of the project&apos;s engineering progress.
@@ -827,27 +1249,61 @@ export default function Home() {
 
             {/* Legend */}
             <div className="rdmap-legend">
-              <span className="rdmap-legend-item"><span className="rdmap-dot rdmap-dot--done" />Completed</span>
-              <span className="rdmap-legend-item"><span className="rdmap-dot rdmap-dot--active" />In progress</span>
-              <span className="rdmap-legend-item"><span className="rdmap-dot rdmap-dot--planned" />Planned</span>
+              <span className="rdmap-legend-item">
+                <span className="rdmap-dot rdmap-dot--done" />
+                Completed
+              </span>
+              <span className="rdmap-legend-item">
+                <span className="rdmap-dot rdmap-dot--active" />
+                In progress
+              </span>
+              <span className="rdmap-legend-item">
+                <span className="rdmap-dot rdmap-dot--planned" />
+                Planned
+              </span>
             </div>
 
             {/* Chart */}
             <div className="rdmap-chart">
-              {([
-                { status: "done",    label: "Deterministic scheduler prototype",  note: "Priority aging, starvation control, quiescence detection"  },
-                { status: "done",    label: "Persistent state journal",            note: "Snapshot / restore cycle, write-ahead log"                 },
-                { status: "active",  label: "Replayable execution model",          note: "Bytecode IR engine, slice resumption, trace hashing"       },
-                { status: "active",  label: "Syntax and IR stabilization",         note: "Parser hardening, canonical bytecode spec, `.vedc` format"  },
-                { status: "planned", label: "Convergence analysis tooling",        note: "Static goal reachability, oscillation detection"           },
-                { status: "planned", label: "Distributed runtime research",        note: "Multi-node domain federation, consensus primitives"         },
-              ] as const).map((row, i) => (
+              {(
+                [
+                  {
+                    status: "done",
+                    label: "Deterministic scheduler prototype",
+                    note: "Priority aging, starvation control, quiescence detection",
+                  },
+                  {
+                    status: "done",
+                    label: "Persistent state journal",
+                    note: "Snapshot / restore cycle, write-ahead log",
+                  },
+                  {
+                    status: "active",
+                    label: "Replayable execution model",
+                    note: "Bytecode IR engine, slice resumption, trace hashing",
+                  },
+                  {
+                    status: "active",
+                    label: "Syntax and IR stabilization",
+                    note: "Parser hardening, canonical bytecode spec, `.lexum` format",
+                  },
+                  {
+                    status: "planned",
+                    label: "Convergence analysis tooling",
+                    note: "Static goal reachability, oscillation detection",
+                  },
+                  {
+                    status: "planned",
+                    label: "Distributed runtime research",
+                    note: "Multi-node domain federation, consensus primitives",
+                  },
+                ] as const
+              ).map((row, i) => (
                 <RoadmapRow key={row.label} index={i} {...row} />
               ))}
             </div>
           </motion.div>
         </section>
-
 
         {/* FREQUENTLY ASKED QUESTIONS */}
         <section
@@ -869,8 +1325,6 @@ export default function Home() {
               Frequently Asked Questions
             </h2>
             <FAQGroup />
-
-
           </motion.div>
         </section>
 
@@ -898,7 +1352,7 @@ export default function Home() {
                 lineHeight: 1.5,
               }}
             >
-              Ved is an experimental systems programming project focused on
+              Lexum is an experimental systems programming project focused on
               reliability engineering for distributed software.
             </p>
             <div className="large-ctas">
@@ -914,7 +1368,7 @@ export default function Home() {
                 Explore developer experience
               </Link>
               <a
-                href="https://github.com/vedlanghq"
+                href="https://github.com/lexumhq"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="large-link"

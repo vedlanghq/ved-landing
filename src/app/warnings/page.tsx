@@ -67,13 +67,13 @@ export default function WarningSystem() {
               className="hero-text"
               style={{ textAlign: 'center', margin: '0 auto', maxWidth: '1200px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
-              <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "2rem", fontWeight: 600 }}>Ved Diagnostics</motion.div>
+              <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "2rem", fontWeight: 600 }}>Lexum Diagnostics</motion.div>
               <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(3.5rem, 7vw, 6rem)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '100%', padding: '0 1rem', wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}>
                 Proactive system risk signalling.
               </motion.h1>
 
               <motion.p className="sub-text" variants={itemFade} style={{ margin: '2.5rem auto 0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', maxWidth: '800px', color: 'var(--text-muted)', lineHeight: 1.6, padding: '0 1rem' }}>
-                Ved surfaces architectural risks before they become failures.
+                Lexum surfaces architectural risks before they become failures.
               </motion.p>
             </motion.div>
           </div>
@@ -117,19 +117,19 @@ export default function WarningSystem() {
               <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
                 <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', padding: '0.75rem 1rem', borderRadius: '6px', minWidth: '100px' }}>
                   <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Namespace</span>
-                  <code style={{ fontSize: '1.1rem', color: 'var(--accent)' }}>VED</code>
+                  <code style={{ fontSize: '1.1rem', color: 'var(--accent)' }}>Lexum</code>
                 </div>
-                <div style={{ color: 'var(--border)' }}>—</div>
+                <div style={{ color: 'var(--border)' }}>-</div>
                 <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', padding: '0.75rem 1rem', borderRadius: '6px', minWidth: '100px' }}>
                   <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Severity</span>
                   <code style={{ fontSize: '1.1rem', color: '#eab308' }}>WARN</code>
                 </div>
-                <div style={{ color: 'var(--border)' }}>—</div>
+                <div style={{ color: 'var(--border)' }}>-</div>
                 <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', padding: '0.75rem 1rem', borderRadius: '6px', minWidth: '120px' }}>
                   <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Domain Area</span>
                   <code style={{ fontSize: '1.1rem', color: 'var(--text-main)' }}>&lt;CATEGORY&gt;</code>
                 </div>
-                <div style={{ color: 'var(--border)' }}>—</div>
+                <div style={{ color: 'var(--border)' }}>-</div>
                 <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', padding: '0.75rem 1rem', borderRadius: '6px', minWidth: '100px' }}>
                   <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Identifier</span>
                   <code style={{ fontSize: '1.1rem', color: 'var(--text-main)' }}>&lt;NUMBER&gt;</code>

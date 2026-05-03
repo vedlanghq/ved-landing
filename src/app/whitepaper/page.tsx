@@ -6,7 +6,7 @@ import PdfViewerWrapper from "@/components/PdfViewerWrapper";
 import BackgroundShapes from "@/components/BackgroundShapes";
 
 export const metadata: Metadata = {
-  title: "Ved | Technical Whitepaper",
+  title: "Lexum | Technical Whitepaper",
   description: "Deterministic Control-Plane Programming for Reproducible Distributed Systems",
 };
 

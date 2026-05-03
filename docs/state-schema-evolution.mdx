@@ -6,13 +6,13 @@ order: 605
 
 # State Schema Evolution
 
-Ved is designed for **long-lived evolving systems**. In Ved, program execution is intertwined with its Durable Snapshots. Because a Ved Domain can effectively run for months or years via mathematical pauses and resumptions, the schema of its underlying state will eventually need to change.
+Lexum is designed for **long-lived evolving systems**. In Lexum, program execution is intertwined with its Durable Snapshots. Because a Lexum Domain can effectively run for months or years via mathematical pauses and resumptions, the schema of its underlying state will eventually need to change.
 
 If you add a new field to a Domain's state block, how does the runtime load the old, pre-migration Snapshot into the new un-started program version when the deployment rolls out?
 
 ## The Problem With Unmanaged Evolution
 
-In traditional systems, schema evolution involves manual database migration scripts (`ALTER TABLE`), maintenance windows, and brittle conversion tools. If this complexity is pushed to the developer in an ad-hoc manner, they will inevitably write non-deterministic data patch tools, violating Ved's guarantee of structural production correctness.
+In traditional systems, schema evolution involves manual database migration scripts (`ALTER TABLE`), maintenance windows, and brittle conversion tools. If this complexity is pushed to the developer in an ad-hoc manner, they will inevitably write non-deterministic data patch tools, violating Lexum's guarantee of structural production correctness.
 
 If old Snapshots become unreadable to the new Domain structure:
 
@@ -20,11 +20,11 @@ If old Snapshots become unreadable to the new Domain structure:
 - Recovery logic becomes fragile.
 - Rollbacks become dangerous.
 
-## Ved's Built-In Versioning Model
+## Lexum's Built-In Versioning Model
 
-Ved treats **Schema Evolution as a first-class language capability**.
+Lexum treats **Schema Evolution as a first-class language capability**.
 
-Instead of over-automating migrations with "black box" magic, Ved implements a pragmatic architecture:
+Instead of over-automating migrations with "black box" magic, Lexum implements a pragmatic architecture:
 
 > **Built-in versioned state schemas + developer-defined migration logic.**
 
@@ -32,7 +32,7 @@ Instead of over-automating migrations with "black box" magic, Ved implements a p
 
 Every `domain` block's state is strictly versioned by the compiler.
 
-```ved
+```Lexum
 domain PaymentGateway {
     @version 2 // Incrementing marks an evolution edge
     state {
@@ -46,7 +46,7 @@ domain PaymentGateway {
 
 If the compiler sees a state block incremented to version 2, but the previous snapshot on disk is version 1, it requires the developer to define an explicit, pure, deterministic transition function detailing how to migrate the old schema into the new shape.
 
-```ved
+```Lexum
 migration v1_to_v2 {
     from: PaymentGateway.State@1
     to: PaymentGateway.State@2

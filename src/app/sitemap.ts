@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://vedlanghq.netlify.app/";
+  const baseUrl = "https://lexumhq.netlify.app/";
 
   return [
     {

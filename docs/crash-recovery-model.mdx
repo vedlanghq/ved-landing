@@ -8,7 +8,7 @@ order: 506
 
 In imperative systems, if a server crashes midway through a complex orchestration, you are typically left with an unknown state. The database might have committed a row, but the external API didn't fire, or vice versa. Recovery requires custom scripts, dead-letter queue manual inspections, and significant human intervention.
 
-In the Ved Runtime, crash recovery is not a theoretical edge-case—it is a mathematical certainty derived directly from the Snapshot Architecture and the Effect Execution Boundary.
+In the Lexum Runtime, crash recovery is not a theoretical edge-caseit is a mathematical certainty derived directly from the Snapshot Architecture and the Effect Execution Boundary.
 
 ## The Snapshot Foundation
 
@@ -44,4 +44,4 @@ The end result of this architecture is **Zero-Code Recovery**.
 You do not write `try/catch` blocks for server outages.
 You do not write manual database rollback scripts.
 
-If the physical server burns to the ground, you simply point a new Ved Runtime instance at the persisted durable filesystem (or distributed KV store). The runtime loads the snapshots, observes the pending domains, resumes the control loop, and mathematically continues executing exactly where it left off.
+If the physical server burns to the ground, you simply point a new Lexum Runtime instance at the persisted durable filesystem (or distributed KV store). The runtime loads the snapshots, observes the pending domains, resumes the control loop, and mathematically continues executing exactly where it left off.

@@ -10,11 +10,11 @@ The defining requirement of a deterministic language is that running the exact s
 
 If a developer embeds an HTTP call inside a function (e.g., `requests.get("https://aws.amazon.com/...")`), determinism is instantly destroyed. AWS might be down, the internet might latency-spike, or the clock on the machine might be skewed.
 
-Ved solves this paradox gracefully via the **Effect Execution Boundary**.
+Lexum solves this paradox gracefully via the **Effect Execution Boundary**.
 
 ## The Hard Partition
 
-The Ved Runtime is mathematically split into two zones:
+The Lexum Runtime is mathematically split into two zones:
 
 ### 1. The Pure Zone (Inside the Sandbox)
 
@@ -23,13 +23,13 @@ It cannot read the system clock. It cannot generate random numbers. It cannot op
 
 ### 2. The Impure Zone (Outside the Sandbox)
 
-The `Effect Adapter` module within the Ved Runtime lives here. It is fully aware of the messy real world. It has TCP sockets, file system access, and wall-clock time.
+The `Effect Adapter` module within the Lexum Runtime lives here. It is fully aware of the messy real world. It has TCP sockets, file system access, and wall-clock time.
 
 ## Crossing the Boundary
 
 When your code in the Pure Zone realizes it needs to call an external API, it creates an **Effect Intent**.
 
-```ved
+```Lexum
 // 1. The code safely declares an intent
 intent = CreateVirtualMachine(size: "large")
 
@@ -45,7 +45,7 @@ Once the `emit` keyword is executed:
 
 ## The Return Journey
 
-While the AWS API computes for 3 minutes, the Pure Zone is not blocked—other Domains continue to execute freely.
+While the AWS API computes for 3 minutes, the Pure Zone is not blocked — other Domains continue to execute freely.
 
 When AWS finally returns an HTTP 200 Success:
 

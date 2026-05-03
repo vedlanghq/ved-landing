@@ -20,13 +20,13 @@ What happens in reality?
 
 This is an **Oscillation Loop**. The system will infinitely boot and destroy cloud servers thousands of times a minute, completely thrashing the API and potentially racking up a $100,000 AWS bill over the weekend.
 
-## The Code: Hysteresis in Ved
+## The Code: Hysteresis in Lexum
 
-Ved handles oscillation through two layers: **Logical Hysteresis (Deadbands)** written by the developer, and **Algorithmic Backpressure** enforced by the runtime.
+Lexum handles oscillation through two layers: **Logical Hysteresis (Deadbands)** written by the developer, and **Algorithmic Backpressure** enforced by the runtime.
 
 Here is how a developer writes safe, oscillation-proof logic using a "Deadband" (a safe resting range):
 
-```ved
+```Lexum
 domain AutoScaler {
   state {
     cpu_average: int
@@ -66,11 +66,11 @@ If the developer writes the code correctly (like above), the system safely rests
 
 But what if a junior engineer makes a mistake and writes a flawed goal like `predicate cpu_average == 50`? It is mathematically almost impossible to hold a CPU at exactly 50%. The system will start thrashing.
 
-Here is how the **Ved Runtime's Algorithmic Oscillation Detection** kicks in to save the day:
+Here is how the **Lexum Runtime's Algorithmic Oscillation Detection** kicks in to save the day:
 
 1.  **The Thrash:** The flawed code runs. `ScaleUp`, `ScaleDown`, `ScaleUp`, `ScaleDown` fire in rapid succession across 10 ticks.
 2.  **The Detection:** The Scheduler mathematically monitors the Domain's memory graph. It notices that the `active_servers` variable is rapidly alternating between `4` and `5` without the Domain ever achieving **Quiescence** (sleep).
-3.  **The Backpressure:** Instead of letting the loop run infinitely, the Ved runtime physically intervenes. It triggers **Algorithmic Backpressure**. It throttles the Domain, drastically reducing its execution priority.
+3.  **The Backpressure:** Instead of letting the loop run infinitely, the Lexum runtime physically intervenes. It triggers **Algorithmic Backpressure**. It throttles the Domain, drastically reducing its execution priority.
 4.  **The Alert:** The runtime emits a structured warning to the telemetry system: `V-WRN-042: State Oscillation Detected in AutoScaler`. The Domain is put in a "cooldown" state to physically prevent API abuse until a human fixes the logic.
 
 ---
@@ -94,22 +94,22 @@ Here is how the **Ved Runtime's Algorithmic Oscillation Detection** kicks in to 
 ### 1. The Power of the "Deadband"
 
 In imperative scripts, engineers often try to fix thrashing by adding arbitrary `sleep(300)` commands (waiting 5 minutes between scaling events). This is a sloppy hack that makes the system sluggish to respond to real emergencies.
-Ved encourages the use of **Deadbands** (a range of acceptable realities). By making the goal a range (`40 to 60`), the system remains lightning-fast to react to a spike of `70%`, but comfortably ignores a flutter between `49%` and `51%`. It models physics rather than just code.
+Lexum encourages the use of **Deadbands** (a range of acceptable realities). By making the goal a range (`40 to 60`), the system remains lightning-fast to react to a spike of `70%`, but comfortably ignores a flutter between `49%` and `51%`. It models physics rather than just code.
 
 ### 2. The Runtime as a "Parent"
 
 In standard languages (like Go or Python), the compiler/runtime assumes the developer is a genius. If the developer writes an infinite loop, the runtime happily executes it until the server bursts into flames.
-Ved acts like a responsible parent. It watches the execution loop, realizes the developer wrote mathematically unstable logic, and steps in to apply the brakes. **It protects the infrastructure from the code.**
+Lexum acts like a responsible parent. It watches the execution loop, realizes the developer wrote mathematically unstable logic, and steps in to apply the brakes. **It protects the infrastructure from the code.**
 
 ### 3. Mathematical Proofs over Testing
 
 Catching an oscillation bug in a staging environment is notoriously difficult because you have to perfectly simulate the exact traffic conditions that cause the flutter. Often, these bugs only show up in production.
-Because Ved's linter (`ved lint`) and runtime are built on formal state-machine logic, they can analyze the code structurally. The compiler can look at your Transitions and say: _"Warning: Transition A and Transition B are perfectly opposed, and your Goal boundary is too narrow. This has a 99% probability of oscillation."_
+Because Lexum's linter (`Lexum lint`) and runtime are built on formal state-machine logic, they can analyze the code structurally. The compiler can look at your Transitions and say: _"Warning: Transition A and Transition B are perfectly opposed, and your Goal boundary is too narrow. This has a 99% probability of oscillation."_
 
 ---
 
 ## Summary
 
-Ved can detect:
+Lexum can detect:
 
 > non-converging system behavior

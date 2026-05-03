@@ -16,13 +16,13 @@ In imperative scripting (Python, Bash, Go), if you have a script that does three
 
 If the script crashes at **Step 2** (maybe the network drops, or the server runs out of memory), you are left in a catastrophic "Half-Finished" state. The primary database is off, the new one isn't ready, and the script is dead. To recover, a human has to manually figure out exactly where it failed and carefully reverse the steps. 
 
-## The Code: The Failure Recovery Loop in Ved
+## The Code: The Failure Recovery Loop in Lexum
 
-Because Ved doesn't execute step-by-step scripts, it doesn't have "half-finished" states. It models the system as a continuous loop that can gracefully degrade and recover. 
+Because Lexum doesn't execute step-by-step scripts, it doesn't have "half-finished" states. It models the system as a continuous loop that can gracefully degrade and recover. 
 
-Here is how Ved handles a critical infrastructure failover and recovery loop:
+Here is how Lexum handles a critical infrastructure failover and recovery loop:
 
-```ved
+```Lexum
 domain DatabaseRouting {
   state {
     primary_status: string = "healthy"
@@ -76,7 +76,7 @@ domain DatabaseRouting {
 
 1.  **Normal Operations:** `primary_status` is `"healthy"`, `active_route` is `"primary"`. Goal Reality A is met. The Domain sleeps.
 2.  **The Crash:** A massive cloud outage takes down the primary database. The Effect Adapter notifies the mailbox. The state updates: `primary_status = "failed"`.
-3.  **The Degradation:** The goal is instantly broken. The Ved runtime wakes up. It evaluates the transitions. *Both* `ExecuteFailover` and `TriggerPagerDuty` are now valid. 
+3.  **The Degradation:** The goal is instantly broken. The Lexum runtime wakes up. It evaluates the transitions. *Both* `ExecuteFailover` and `TriggerPagerDuty` are now valid. 
 4.  **Parallel Execution:** The runtime emits intents to update the DNS and page the engineers. Once both succeed, state is updated. 
 5.  **Safe Fallback:** The Domain evaluates the goal again. It now matches **Reality B** (safely degraded and alerted). The Domain goes back to sleep, having successfully halted the bleeding.
 6.  **The Auto-Recovery:** Two hours later, an engineer fixes the primary DB. The Effect Adapter updates `primary_status` to `"healthy"`. Reality B is suddenly broken! The runtime wakes up, triggers `AutoRestore`, routes traffic back to the primary, and returns to Reality A.
@@ -93,16 +93,16 @@ domain DatabaseRouting {
 ## Key Takeaways:
 
 ### 1. Rejection of "Panic" States
-In traditional code, an error is an exception that causes the thread to panic and crash. In Ved, **an error is just a change in state**. The system doesn't panic. It simply says, *"Okay, the state has changed. Are my goals still met? No? What valid moves do I have to reach a new goal?"* This keeps the control plane entirely rational, even when the underlying infrastructure is on fire.
+In traditional code, an error is an exception that causes the thread to panic and crash. In Lexum, **an error is just a change in state**. The system doesn't panic. It simply says, *"Okay, the state has changed. Are my goals still met? No? What valid moves do I have to reach a new goal?"* This keeps the control plane entirely rational, even when the underlying infrastructure is on fire.
 
 ### 2. Codified "Graceful Degradation"
-Normally, fallback logic is an afterthought tucked inside a `catch` block. In this Ved program, the fallback state (Reality B) is elevated to a first-class mathematical Goal. The compiler understands that running off a replica database is a perfectly valid, stable way for the system to exist, provided the engineers have been paged. 
+Normally, fallback logic is an afterthought tucked inside a `catch` block. In this Lexum program, the fallback state (Reality B) is elevated to a first-class mathematical Goal. The compiler understands that running off a replica database is a perfectly valid, stable way for the system to exist, provided the engineers have been paged. 
 
 ### 3. Independent Recovery Actions
 Notice that `ExecuteFailover` and `TriggerPagerDuty` are separate transitions. Why is this important? Because if PagerDuty's API is temporarily down, the `TriggerPagerDuty` transition will fail and retry. But because it is decoupled, it **does not block the DNS failover**. The system will still save the database routing, even if the alerting system is broken. In a top-to-bottom Python script, a failed PagerDuty API call might crash the script before it ever reaches the DNS failover command.
 
 ### 4. "Self-Healing" is Free
-The `AutoRestore` transition is beautiful because it requires no human intervention. Once the engineer fixes the physical database server, they don't have to remember to run a "restore-dns.sh" script. The Ved control loop notices the health check pass and autonomously walks the system back up the stairs to its optimal state.
+The `AutoRestore` transition is beautiful because it requires no human intervention. Once the engineer fixes the physical database server, they don't have to remember to run a "restore-dns.sh" script. The Lexum control loop notices the health check pass and autonomously walks the system back up the stairs to its optimal state.
 
 ---
 

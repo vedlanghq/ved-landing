@@ -7,7 +7,7 @@ export function CookieConsent() {
 
   useEffect(() => {
     // Check local storage for consent state
-    const consent = localStorage.getItem("ved-cookie-consent");
+    const consent = localStorage.getItem("Lexum-cookie-consent");
     if (!consent) {
       setShowBanner(true);
     } else if (consent === "granted") {
@@ -17,13 +17,13 @@ export function CookieConsent() {
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem("ved-cookie-consent", "granted");
+    localStorage.setItem("Lexum-cookie-consent", "granted");
     setShowBanner(false);
     enableAnalytics();
   };
 
   const handleDecline = () => {
-    localStorage.setItem("ved-cookie-consent", "denied");
+    localStorage.setItem("Lexum-cookie-consent", "denied");
     setShowBanner(false);
   };
 

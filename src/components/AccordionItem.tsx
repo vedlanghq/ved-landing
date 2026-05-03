@@ -7,7 +7,7 @@ export function AccordionItem({
   limitation,
   solution,
   labelA = "The limit:",
-  labelB = "The Ved approach:",
+  labelB = "The Lexum approach:",
   isOpen,
   onToggle,
 }: Readonly<{

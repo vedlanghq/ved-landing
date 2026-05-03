@@ -1,4 +1,4 @@
-const CACHE_NAME = "ved-cache-v1";
+const CACHE_NAME = "Lexum-cache-v1";
 const URLS_TO_CACHE = [
   "/",
   "/docs",

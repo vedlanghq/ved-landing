@@ -8,17 +8,17 @@ order: 804
 
 Standard software unit testing assertions like "Does `1 + 1 == 2`?" are insufficient for validating the behavior of a long-lived control plane. If your Domain orchestrates a distributed worker pool, the true test of correctness is whether the cluster successfully stabilizes after a sequence of network partitions, partial database timeouts, and instance failovers.
 
-To test these scenarios locally, without spinning up expensive cloud resources, Ved offers the **Deterministic Replay Engine**.
+To test these scenarios locally, without spinning up expensive cloud resources, Lexum offers the **Deterministic Replay Engine**.
 
 ## The Time-Travel Harness
 
-Because Ved's business logic is mathematically isolated from system effects via the Effect Boundary, it is trivial to replace the actual `Network Adapter` with a `Test Adapter` during simulation.
+Because Lexum's business logic is mathematically isolated from system effects via the Effect Boundary, it is trivial to replace the actual `Network Adapter` with a `Test Adapter` during simulation.
 
 More importantly, the Test Adapter has the ability to manipulate **Logical Time**.
 
-When running `ved simulate`, developers can orchestrate scenarios spanning days or weeks, executing them practically instantly.
+When running `Lexum simulate`, developers can orchestrate scenarios spanning days or weeks, executing them practically instantly.
 
-```ved
+```Lexum
 // A conceptual simulation block
 test "Worker Pool Degradation Under Load" {
     given {

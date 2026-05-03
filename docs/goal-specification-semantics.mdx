@@ -7,13 +7,13 @@ order: 604
 # Goal Specification Semantics
 
 In most orchestration systems, you write imperatively: _"Do X, then do Y."_
-In Ved, you declare a Goal: _"I want the system to reach state Z."_
+In Lexum, you declare a Goal: _"I want the system to reach state Z."_
 
-If Ved gets goal semantics correctly, it becomes a true control-plane language where developers can reason mathematically about convergence, and runtime behavior becomes completely predictable.
+If Lexum gets goal semantics correctly, it becomes a true control-plane language where developers can reason mathematically about convergence, and runtime behavior becomes completely predictable.
 
 ## The Nature of a Goal
 
-A Goal in Ved represents a **desired stable condition of domain state over logical time**.
+A Goal in Lexum represents a **desired stable condition of domain state over logical time**.
 
 A goal is **not**:
 
@@ -29,7 +29,7 @@ Instead, a goal is:
 
 ## The Goal Structure
 
-To prevent ad-hoc reconciliation and orchestration oscillation, the Ved compiler requires goals to be formulated with rigorous structure. A complete Goal specification consists of five key components:
+To prevent ad-hoc reconciliation and orchestration oscillation, the Lexum compiler requires goals to be formulated with rigorous structure. A complete Goal specification consists of five key components:
 
 ### 1. Predicate
 

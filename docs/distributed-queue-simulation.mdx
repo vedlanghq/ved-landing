@@ -13,13 +13,13 @@ If Worker A and Worker B both ask the queue for a task at the exact same millise
 
 To fix this today, engineers have to introduce heavy external dependencies like Redis or Apache Kafka, implementing complex "Distributed Mutex Locks" and "Visibility Timeouts." If a worker crashes mid-processing, the lock has to magically expire so another worker can pick it up. It is a fragile, infrastructure-heavy nightmare.
 
-## The Code: Lock-Free Queues in Ved
+## The Code: Lock-Free Queues in Lexum
 
-Because Ved strictly enforces **ADR-002: Absolute Rejection of Shared Mutable State**, workers cannot share a memory lock. Instead, Ved solves this using the **Actor Model** - coordinating through isolated state machines and asynchronous Mailboxes.
+Because Lexum strictly enforces **ADR-002: Absolute Rejection of Shared Mutable State**, workers cannot share a memory lock. Instead, Lexum solves this using the **Actor Model** - coordinating through isolated state machines and asynchronous Mailboxes.
 
-Here is how a distributed queue is modeled in Ved:
+Here is how a distributed queue is modeled in Lexum:
 
-```ved
+```Lexum
 // DOMAIN 1: The Central Broker
 domain QueueBroker {
   state {
@@ -106,20 +106,20 @@ domain WorkerNode {
 ### 1. The Elimination of Redis & Kafka
 
 To achieve this level of safe, distributed queueing today, you _must_ run external infrastructure (like Redis for locking or Kafka for streaming).
-Ved makes these dependencies obsolete for orchestration. The runtime itself acts as the deterministic message broker. Because the memory of the `QueueBroker` is protected by COW (Copy-On-Write) snapshots, if the Broker server crashes, it reboots, loads the snapshot, and instantly remembers exactly which tasks were in the queue and which workers were idle. **You get Kafka-level resilience with zero infrastructure overhead.**
+Lexum makes these dependencies obsolete for orchestration. The runtime itself acts as the deterministic message broker. Because the memory of the `QueueBroker` is protected by COW (Copy-On-Write) snapshots, if the Broker server crashes, it reboots, loads the snapshot, and instantly remembers exactly which tasks were in the queue and which workers were idle. **You get Kafka-level resilience with zero infrastructure overhead.**
 
 ### 2. The "Blast Radius" is Perfectly Contained
 
 If `WorkerNode #42` encounters a corrupted video file and physically crashes, what happens to the system?
 
 - **In a tight script:** The loop crashes, and the other 9,999 videos stop processing.
-- **In Ved:** Nothing happens to the system. The `QueueBroker` doesn't care. `Worker #42` simply stops sending `WorkerIdle` events. The Broker stops routing tasks to it. The remaining 49 workers continue pulling tasks. The failure is completely isolated to the hardware it occurred on.
+- **In Lexum:** Nothing happens to the system. The `QueueBroker` doesn't care. `Worker #42` simply stops sending `WorkerIdle` events. The Broker stops routing tasks to it. The remaining 49 workers continue pulling tasks. The failure is completely isolated to the hardware it occurred on.
 
 ### 3. Time-Travel Testing for Distributed Systems
 
 How do you test a distributed queue with 50 workers and 10,000 tasks? Normally, you have to spin up 50 AWS instances and run a massive integration test.
-Because of Ved's strictly Pure deterministic logic and simulated mailboxes, you can use `ved simulate` on your laptop. You can tell the compiler: _"Simulate 1 Broker and 50 Workers. Inject 10,000 tasks. Randomly drop 5% of network packets and simulate 3 hardware crashes."_
-The Ved runtime will execute the entire distributed choreography locally in seconds, proving mathematically whether your code drops tasks or deadlocks.
+Because of Lexum's strictly Pure deterministic logic and simulated mailboxes, you can use `Lexum simulate` on your laptop. You can tell the compiler: _"Simulate 1 Broker and 50 Workers. Inject 10,000 tasks. Randomly drop 5% of network packets and simulate 3 hardware crashes."_
+The Lexum runtime will execute the entire distributed choreography locally in seconds, proving mathematically whether your code drops tasks or deadlocks.
 
 ---
 

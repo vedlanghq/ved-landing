@@ -8,7 +8,7 @@ order: 201
 
 ## Overview
 
-Ved is built on a single foundational assumption:
+Lexum is built on a single foundational assumption:
 
 > A system must behave identically given identical inputs and state.
 
@@ -32,7 +32,7 @@ This leads to:
 - inconsistent debugging outcomes
 - unpredictable system evolution
 
-Ved eliminates these issues by enforcing deterministic execution semantics.
+Lexum eliminates these issues by enforcing deterministic execution semantics.
 
 ---
 
@@ -40,10 +40,10 @@ Ved eliminates these issues by enforcing deterministic execution semantics.
 
 Given:
 
-- initial state S₀
+- initial state Sâ‚€
 - input sequence I
 
-Ved guarantees:
+Lexum guarantees:
 
 execute(S₀, I) → identical execution trace → identical final state
 
@@ -57,7 +57,7 @@ This implies:
 
 ## Sources of Nondeterminism (Eliminated)
 
-Ved explicitly removes:
+Lexum explicitly removes:
 
 ### 1. Unordered Execution
 
@@ -70,7 +70,7 @@ All scheduling decisions are:
 
 ### 2. Implicit Time Dependencies
 
-Ved does not rely on:
+Lexum does not rely on:
 
 - wall-clock time
 - thread scheduling
@@ -154,7 +154,7 @@ These are deliberate trade-offs for:
 
 ## Summary
 
-Determinism in Ved is:
+Determinism in Lexum is:
 
 - enforced at runtime
 - reflected in language design

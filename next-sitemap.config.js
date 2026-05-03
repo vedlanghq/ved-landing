@@ -1,4 +1,4 @@
 module.exports = {
-  siteUrl: "https://vedlanghq.netlify.app",
+  siteUrl: "https://lexumhq.netlify.app",
   generateRobotsTxt: true,
 };

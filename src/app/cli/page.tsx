@@ -92,14 +92,14 @@ function CommandAccordionItem({
 }
 
 const COMMAND_DATA = [
-  { command: "ved build", title: "Compilation & Authorization", desc: "Compiles Ved source files into deterministic bytecode. Before emitting the binary, it rigorously validates authority bounds across all transitions to ensure no state mutations occur outside of their permitted domains." },
-  { command: "ved run", title: "Local Orchestration Simulator", desc: "Executes the compiled bytecode locally in an isolated sandbox. It simulates distributed orchestration overhead, injects dynamic gas metering, and guarantees exactly the same execution path as production." },
-  { command: "ved check", title: "Static Idiom Analysis", desc: "Triggers the deterministic static analysis engine. Instead of just checking types, it catches systemic antipatterns like unbounded retry loops, transient state mishandling, and non-idempotent payloads.", isAccent: true },
-  { command: "ved test", title: "Formal Convergence Testing", desc: "Runs bounded convergence simulations. It validates state graph assertions under simulated network partitions, ensuring that your logic correctly handles dropped packets and starvation scenarios before deployment." }
+  { command: "Lexum build", title: "Compilation & Authorization", desc: "Compiles Lexum source files into deterministic bytecode. Before emitting the binary, it rigorously validates authority bounds across all transitions to ensure no state mutations occur outside of their permitted domains." },
+  { command: "Lexum run", title: "Local Orchestration Simulator", desc: "Executes the compiled bytecode locally in an isolated sandbox. It simulates distributed orchestration overhead, injects dynamic gas metering, and guarantees exactly the same execution path as production." },
+  { command: "Lexum check", title: "Static Idiom Analysis", desc: "Triggers the deterministic static analysis engine. Instead of just checking types, it catches systemic antipatterns like unbounded retry loops, transient state mishandling, and non-idempotent payloads.", isAccent: true },
+  { command: "Lexum test", title: "Formal Convergence Testing", desc: "Runs bounded convergence simulations. It validates state graph assertions under simulated network partitions, ensuring that your logic correctly handles dropped packets and starvation scenarios before deployment." }
 ];
 
 function WorkflowAccordions() {
-  const [openKey, setOpenKey] = useState<string | null>("ved build");
+  const [openKey, setOpenKey] = useState<string | null>("Lexum build");
   return (
     <div className="command-breakdown" style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       {COMMAND_DATA.map((item) => (
@@ -152,7 +152,7 @@ export default function CliUXPhilosophy() {
               className="hero-text"
               style={{ textAlign: 'center', margin: '0 auto', maxWidth: '800px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
-              <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "1.5rem", fontWeight: 600 }}>Ved Tooling</motion.div>
+              <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "1.5rem", fontWeight: 600 }}>Lexum Tooling</motion.div>
               <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(3.5rem, 7vw, 6rem)', lineHeight: 1.1, letterSpacing: '-0.04em' }}>
                 The terminal is
                 <br />

@@ -8,7 +8,7 @@ order: 1002
 
 When a production system fails, developers usually rely on parsing millions of unstructured text logs ("grepping for errors") to reconstruct the timeline that led to the fault.
 
-Because the Ved Runtime mandates that all mutations happen via perfectly pure mathematical Transitions and all physical side-effects are captured as formal Events in an immutable log, **Ved natively supports time-travel replay debugging.**
+Because the Lexum Runtime mandates that all mutations happen via perfectly pure mathematical Transitions and all physical side-effects are captured as formal Events in an immutable log, **Lexum natively supports time-travel replay debugging.**
 
 ## The Replay Architecture
 
@@ -16,7 +16,7 @@ If an alarm fires at 3:00 AM indicating that a specific Tenant Domain entered a 
 
 1. They download the `Tenant Snapshot` from 2:00 AM (an hour before the fault).
 2. They download the `Mailbox Journal`, which contains exactly the raw events targeting that Domain between 2:00 AM and 3:00 AM.
-3. They spin up `ved runtime start --replay` locally.
+3. They spin up `Lexum runtime start --replay` locally.
 
 The local Runtime mounts the 2:00 AM snapshot into memory. It then reads the very next event out of the Mailbox Journal, calculates the exact same pure Transition, and arrives at the 2:01 AM state.
 

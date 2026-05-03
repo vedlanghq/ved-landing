@@ -3,10 +3,10 @@ import { join } from 'node:path';
 
 const structure = {
   "1. Introduction": [
-    { title: "What is Ved", slug: "what-is-ved" },
+    { title: "What is Lexum", slug: "what-is-Lexum" },
     { title: "Why Deterministic Orchestration", slug: "why-deterministic-orchestration" },
     { title: "Problem Space", slug: "problem-space" },
-    { title: "When to Use Ved", slug: "when-to-use-ved" }
+    { title: "When to Use Lexum", slug: "when-to-use-Lexum" }
   ],
   "2. Philosophy": [
     { title: "Determinism as Design Principle", slug: "determinism-as-design-principle" },

@@ -6,7 +6,7 @@ order: 603
 
 # Authority Scope Hierarchy
 
-To balance rigorous safety with necessary developer freedom, Ved organizes execution authority into two strict, orthogonal dimensions: **Privilege Level** and **Bypass Level**.
+To balance rigorous safety with necessary developer freedom, Lexum organizes execution authority into two strict, orthogonal dimensions: **Privilege Level** and **Bypass Level**.
 
 ## Privilege Flags (Operational Reach)
 
@@ -39,7 +39,7 @@ These levels describe how much authority a specific code block, domain, or trans
 
 ## Bypass Flags (Safety Overrides)
 
-In production environments, there are emergencies where strict compiler safety must temporarily give way to necessary operational patches. Instead of fighting the compiler, Ved formalizes the "escape hatch" via Bypass Levels.
+In production environments, there are emergencies where strict compiler safety must temporarily give way to necessary operational patches. Instead of fighting the compiler, Lexum formalizes the "escape hatch" via Bypass Levels.
 
 - **Bypass A — Diagnostic Relaxation:** Ignores non-critical warnings and allows experimental constructs.
 - **Bypass B — Effect Declaration Skip:** Informs the compiler to trust the developer's claims, while the runtime still strictly monitors the execution.
@@ -52,4 +52,4 @@ Flags and bypasses are not mere switches; they are semantic operations that the 
 
 When a developer uses a higher-level bypass to push a hotfix, the language syntax forces them to attach a `reason`. This reason is permanently embedded into the deterministic execution log. If a network outage forces a Kubernetes RBAC escalation bypass, the runtime allows it, warns the operator, and immediately records the causal chain into the immutable event store.
 
-By integrating Privileges and Overrides directly into the type lattice, Ved transforms "emergency runbooks" into statically verifiable, fully audited language constructs.
+By integrating Privileges and Overrides directly into the type lattice, Lexum transforms "emergency runbooks" into statically verifiable, fully audited language constructs.

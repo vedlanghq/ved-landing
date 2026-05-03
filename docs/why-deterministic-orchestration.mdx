@@ -6,11 +6,11 @@ order: 102
 
 # Why Deterministic Orchestration?
 
-The cornerstone of Ved's philosophy is **Deterministic Orchestration**, creating an ironclad identity for the language:
+The cornerstone of Lexum's philosophy is **Deterministic Orchestration**, creating an ironclad identity for the language:
 
 > _Same intent → same evolution → same outcome everywhere._
 
-At system scale, a minor timing variation or an arbitrary retry delay can cascade into catastrophic, difficult-to-reproduce state corruptions. Current languages treat determinism as an afterthought or an application-layer concern. Ved builds it directly into the runtime substrate.
+At system scale, a minor timing variation or an arbitrary retry delay can cascade into catastrophic, difficult-to-reproduce state corruptions. Current languages treat determinism as an afterthought or an application-layer concern. Lexum builds it directly into the runtime substrate.
 
 ---
 
@@ -23,7 +23,7 @@ With absolute deterministic reproducibility, the concept of a "flaky production 
 3. Same state snapshot
 4. Same input stream
 
-**Ved guarantees identical execution behavior and final state** regardless of whether it is running on a developer's laptop, a staging cluster, or a global production fleet.
+**Lexum guarantees identical execution behavior and final state** regardless of whether it is running on a developer's laptop, a staging cluster, or a global production fleet.
 
 This radically changes how we handle operations:
 
@@ -39,7 +39,7 @@ Because execution is mathematically predictable, the compiler and runtime can pe
 
 ## 3. The Engineering Constraints
 
-Providing true deterministic orchestration is expensive and requires the runtime to take control of traditional sources of non-determinism. In Ved:
+Providing true deterministic orchestration is expensive and requires the runtime to take control of traditional sources of non-determinism. In Lexum:
 
 - **Time:** Wall-clock time cannot be read arbitrarily. The runtime provides logical time primitives.
 - **Randomness:** Entropy is strictly managed, seeded, and perfectly replayable.
@@ -48,6 +48,6 @@ Providing true deterministic orchestration is expensive and requires the runtime
 
 ## 4. A Correctness Platform
 
-By guaranteeing that your infrastructure and backend systems will converge predictably, Ved elevates itself from being just another programming language into a **Systems Correctness Platform.**
+By guaranteeing that your infrastructure and backend systems will converge predictably, Lexum elevates itself from being just another programming language into a **Systems Correctness Platform.**
 
 It removes the cognitive overhead of managing chaos so engineers can focus purely on defining the desired evolution of the system.

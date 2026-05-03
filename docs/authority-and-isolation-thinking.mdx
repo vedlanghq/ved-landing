@@ -8,7 +8,7 @@ order: 203
 
 ## Overview
 
-Ved enforces strict boundaries between system components through:
+Lexum enforces strict boundaries between system components through:
 
 - domain isolation
 - explicit authority
@@ -107,7 +107,7 @@ Bad (shared state):
 
 `global_count += 1`
 
-Ved:
+Lexum:
 
 ```
 domain Counter { state { count: int }
@@ -132,7 +132,7 @@ This ensures:
 
 ## Summary
 
-Ved treats system design as:
+Lexum treats system design as:
 
 > a set of isolated, interacting authorities
 

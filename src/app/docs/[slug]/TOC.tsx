@@ -1,92 +1,48 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
-import GithubSlugger from "github-slugger";
+import { useEffect, useState } from "react";
 
-export function TOC({ content }: Readonly<{ content: string }>) {
-  const [activeId, setActiveId] = useState<string>("");
-
-  const headings = useMemo(() => {
-    // Process markdown string into headings
-    const regex = /^(#{2,3})\s+(.+)$/gm;
-    const items = [];
-    let match;
-    const slugger = new GithubSlugger();
-
-    while ((match = regex.exec(content)) !== null) {
-      const level = match[1].length;
-      const text = match[2].trim();
-      const id = slugger.slug(text);
-      items.push({ id, text, level });
-    }
-    return items;
-  }, [content]);
+export default function TOC({ content }: Readonly<{ content: string }>) {
+  const [headings, setHeadings] = useState<
+    { id: string; text: string; level: number }[]
+  >([]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Find all intersecting entries
-        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
-        if (visibleEntries.length > 0) {
-          // You could be more sophisticated (e.g. taking the top-most visible), 
-          // but for basic usage grabbing the first is fine.
-          setActiveId(visibleEntries[0].target.id);
-        }
-      },
-      { rootMargin: "0px 0px -80% 0px", threshold: 0 }
-    );
+    // Extract markdown headings (## and ###)
+    const matches = content.match(/^#{2,3}\s+(.+)$/gm);
+    if (!matches) return;
 
-    const elements = document.querySelectorAll("h2, h3");
-    elements.forEach((elem) => observer.observe(elem));
+    const parsedHeadings = matches.map((match) => {
+      const level = new RegExp(/^#+/).exec(match)?.[0].length || 2;
+      const text = match.replace(/^#+\s+/, "");
+      // Simple slugify matching github-slugger used by rehype-slug
+      const id = text
+        .toLowerCase()
+        .replaceAll(/[^a-z0-9 -]/g, "")
+        .replaceAll(/\s+/g, "-")
+        .replaceAll(/-+/g, "-");
 
-    return () => observer.disconnect();
-  }, [headings]);
+      return { id, text, level };
+    });
+
+    setHeadings(parsedHeadings);
+  }, [content]);
 
   if (headings.length === 0) return null;
 
   return (
-    <div style={{ position: "relative" }}>
+    <>
       <h4>On this page</h4>
-      <ul style={{ padding: 0, margin: "1rem 0 0 0", listStyle: "none", display: "flex", flexDirection: "column", gap: "2px" }}>
-        {headings.map((heading) => {
-          const isActive = activeId === heading.id;
-          return (
-            <li key={heading.id}>
-              <a
-                href={`#${heading.id}`}
-                className={isActive ? "active" : ""}
-                style={{
-                  display: "block",
-                  padding: "0.4rem 0.5rem 0.4rem 1rem",
-                  marginLeft: heading.level === 3 ? "1rem" : "0",
-                  color: isActive ? "var(--accent)" : "var(--text-muted)",
-                  fontWeight: isActive ? 600 : 400,
-                  fontSize: "0.76rem",
-                  textDecoration: "none",
-                  borderLeft: isActive ? "2px solid var(--accent)" : "2px solid transparent",
-                  background: isActive ? "var(--bg-surface-hover)" : "transparent",
-                  borderRadius: "0 4px 4px 0",
-                  transition: "all 0.2s ease-in-out"
-                }}
-                onMouseOver={(e) => {
-                  if (!isActive) e.currentTarget.style.color = "var(--text-main)";
-                }}
-                onFocus={(e) => {
-                  if (!isActive) e.currentTarget.style.color = "var(--text-main)";
-                }}
-                onMouseOut={(e) => {
-                  if (!isActive) e.currentTarget.style.color = "var(--text-muted)";
-                }}
-                onBlur={(e) => {
-                  if (!isActive) e.currentTarget.style.color = "var(--text-muted)";
-                }}
-              >
-                {heading.text}
-              </a>
-            </li>
-          );
-        })}
+      <ul>
+        {headings.map((heading, index) => (
+          <li
+            key={`${heading.id}-${index}`}
+            style={{ marginLeft: heading.level === 3 ? "1rem" : "0" }}
+          >
+            <a href={`#${heading.id}`}>{heading.text}</a>
+          </li>
+        ))}
       </ul>
-    </div>
+    </>
   );
 }

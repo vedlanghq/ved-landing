@@ -18,7 +18,7 @@ const DOCS_TABS: DocsTab[] = [
       <div className="dh-card">
         <div className="dh-card-header">
           <span className="dh-chip">01 / Get Started</span>
-          <h2>Install &amp; run your first Ved program.</h2>
+          <h2>Install &amp; run your first Lexum program.</h2>
           <p>
             Set up the toolchain, compile a domain definition, and watch the
             runtime stabilise your first self-healing worker pool — in under
@@ -26,7 +26,7 @@ const DOCS_TABS: DocsTab[] = [
           </p>
         </div>
         <div className="dh-card-grid">
-          <Link href="/docs/what-is-ved" className="dh-tile">
+          <Link href="/docs/what-is-Lexum" className="dh-tile">
             <span className="dh-tile-num">01</span>
             <span className="dh-tile-title">Installation</span>
             <span className="dh-tile-desc">Build from source or grab a pre-built binary.</span>
@@ -57,7 +57,7 @@ const DOCS_TABS: DocsTab[] = [
       <div className="dh-card">
         <div className="dh-card-header">
           <span className="dh-chip">02 / Language Guide</span>
-          <h2>The Ved language reference.</h2>
+          <h2>The Lexum language reference.</h2>
           <p>
             Every keyword, type, and construct — explained with worked examples
             and the compiler error codes you will encounter along the way.
@@ -134,7 +134,7 @@ const DOCS_TABS: DocsTab[] = [
       <div className="dh-card">
         <div className="dh-card-header">
           <span className="dh-chip">04 / CLI</span>
-          <h2>Operate Ved from the terminal.</h2>
+          <h2>Operate Lexum from the terminal.</h2>
           <p>
             Compile, run, inspect execution traces, and integrate the runtime
             into CI pipelines — everything exposed through a single binary.
@@ -143,22 +143,22 @@ const DOCS_TABS: DocsTab[] = [
         <div className="dh-card-grid">
           <Link href="/docs/command-reference" className="dh-tile">
             <span className="dh-tile-num">01</span>
-            <span className="dh-tile-title">ved build</span>
-            <span className="dh-tile-desc">Compile <code>.ved</code> source to <code>.vedc</code> bytecode.</span>
+            <span className="dh-tile-title">Lexum build</span>
+            <span className="dh-tile-desc">Compile <code>.Lexum</code> source to <code>.lexum</code> bytecode.</span>
           </Link>
           <Link href="/docs/lint-verify-usage" className="dh-tile">
             <span className="dh-tile-num">02</span>
-            <span className="dh-tile-title">ved run</span>
+            <span className="dh-tile-title">Lexum run</span>
             <span className="dh-tile-desc">Execute a compiled artifact in the runtime sandbox.</span>
           </Link>
           <Link href="/docs/deterministic-replay-debugging" className="dh-tile">
             <span className="dh-tile-num">03</span>
-            <span className="dh-tile-title">ved trace</span>
+            <span className="dh-tile-title">Lexum trace</span>
             <span className="dh-tile-desc">Inspect execution traces and determinism hashes.</span>
           </Link>
           <Link href="/docs/observability-commands" className="dh-tile">
             <span className="dh-tile-num">04</span>
-            <span className="dh-tile-title">ved check</span>
+            <span className="dh-tile-title">Lexum check</span>
             <span className="dh-tile-desc">Run the compiler in lint-only mode for CI gates.</span>
           </Link>
         </div>
@@ -258,13 +258,13 @@ export default function DocsHome() {
 
         {/* Hero */}
         <section className="dh-hero">
-          <p className="dh-eyebrow">Ved Documentation</p>
+          <p className="dh-eyebrow">Lexum Documentation</p>
           <h1 className="dh-hero-title">
             Deterministic orchestration.<br />
             deeply documented.
           </h1>
           <p className="dh-hero-sub">
-            Everything you need to understand, operate, and extend the Ved
+            Everything you need to understand, operate, and extend the Lexum
             runtime. From first principles to production.
           </p>
         </section>
@@ -277,7 +277,7 @@ export default function DocsHome() {
         {/* Quick-links strip */}
         <nav className="dh-strip" aria-label="Quick links">
           <a
-            href="https://github.com/vedlanghq"
+            href="https://github.com/lexumhq"
             target="_blank"
             rel="noopener noreferrer"
             className="dh-strip-link"
@@ -288,7 +288,7 @@ export default function DocsHome() {
             GitHub
           </a>
           <a
-            href="https://github.com/vedlanghq/ved/issues"
+            href="https://github.com/lexumhq/lexum/issues"
             target="_blank"
             rel="noopener noreferrer"
             className="dh-strip-link"

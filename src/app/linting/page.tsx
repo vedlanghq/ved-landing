@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import { AccordionItem } from "@/components/AccordionItem";
 
 const LINT_CATEGORIES = [
-  { title: "Unbounded Retry Loops", desc: "Ved flags retries on best-effort networks without strict upper limits or backoff guarantees." },
+  { title: "Unbounded Retry Loops", desc: "Lexum flags retries on best-effort networks without strict upper limits or backoff guarantees." },
   { title: "State Domain Mishandling", desc: "Catches confusion between transient cache states and fatal persistent storage bounds." },
   { title: "Non-idempotent Cross-Boundary Payloads", desc: "Warns when emitting network IO that isn't guaranteed to be idempotent across failure boundaries." },
   { title: "Implicit Authority Downgrades", desc: "Flags when high-authority domains pass unsanitized references down to lower scopes." }
@@ -68,7 +68,7 @@ export default function LintingSystem() {
               className="hero-text"
               style={{ textAlign: 'center', margin: '0 auto', maxWidth: '1200px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
-              <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "2rem", fontWeight: 600 }}>Ved Diagnostics</motion.div>
+              <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "2rem", fontWeight: 600 }}>Lexum Diagnostics</motion.div>
               <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(3.5rem, 7vw, 6rem)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '100%', padding: '0 1rem', wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}>
                 Lints for control plane idioms.
               </motion.h1>
@@ -92,7 +92,7 @@ export default function LintingSystem() {
               transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <p>
-                Linting isn&apos;t a stylistic suggestion in Ved. It&apos;s a proactive defense against emergent chaos. Lints catch antipatterns that cause systemic failures rather than local crashes.
+                Linting isn&apos;t a stylistic suggestion in Lexum. It&apos;s a proactive defense against emergent chaos. Lints catch antipatterns that cause systemic failures rather than local crashes.
               </p>
             </motion.div>
           </div>
@@ -128,12 +128,12 @@ export default function LintingSystem() {
               transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <p>
-                Where possible, `ved fmt` and `ved fix` apply standardized, community-proven transformations to code. The objective is frictionless compliance with distributed system best practices.
+                Where possible, `Lexum fmt` and `Lexum fix` apply standardized, community-proven transformations to code. The objective is frictionless compliance with distributed system best practices.
               </p>
               <div className="command-breakdown" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
                   <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', textAlign: 'center' }}>
-                    <code style={{ color: 'var(--accent)', fontWeight: 600, fontSize: '1.1rem' }}>ved fix</code>
+                    <code style={{ color: 'var(--accent)', fontWeight: 600, fontSize: '1.1rem' }}>Lexum fix</code>
                   </div>
                   <div style={{ padding: '1rem', color: 'var(--text-muted)' }}>
                     Executes the deterministic static analysis engine.

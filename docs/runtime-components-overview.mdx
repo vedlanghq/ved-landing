@@ -6,9 +6,9 @@ order: 501
 
 # Runtime Components Overview
 
-Unlike standard compiled languages (like C or Go) that output a monolithic binary tied strictly to the underlying Operating System's abilities, Ved ships as an integrated **Virtual Control Runtime**.
+Unlike standard compiled languages (like C or Go) that output a monolithic binary tied strictly to the underlying Operating System's abilities, Lexum ships as an integrated **Virtual Control Runtime**.
 
-The Ved Runtime acts as a deterministic mini-OS designed specifically for managing state evolution. It is mathematically segregated into distinct components mapping the "Pure" logic of your code from the "Impure" reality of the machine.
+The Lexum Runtime acts as a deterministic mini-OS designed specifically for managing state evolution. It is mathematically segregated into distinct components mapping the "Pure" logic of your code from the "Impure" reality of the machine.
 
 ## The Component Architecture
 
@@ -25,4 +25,4 @@ The Ved Runtime acts as a deterministic mini-OS designed specifically for managi
    The memory persistence layer. When the Scheduler finishes executing a Slice, the Snapshot Engine takes the Copy-On-Write memory graph and durably serializes the current canonical state to disk.
 
 5. **The Effect Adapter (The Hands)**
-   The _only_ component in the Ved Architecture allowed to interact with the outside world. If your code needs to call the AWS API, the Effect Adapter performs the actual HTTPS request outside the deterministic boundary, formats the response, and places the result event back into the Mailbox Router as a historical fact.
+   The _only_ component in the Lexum Architecture allowed to interact with the outside world. If your code needs to call the AWS API, the Effect Adapter performs the actual HTTPS request outside the deterministic boundary, formats the response, and places the result event back into the Mailbox Router as a historical fact.

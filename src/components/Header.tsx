@@ -5,9 +5,11 @@ import { usePathname } from "next/navigation";
 import ThemeToggle from "@/app/ThemeToggle";
 import { FaBars } from "react-icons/fa";
 import { Home } from "lucide-react";
-import VedLogo from "./VedLogo";
+import LexumLogo from "./LexumLogo";
 
-export default function Header({ searchSlot }: Readonly<{ searchSlot?: React.ReactNode }>) {
+export default function Header({
+  searchSlot,
+}: Readonly<{ searchSlot?: React.ReactNode }>) {
   const pathname = usePathname();
   const isDocsPage = pathname?.startsWith("/docs");
 
@@ -18,16 +20,16 @@ export default function Header({ searchSlot }: Readonly<{ searchSlot?: React.Rea
           {isDocsPage && (
             <button
               className="docs-mobile-header-btn"
-              onClick={() => globalThis.dispatchEvent(new CustomEvent("toggleDocsSidebar"))}
+              onClick={() =>
+                globalThis.dispatchEvent(new CustomEvent("toggleDocsSidebar"))
+              }
               aria-label="Toggle Docs Sidebar"
             >
               <FaBars size={20} />
             </button>
           )}
-          <div style={{ width: "20px", minWidth: "20px", height: "40px", overflow: "visible", position: "relative" }}>
-            <div style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)" }}>
-              <VedLogo className="logo" fontSize={10} />
-            </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <LexumLogo className="logo" fontSize={7} condensed={true} />
           </div>
         </div>
 
@@ -36,31 +38,35 @@ export default function Header({ searchSlot }: Readonly<{ searchSlot?: React.Rea
             <Link
               href="/docs"
               title="Docs Home"
-              style={{ 
-                display: "flex", 
-                alignItems: "center", 
+              style={{
+                display: "flex",
+                alignItems: "center",
                 justifyContent: "center",
                 color: "var(--text-muted)",
-                transition: "color 0.2s ease"
+                transition: "color 0.2s ease",
               }}
-              onMouseOver={e => e.currentTarget.style.color = "var(--accent)"}
-              onMouseOut={e => e.currentTarget.style.color = "var(--text-muted)"}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.color = "var(--accent)")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.color = "var(--text-muted)")
+              }
             >
               <Home size={20} />
             </Link>
           ) : (
             <Link
               href="/docs"
-              style={{ fontWeight: 600, color: "var(--accent)", textTransform: "uppercase" }}
+              style={{
+                fontWeight: 600,
+                color: "var(--accent)",
+                textTransform: "uppercase",
+              }}
             >
               Docs
             </Link>
           )}
-          {searchSlot && (
-            <div className="header-search-slot">
-              {searchSlot}
-            </div>
-          )}
+          {searchSlot && <div className="header-search-slot">{searchSlot}</div>}
           <div className="theme-toggle-wrapper">
             <ThemeToggle />
           </div>

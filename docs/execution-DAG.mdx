@@ -6,17 +6,17 @@ order: 304
 
 # Execution DAG
 
-Because Ved enforces that all external I/O goes through the Effect System and all Transitions are built out of discrete Deterministic Slices, the Ved Compiler is capable of doing something unique: it can map the entire orchestration flow of a system as a **Directed Acyclic Graph (DAG)** before the code ever runs.
+Because Lexum enforces that all external I/O goes through the Effect System and all Transitions are built out of discrete Deterministic Slices, the Lexum Compiler is capable of doing something unique: it can map the entire orchestration flow of a system as a **Directed Acyclic Graph (DAG)** before the code ever runs.
 
 ## The Problem with Branching Scripts
 
 When you write a normal script, the runtime has no idea what will happen on line 20 until it executes line 19. If line 19 contains a dynamic `if (network_request() == true)`, the execution tree branches dynamically in real time.
 
-This makes it impossible for the runtime to optimize scheduling, pre-fetch data, or simulate failures accurately—it's flying blind.
+This makes it impossible for the runtime to optimize scheduling, pre-fetch data, or simulate failures accurately — it's flying blind.
 
 ## Static Inference of Causality
 
-In Ved, because of its structured semantics, the compiler builds a rigid causal graph of how state will evolve:
+In Lexum, because of its structured semantics, the compiler builds a rigid causal graph of how state will evolve:
 
 - `Slice 1` -> calculates parameters.
 - `Effect Intent` -> sends an API request.
@@ -33,6 +33,6 @@ The compiler analyzes this and constructs the Execution DAG.
 
 ## Consequence Awareness
 
-By elevating execution beyond dynamic code into a static Execution DAG, Ved achieves **Consequence Awareness**.
+By elevating execution beyond dynamic code into a static Execution DAG, Lexum achieves **Consequence Awareness**.
 
 The runtime literally knows the future consequences of a Transition before it executes the first instruction. It knows what scopes might be mutated, what effects will be scheduled, and what other domains will be woken up, enabling a fundamentally safer model of operations automation.

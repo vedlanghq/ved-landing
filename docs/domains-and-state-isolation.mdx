@@ -6,9 +6,9 @@ order: 201
 
 # Domains and State Isolation
 
-Shared mutable state is the root cause of almost all complex race conditions, deadlocks, and unpredictable failures in distributed systems. Ved approaches state management by completely rejecting the concept of a single global mutable memory space.
+Shared mutable state is the root cause of almost all complex race conditions, deadlocks, and unpredictable failures in distributed systems. Lexum approaches state management by completely rejecting the concept of a single global mutable memory space.
 
-Instead, the execution environment in Ved is built around **Domains**.
+Instead, the execution environment in Lexum is built around **Domains**.
 
 ## What is a Domain?
 
@@ -23,9 +23,9 @@ Think of a Domain as a micro-service or an actor, but elevated to a native langu
 
 ## The Architecture: Static Types, Dynamic Instances
 
-Ved balances the need for rigorous compile-time safety and real-world horizontal scalability.
+Lexum balances the need for rigorous compile-time safety and real-world horizontal scalability.
 
-You cannot arbitrarily generate untyped domains at runtime. Instead, Ved forces you to define **Domain Types** statically at compile time, which can then be instantiated dynamically.
+You cannot arbitrarily generate untyped domains at runtime. Instead, Lexum forces you to define **Domain Types** statically at compile time, which can then be instantiated dynamically.
 
 ### What is enforced at compile time?
 
@@ -53,8 +53,8 @@ Because domains cannot secretly mutate each other's state behind the scenes, the
 
 ### 3. Natural Scalability
 
-Domains communicate via messages. To the Ved code, it does not matter if Domain A and Domain B are sitting in the same CPU thread or if they are separated across distinct hardware nodes in different geographical regions. The code runs identically, giving Ved a natural path to transparent distributed clustering.
+Domains communicate via messages. To the Lexum code, it does not matter if Domain A and Domain B are sitting in the same CPU thread or if they are separated across distinct hardware nodes in different geographical regions. The code runs identically, giving Lexum a natural path to transparent distributed clustering.
 
 ### 4. Independent Recoverability
 
-Because each domain is isolated, it is saved via the runtime's snapshot semantics individually. If `OrderDomain[145]` crashes, the system doesn't need to roll back the entire cluster—it just reloads the snapshot for `OrderDomain[145]` exactly where it halted.
+Because each domain is isolated, it is saved via the runtime's snapshot semantics individually. If `OrderDomain[145]` crashes, the system doesn't need to roll back the entire cluster - it just reloads the snapshot for `OrderDomain[145]` exactly where it halted.

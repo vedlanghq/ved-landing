@@ -36,7 +36,7 @@ Tools like Terraform or Kubernetes manifests allow developers to declare _what_ 
 
 When you exceed the boundaries of a YAML configuration file, you are forced to retreat to writing imperative orchestrators that lack built-in persistence, crash recovery, and convergence guarantees.
 
-## The Ved Thesis
+## The Lexum Thesis
 
 We need a general-purpose language where:
 
@@ -44,4 +44,4 @@ We need a general-purpose language where:
 2. **Determinism** is guaranteed at the lowest runtime level, so an orchestration failure is perfectly mathematically replayable.
 3. Programs are treated as **persistent living systems** that automatically pause and resume their state if the execution node crashes, rather than ephemeral loops that lose track of their context.
 
-The problem space of Ved is the taming of chaotic operational logic into safe, predictable system evolution.
+The problem space of Lexum is the taming of chaotic operational logic into safe, predictable system evolution.

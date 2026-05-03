@@ -18,7 +18,7 @@ Challenges:
 
 ---
 
-## Ved Approach
+## Lexum Approach
 
 Define the desired state:
 
@@ -89,7 +89,7 @@ Imperative approach:
 - requires manual checks
 - prone to race conditions
 
-Ved approach:
+Lexum approach:
 
 - self-correcting
 - deterministic
@@ -102,17 +102,17 @@ Ved approach:
 ### 1. The Death of the "Reconciliation Loop" Boilerplate
 
 If you want to build an auto-scaler in Go or Python today, you have to write a massive `while(true)` loop. You have to write logic to poll the API, calculate the difference between desired and actual, write `if/else` branches for scaling up vs. scaling down, and handle thread locks so two loops don't accidentally scale up at the same time.
-Ved completely eliminates the loop. You just define the mathematical "fixed point" (the Goal) and the rules of movement (the Transitions). The runtime handles the looping, the polling, and the thread safety.
+Lexum completely eliminates the loop. You just define the mathematical "fixed point" (the Goal) and the rules of movement (the Transitions). The runtime handles the looping, the polling, and the thread safety.
 
 ### 2. Bidirectional Healing (Self-Correcting)
 
 In imperative scripts, developers usually only write the *"happy path"* (e.g., `if workers < 5: add worker`). They often forget to write the logic for what happens if there are _too many_ workers.
-Because Ved is driven by a strict mathematical Goal (`== 5`), it forces the system to be bidirectionally self-healing. It doesn't just recover from crashes; it recovers from human tampering and configuration drift.
+Because Lexum is driven by a strict mathematical Goal (`== 5`), it forces the system to be bidirectionally self-healing. It doesn't just recover from crashes; it recovers from human tampering and configuration drift.
 
 ### 3. Immunity to Race Conditions
 
 In a traditional system, if two different monitoring alerts fire at the exact same millisecond saying "worker died," a standard script might accidentally boot up _two_ replacement workers instead of one, overshooting the target.
-Because Ved executes Transitions in strict, deterministic, single-threaded slices, race conditions are mathematically impossible. It will process the first alert, update the state, evaluate the goal, and _then_ process the second alert.
+Because Lexum executes Transitions in strict, deterministic, single-threaded slices, race conditions are mathematically impossible. It will process the first alert, update the state, evaluate the goal, and _then_ process the second alert.
 
 ### 4. Extreme Readability
 

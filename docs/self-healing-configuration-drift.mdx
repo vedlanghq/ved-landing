@@ -12,11 +12,11 @@ But three months later, an engineer is trying to debug a production issue at 2:0
 
 This is **Configuration Drift**. Your code says the database is secure, but reality says it is exposed. Terraform won't fix this until someone manually runs `terraform apply` again. In the meantime, you have a massive security breach.
 
-### The Code: Self-Healing in Ved
+### The Code: Self-Healing in Lexum
 
-Ved treats configuration as an active entity, not a passive text file. Here is how a Ved domain handles a strict security policy:
+Lexum treats configuration as an active entity, not a passive text file. Here is how a Lexum domain handles a strict security policy:
 
-```ved
+```Lexum
 domain SecurityPolicy {
   state {
     // The source of truth
@@ -60,8 +60,8 @@ domain SecurityPolicy {
 1.  **Deployment:** The system boots. `actual_ports` matches `desired_ports` ([80, 443]). The Goal is `true`. The Domain goes to sleep (Quiescence).
 2.  **The Drift (Human Interference):** An engineer manually logs into the cloud provider and opens port `22` (SSH) to do some debugging.
 3.  **The Detection:** The Impure Effect Adapter (which is constantly watching the cloud provider's event stream in the background) notices the firewall change. It drops a message into the Domain's mailbox: _"Hey, actual_ports is now [80, 443, 22]"_.
-4.  **The Healing:** The Ved runtime wakes up and evaluates the `PolicyEnforced` goal. It evaluates to `false`.
-5.  **The Correction:** The scheduler triggers the `CloseRoguePorts` transition. Ved emits the intent to close port `22`. The firewall is locked back down. The Domain goes back to sleep.
+4.  **The Healing:** The Lexum runtime wakes up and evaluates the `PolicyEnforced` goal. It evaluates to `false`.
+5.  **The Correction:** The scheduler triggers the `CloseRoguePorts` transition. Lexum emits the intent to close port `22`. The firewall is locked back down. The Domain goes back to sleep.
 
 ---
 
@@ -79,7 +79,7 @@ Traditional systems:
 - detect drift late
 - require manual fixes
 
-Ved:
+Lexum:
 
 - continuously enforces correctness
 
@@ -90,17 +90,17 @@ Ved:
 ### 1. Active IaC vs. Passive IaC
 
 Terraform, Pulumi, and Ansible are **Passive IaC**. They are essentially glorified scripts that only enforce reality when a human presses "Run."
-Ved is **Active IaC**. It is a relentless, mathematically driven enforcer. If a human tampers with the system, Ved instantly overwrites their changes like an immune system destroying a virus. You no longer have to wonder if your production environment matches your code - Ved guarantees it 24/7.
+Lexum is **Active IaC**. It is a relentless, mathematically driven enforcer. If a human tampers with the system, Lexum instantly overwrites their changes like an immune system destroying a virus. You no longer have to wonder if your production environment matches your code - Lexum guarantees it 24/7.
 
 ### 2. Security and Compliance by Default
 
 For companies dealing with strict compliance (HIPAA, SOC2, PCI), configuration drift is an audit nightmare. Usually, companies buy expensive third-party security software just to scan for open ports and send Slack alerts.
-With Ved, the security policy enforces itself. The moment an illegal port is opened, it is closed milliseconds later. You don't get an alert saying _"You have a security breach"_; you get an audit log saying _"A security breach was attempted and instantly neutralized."_
+With Lexum, the security policy enforces itself. The moment an illegal port is opened, it is closed milliseconds later. You don't get an alert saying _"You have a security breach"_; you get an audit log saying _"A security breach was attempted and instantly neutralized."_
 
 ### 3. Eliminating "State File" Corruption
 
 In Terraform, if the local `.tfstate` file gets out of sync with the cloud provider, the entire deployment pipeline breaks, and an SRE has to manually perform brain surgery on a JSON file to fix it.
-Because Ved is constantly running a live reconciliation loop (evaluating `actual` vs `desired`), there is no fragile, static state file to corrupt. The "state" is just the living memory of the runtime, constantly synchronizing with reality on every tick.
+Because Lexum is constantly running a live reconciliation loop (evaluating `actual` vs `desired`), there is no fragile, static state file to corrupt. The "state" is just the living memory of the runtime, constantly synchronizing with reality on every tick.
 
 ## Summary
 

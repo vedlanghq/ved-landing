@@ -12,13 +12,13 @@ In most enterprise backend environments, deploying a new version of the codebase
 2. Drain connections from the v1 instances.
 3. Once empty, kill the v1 instances.
 
-For web servers, this is fine because HTTP requests are short-lived. But in Ved, a single Domain might be actively orchestrating a 7-day database migration workflow. Draining that connection is impossible.
+For web servers, this is fine because HTTP requests are short-lived. But in Lexum, a single Domain might be actively orchestrating a 7-day database migration workflow. Draining that connection is impossible.
 
-Instead, Ved is designed to support **Deterministic Hot Upgrades**.
+Instead, Lexum is designed to support **Deterministic Hot Upgrades**.
 
 ## The Execution Pause
 
-Because Ved executes in highly isolated Deterministic Slices, a Ved node never has "hanging threads" blocking the CPU indefinitely.
+Because Lexum executes in highly isolated Deterministic Slices, a Lexum node never has "hanging threads" blocking the CPU indefinitely.
 
 When a Hot Upgrade is invoked by an Operator:
 

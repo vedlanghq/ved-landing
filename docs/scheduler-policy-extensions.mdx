@@ -6,13 +6,13 @@ order: 1003
 
 # Scheduler Policy Extensions
 
-In v0.1, the Ved runtime ships with a default `Deterministic Arbitrator` scheduler policy. It prioritizes executing Domains strictly by their declared integer `priority` and uses a predictable Round-Robin algorithm to resolve identical priority ties in the active queue.
+In v0.1, the Lexum runtime ships with a default `Deterministic Arbitrator` scheduler policy. It prioritizes executing Domains strictly by their declared integer `priority` and uses a predictable Round-Robin algorithm to resolve identical priority ties in the active queue.
 
 However, as projects mature into global architectures, operators will need to alter how the runtime allocates physical CPU time to domains.
 
 ## The Extensibility Contract
 
-Ved schedulers are designed as swappable, formal plugins. You can compile the runtime with a custom Scheduler Policy written in Rust that implements the `ved_scheduler_interface`.
+Lexum schedulers are designed as swappable, formal plugins. You can compile the runtime with a custom Scheduler Policy written in Rust that implements the `ved_scheduler_interface`.
 
 Because Domains communicate via asynchronous mailboxes and mutations happen in perfectly isolated slices, you can safely swap the entire algorithm that decides _which_ slice runs next, without risking memory corruption or state races.
 

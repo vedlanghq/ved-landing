@@ -13,13 +13,13 @@ Imagine you are building a system that needs to send 100,000 emails via a third-
 In standard programming (Node.js, Go, Python), developers usually solve this by looping through the emails and calling `sleep()` to artificially slow down the loop.
 The fatal flaw? If 100,000 emails are in memory and the thread is sleeping, your server is holding thousands of network sockets open and consuming massive amounts of RAM just to "wait." If a traffic spike hits, your server runs out of memory and crashes. The alternative is setting up a complex, external Redis cluster just to manage a "Token Bucket" rate limiter.
 
-### The Code: Rate Limiting in Ved
+### The Code: Rate Limiting in Lexum
 
-In Ved, because you cannot use `sleep()` (as it breaks determinism and blocks the CPU), rate limiting is modeled purely as a mathematical state constraint.
+In Lexum, because you cannot use `sleep()` (as it breaks determinism and blocks the CPU), rate limiting is modeled purely as a mathematical state constraint.
 
-Here is how Ved implements a natural Token Bucket rate limiter:
+Here is how Lexum implements a natural Token Bucket rate limiter:
 
-```ved
+```Lexum
 domain EmailProcessor {
   state {
     pending_emails: list<EmailPayload>
@@ -55,7 +55,7 @@ domain EmailProcessor {
 ### How it Executes (The Control Loop)
 
 1.  **The Flood:** A microservice drops 100,000 emails into the `pending_emails` queue.
-2.  **The Sprint:** The Ved runtime wakes up. The goal is `false`. It triggers the `SendEmail` transition. Because `available_tokens` starts at 10, it rapidly processes 10 emails in the span of a few milliseconds.
+2.  **The Sprint:** The Lexum runtime wakes up. The goal is `false`. It triggers the `SendEmail` transition. Because `available_tokens` starts at 10, it rapidly processes 10 emails in the span of a few milliseconds.
 3.  **The Natural Brake:** On the 11th evaluation, `available_tokens == 0`. The `SendEmail` transition is now invalid. The Goal is still false, but the Domain has _no valid moves left_.
 4.  **Zero-Cost Waiting:** The Domain elegantly goes to sleep. It releases 100% of the CPU back to the scheduler. It is not "sleeping" on a thread; it is completely dormant.
 5.  **The Replenish:** One second later, the Impure Effect Adapter (which tracks real-world wall-clock time) fires a `TimerTick_1Sec` event into the Mailbox.
@@ -75,20 +75,20 @@ domain EmailProcessor {
 ### 1. Algorithmic Backpressure (No Redis Required)
 
 In standard microservices, to achieve this level of cross-server rate limiting without dropping data during a crash, you have to spin up a Redis instance, write Lua scripts for atomicity, and maintain a separate database.
-Ved gives you distributed rate limiting for free. Because the memory state (`available_tokens` and `pending_emails`) is continuously flushed to disk via COW snapshots, the rate limiter survives server reboots perfectly intact. You don't need Redis; the Ved runtime _is your state manager_.
+Lexum gives you distributed rate limiting for free. Because the memory state (`available_tokens` and `pending_emails`) is continuously flushed to disk via COW snapshots, the rate limiter survives server reboots perfectly intact. You don't need Redis; the Lexum runtime _is your state manager_.
 
 ### 2. Deterministic Time
 
 Notice how the Domain doesn't check `System.now()`. It waits for an `Event::TimerTick`.
-Because if your code reads the system clock, you cannot accurately test it. By injecting time as a Mailbox event, you can use Ved's **Time-Travel Simulator** to test this logic. You can write a unit test that instantly fires 100,000 "TimerTicks" to prove that your code will correctly process the queue over exactly 2.7 hours, and the test runs locally in 50 milliseconds.
+Because if your code reads the system clock, you cannot accurately test it. By injecting time as a Mailbox event, you can use Lexum's **Time-Travel Simulator** to test this logic. You can write a unit test that instantly fires 100,000 "TimerTicks" to prove that your code will correctly process the queue over exactly 2.7 hours, and the test runs locally in 50 milliseconds.
 
 ### 3. CPU Liberation
 
-The concept of "Zero-Cost Waiting" cannot be overstated. Standard infrastructure spends an ungodly amount of compute power simply _waiting_ for network I/O. By turning rate limits into state conditions, Ved allows a single CPU core to orchestrate millions of pending tasks simultaneously without thread starvation.
+The concept of "Zero-Cost Waiting" cannot be overstated. Standard infrastructure spends an ungodly amount of compute power simply _waiting_ for network I/O. By turning rate limits into state conditions, Lexum allows a single CPU core to orchestrate millions of pending tasks simultaneously without thread starvation.
 
 ### 4. Safe Degradation under Load
 
-If SendGrid goes down and starts throwing HTTP 500 errors, those errors get routed back to the domain (similar to the Retry Reconciliation example). The queue simply grows. But because Ved domains are strictly bounded and memory-snapshotted, a massive queue won't crash the program. The backpressure naturally bubbles up, safely buffering the system until the API comes back online.
+If SendGrid goes down and starts throwing HTTP 500 errors, those errors get routed back to the domain (similar to the Retry Reconciliation example). The queue simply grows. But because Lexum domains are strictly bounded and memory-snapshotted, a massive queue won't crash the program. The backpressure naturally bubbles up, safely buffering the system until the API comes back online.
 
 ---
 

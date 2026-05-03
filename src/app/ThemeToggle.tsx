@@ -8,7 +8,7 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     setMounted(true);
-    const savedTheme = localStorage.getItem("ved-theme");
+    const savedTheme = localStorage.getItem("Lexum-theme");
     const systemPrefersDark = globalThis.matchMedia(
       "(prefers-color-scheme: dark)",
     ).matches;
@@ -20,7 +20,7 @@ export default function ThemeToggle() {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
     document.documentElement.dataset.theme = newTheme;
-    localStorage.setItem("ved-theme", newTheme);
+    localStorage.setItem("Lexum-theme", newTheme);
   };
 
   if (!mounted) {

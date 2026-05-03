@@ -15,7 +15,7 @@ export default function Home() {
       <header>
         <nav>
           <a href="#" className="logo">
-            <span className="logo-dot"></span> Ved
+            <span className="logo-dot"></span> Lexum
           </a>
           <div className="nav-links">
             <a href="#vision">Vision</a>
@@ -33,7 +33,7 @@ export default function Home() {
           <h1>Deterministic Control-Plane Programming Language</h1>
 
           <p>
-            Ved is a deterministic declarative systems programming language for
+            Lexum is a deterministic declarative systems programming language for
             engineering reliable, long-lived distributed systems. Stop writing
             ephemeral scripts. Start defining persistent convergence.
           </p>
@@ -65,7 +65,7 @@ export default function Home() {
               <h3>Deterministic Execution</h3>
 
               <p>
-                Given the same program, state, and inputs, Ved guarantees
+                Given the same program, state, and inputs, Lexum guarantees
                 identical system evolution. Transitions execute in deterministic
                 slices, enabling reproducible incident debugging and safe
                 operational automation.
@@ -78,7 +78,7 @@ export default function Home() {
               <h3>Persistent Runtime</h3>
 
               <p>
-                Ved treats programs as long-lived evolving systems. State is
+                Lexum treats programs as long-lived evolving systems. State is
                 strongly typed, versioned, and snapshotted automatically.
                 Execution resumes seamlessly after a failure without manual
                 recovery.
@@ -104,7 +104,7 @@ export default function Home() {
               <h2>Declarative Desired Goals</h2>
 
               <p>
-                Ved programs define what the system should become, not just what
+                Lexum programs define what the system should become, not just what
                 it should do next. The runtime plans and executes deterministic
                 steps toward convergence.
               </p>
@@ -153,7 +153,7 @@ export default function Home() {
                 <div className="dot green"></div>
               </div>
 
-              <div className="code-title">autoscaler.ved</div>
+              <div className="code-title">autoscaler.Lexum</div>
             </div>
 
             <div className="code-content">
@@ -190,11 +190,11 @@ domain AutoScaler {
       <footer>
         <div className="footer-content">
           <div className="logo">
-            <span className="logo-dot"></span> Ved
+            <span className="logo-dot"></span> Lexum
           </div>
 
           <div className="footer-text">
-            &copy; 2025 Ved Programming Language. Experimental Research Project.
+            &copy; 2025 Lexum Programming Language. Experimental Research Project.
           </div>
 
           <div className="footer-links">

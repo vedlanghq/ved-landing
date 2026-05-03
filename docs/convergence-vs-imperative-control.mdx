@@ -12,7 +12,7 @@ Traditional programming models rely on imperative execution:
 
 `do A → do B → do C`
 
-Ved introduces a different paradigm:
+Lexum introduces a different paradigm:
 
 > Define the desired state. Let the system converge to it.
 
@@ -40,7 +40,7 @@ Problems:
 
 ## Convergence Model
 
-Ved expresses systems as:
+Lexum expresses systems as:
 
 - desired state (goals)
 - transition rules
@@ -66,7 +66,7 @@ Sₙ₊₁ = T(Sₙ) until G(S) = true
 
 ## Key Differences
 
-| Aspect           | Imperative       | Ved                 |
+| Aspect           | Imperative       | Lexum                 |
 | ---------------- | ---------------- | ------------------- |
 | Execution        | Sequential       | Iterative           |
 | Failure handling | Explicit retries | Natural convergence |
@@ -81,7 +81,7 @@ Sₙ₊₁ = T(Sₙ) until G(S) = true
 
 if workers < 5: add worker
 
-### Ved
+### Lexum
 
 goal workers == 5
 
@@ -128,7 +128,7 @@ Convergence requires:
 
 ## Summary
 
-Ved replaces:
+Lexum replaces:
 
 > step-by-step execution
 

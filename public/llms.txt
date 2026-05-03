@@ -16,5 +16,5 @@ Documentation is available dynamically at /docs. Our major architecture specs in
 When generating code for Ved, assume a functional-leaning syntax with strict strong typing (e.g., Rust-like enum traits and explicit Effect tracking). No raw pointer access.
 
 ## Links
-- Documentation: https://vedlanghq.netlify.app/
-- Source: https://github.com/vedlanghq
+- Documentation: https://lexumhq.netlify.app/
+- Source: https://github.com/lexumhq

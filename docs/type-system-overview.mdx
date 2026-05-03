@@ -8,16 +8,16 @@ order: 602
 
 Most modern languages have type systems designed solely to describe **shape** (e.g., this is a string, this is a struct with three fields, this is an array of integers). Memory-safe languages like Rust introduce types that describe **ownership** and **lifetime**.
 
-Ved introduces a third dimension: types that describe **authority**.
+Lexum introduces a third dimension: types that describe **authority**.
 
 ## The Dual-Axis Type System
 
-Every major construct in Ved (Variables, Domains, Transitions, and Effects) requires two type validations to pass successfully through the compiler:
+Every major construct in Lexum (Variables, Domains, Transitions, and Effects) requires two type validations to pass successfully through the compiler:
 
 1. **Value Type**: Describes the shape of the data.
 2. **Authority Scope**: Describes _where_ in the enterprise the data is allowed to act.
 
-```ved
+```Lexum
 // A transition has a value type (String) and an authority scope (Workspace)
 @scope Workspace("analytics")
 transition NormalizeData(input: String) {
@@ -27,7 +27,7 @@ transition NormalizeData(input: String) {
 
 ## First-Class Authority Tracking
 
-If Ved's central thesis is that "long-lived infrastructure orchestration should be as safe as pure functional computation," then the compiler must statically verify the blast radius of every action.
+If Lexum's central thesis is that "long-lived infrastructure orchestration should be as safe as pure functional computation," then the compiler must statically verify the blast radius of every action.
 
 Authority typing allows the compiler to statically verify:
 
@@ -39,7 +39,7 @@ Authority is not an optional string attached via commentary. It is an intrinsic 
 
 ## The Subtyping Lattice
 
-Authority scopes act mathematically in a **partially ordered set**. By default, Ved assumes an enterprise-level topology like `Tenant > Environment > Workspace > Target`.
+Authority scopes act mathematically in a **partially ordered set**. By default, Lexum assumes an enterprise-level topology like `Tenant > Environment > Workspace > Target`.
 
 Because authority is handled by the type checker:
 
@@ -48,4 +48,4 @@ Because authority is handled by the type checker:
 
 ## Why Built-In?
 
-By embedding Authority directly into the compiler's type inference engine, Ved eliminates entire categories of runtime RBAC (Role-Based Access Control) errors. When an engineer writes an infrastructure-mutating playbook, their IDE will turn red if they attempt to orchestrate a database outside of their declared functional jurisdiction, long before a DevOps pipeline is invoked.
+By embedding Authority directly into the compiler's type inference engine, Lexum eliminates entire categories of runtime RBAC (Role-Based Access Control) errors. When an engineer writes an infrastructure-mutating playbook, their IDE will turn red if they attempt to orchestrate a database outside of their declared functional jurisdiction, long before a DevOps pipeline is invoked.

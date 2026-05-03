@@ -12,13 +12,13 @@ In standard distributed systems, if an App Server needs to wait for a Database t
 
 This creates **tight coupling**. If the Database takes too long, the App Server's thread times out and crashes. If they try to share a memory state, you risk deadlocks (where both systems are stuck waiting for each other forever).
 
-Ved enforces **ADR-002: Absolute Rejection of Shared Mutable State**. Domains cannot read each other's memory. They coordinate through asynchronous **Mailboxes** and **Choreography**.
+Lexum enforces **ADR-002: Absolute Rejection of Shared Mutable State**. Domains cannot read each other's memory. They coordinate through asynchronous **Mailboxes** and **Choreography**.
 
 ## Example: Booting an App that Depends on a Database
 
-Here is how Ved coordinates two isolated domains (a Database Provisioner and an App Provisioner) using message passing:
+Here is how Lexum coordinates two isolated domains (a Database Provisioner and an App Provisioner) using message passing:
 
-```ved
+```Lexum
 // DOMAIN 1: The Database
 domain DatabaseProvisioner {
   state {
@@ -94,7 +94,7 @@ Traditional systems:
 - require locks
 - risk race conditions
 
-Ved:
+Lexum:
 
 - message-based coordination
 - deterministic interaction
@@ -113,11 +113,11 @@ If the `DatabaseProvisioner` domain crashes due to a weird hardware fault right 
 
 ### 3. Eventual Consistency as a Superpower
 
-Most developers are terrified of "Eventual Consistency" (the idea that system A knows something, but system B won't find out for a few milliseconds). Ved leans into it. The `AppProvisioner` doesn't actually know if the database is currently running; it only knows that _its internal state_ says `db_ready = true`. This forces developers to design highly resilient systems that can handle being out of sync temporarily.
+Most developers are terrified of "Eventual Consistency" (the idea that system A knows something, but system B won't find out for a few milliseconds). Lexum leans into it. The `AppProvisioner` doesn't actually know if the database is currently running; it only knows that _its internal state_ says `db_ready = true`. This forces developers to design highly resilient systems that can handle being out of sync temporarily.
 
 ### 4. Safe "Scale-Out" Architecture
 
-Because these domains don't share memory, they don't even have to live on the same physical server. The Ved runtime could execute the Database domain on a server in Tokyo and the App domain on a server in Mumbai. The logic remains 100% identical. The runtime handles the cross-border message delivery. You write the code for a single machine, and the runtime scales it globally for free.
+Because these domains don't share memory, they don't even have to live on the same physical server. The Lexum runtime could execute the Database domain on a server in Tokyo and the App domain on a server in Mumbai. The logic remains 100% identical. The runtime handles the cross-border message delivery. You write the code for a single machine, and the runtime scales it globally for free.
 
 ---
 

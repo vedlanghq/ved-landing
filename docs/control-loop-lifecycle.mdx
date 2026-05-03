@@ -6,13 +6,13 @@ order: 401
 
 # Control Loop Lifecycle
 
-In imperative languages, execution begins at `main()` and proceeds downward until the program exits. In Ved, there is no top-to-bottom procedural execution.
+In imperative languages, execution begins at `main()` and proceeds downward until the program exits. In Lexum, there is no top-to-bottom procedural execution.
 
-Instead, Ved programs execute as **Continuous Control Loops**, designed to observe state, evaluate goals, and execute transitions indefinitely.
+Instead, Lexum programs execute as **Continuous Control Loops**, designed to observe state, evaluate goals, and execute transitions indefinitely.
 
 ## The 4-Phase Lifecycle
 
-The Ved runtime manages every Domain through a rigid, infinitely repeating 4-phase execution loop.
+The Lexum runtime manages every Domain through a rigid, infinitely repeating 4-phase execution loop.
 
 ### 1. Observation (Mailbox Ingestion)
 
@@ -35,7 +35,7 @@ If all goals evaluate to `true`, the Domain is deemed stable and yields its CPU 
 
 ### 3. Transition Scheduling
 
-For every unsatisfied Goal, the Ved scheduler identifies the mapped `Transition` (reconciliation logic). The scheduler looks at the Goal's declared **Priority Level** (e.g., Critical vs Background) and places the Transition into the CPU's execution queue.
+For every unsatisfied Goal, the Lexum scheduler identifies the mapped `Transition` (reconciliation logic). The scheduler looks at the Goal's declared **Priority Level** (e.g., Critical vs Background) and places the Transition into the CPU's execution queue.
 
 ### 4. Deterministic Execution
 
@@ -45,4 +45,4 @@ The scheduler executes the Transition within strict **Execution Slices**. When a
 
 Traditional CI/CD pipelines or deployment scripts are "fire-and-forget." If the script successfully finishes, it terminates. But if the server falls over 10 minutes later, the script cannot help you.
 
-Ved models software as **Closed-Loop Control Systems** (like an airplane autopilot or a thermostat). The code is never truly "finished" executing; it is merely constantly ensuring that the physical reality of the system matches the declarative goals you programmed.
+Lexum models software as **Closed-Loop Control Systems** (like an airplane autopilot or a thermostat). The code is never truly "finished" executing; it is merely constantly ensuring that the physical reality of the system matches the declarative goals you programmed.
