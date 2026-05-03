@@ -72,11 +72,11 @@ const getComponents = (doc: any) => ({
         <div className="docs-meta-bar">
           <div className="docs-meta-item">
             <Clock size={16} strokeWidth={1.5} />
-            <span>{doc.meta.readingTime} min read</span>
+            <span>{doc?.meta?.readingTime || 1} min read</span>
           </div>
 
           <a
-            href={`https://github.com/lexumhq/lexum-landing/edit/main/docs/${doc.slug}.mdx`}
+            href={`https://github.com/lexumhq/lexum-landing/edit/main/docs/${doc?.slug || "execution-DAG"}.mdx`}
             target="_blank"
             rel="noopener noreferrer"
             className="docs-meta-item hover-underline"
