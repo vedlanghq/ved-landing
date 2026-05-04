@@ -108,7 +108,7 @@ const DOCS_TABS: DocsTab[] = [
             <span className="dh-tile-title">Scheduler</span>
             <span className="dh-tile-desc">Priority aging, starvation control, quiescence detection.</span>
           </Link>
-          <Link href="/docs/execution-DAG" className="dh-tile">
+          <Link href="/docs/execution-dag" className="dh-tile">
             <span className="dh-tile-num">02</span>
             <span className="dh-tile-title">Interpreter</span>
             <span className="dh-tile-desc">Gas-bounded slice execution and safe state yielding.</span>

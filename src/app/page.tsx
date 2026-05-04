@@ -1269,32 +1269,37 @@ export default function Home() {
                 [
                   {
                     status: "done",
-                    label: "Deterministic scheduler prototype",
-                    note: "Priority aging, starvation control, quiescence detection",
+                    label: "Compiler & Semantic Validation",
+                    note: "Syntax modeling, capability escalation trapping, AST boundary enforcement",
                   },
                   {
                     status: "done",
-                    label: "Persistent state journal",
-                    note: "Snapshot / restore cycle, write-ahead log",
+                    label: "Bytecode & Virtual Machine",
+                    note: "Lexum-IR interpreter engine, binary packer, dynamic gas metering",
+                  },
+                  {
+                    status: "done",
+                    label: "Domain Engine & Recovery",
+                    note: "Asynchronous routing, snapshot persistence, crash resilience",
+                  },
+                  {
+                    status: "done",
+                    label: "Goal Engine & Convergence",
+                    note: "Predicate evaluation, priority dominance, oscillation traps",
+                  },
+                  {
+                    status: "done",
+                    label: "Scale Verification",
+                    note: "Banking consistency, message storms, multi-domain determinism",
                   },
                   {
                     status: "active",
-                    label: "Replayable execution model",
-                    note: "Bytecode IR engine, slice resumption, trace hashing",
-                  },
-                  {
-                    status: "active",
-                    label: "Syntax and IR stabilization",
-                    note: "Parser hardening, canonical bytecode spec, `.lexum` format",
+                    label: "Developer Experience (DX) & v0.1",
+                    note: "Artifact polish, heartbeat metrics, production demos",
                   },
                   {
                     status: "planned",
-                    label: "Convergence analysis tooling",
-                    note: "Static goal reachability, oscillation detection",
-                  },
-                  {
-                    status: "planned",
-                    label: "Distributed runtime research",
+                    label: "Distributed Runtime Expansion",
                     note: "Multi-node domain federation, consensus primitives",
                   },
                 ] as const

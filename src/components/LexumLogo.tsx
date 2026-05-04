@@ -212,8 +212,7 @@ export default function LexumLogo({
       >
         <pre
           aria-hidden="true"
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={() => {
             playTrace();
           }}
           style={{

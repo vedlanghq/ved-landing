@@ -52,12 +52,12 @@ function CommandAccordionItem({
     <div style={{ display: 'flex', flexDirection: 'column', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
       <button 
         onClick={onToggle}
-        style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', width: '100%', padding: 0, cursor: 'pointer', textAlign: 'left', borderBottom: isOpen ? '1px solid var(--border)' : 'none' }}
+        style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', background: 'none', border: 'none', width: '100%', padding: 0, cursor: 'pointer', textAlign: 'left', borderBottom: isOpen ? '1px solid var(--border)' : 'none' }}
       >
-        <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '140px', textAlign: 'center' }}>
+        <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '140px', flex: '1 1 auto', textAlign: 'center' }}>
           <code style={{ color: isAccent ? 'var(--accent)' : 'var(--text-main)', fontWeight: 600, fontSize: '1.1rem' }}>{command}</code>
         </div>
-        <div style={{ padding: '1rem', color: 'var(--text-muted)', fontWeight: 500, flex: 1 }}>
+        <div style={{ padding: '1rem', color: 'var(--text-muted)', fontWeight: 500, flex: '3 1 200px' }}>
           {title}
         </div>
         <div style={{ padding: '1rem', color: 'var(--text-muted)' }}>
@@ -153,7 +153,7 @@ export default function CliUXPhilosophy() {
               style={{ textAlign: 'center', margin: '0 auto', maxWidth: '800px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
               <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "1.5rem", fontWeight: 600 }}>Lexum Tooling</motion.div>
-              <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(3.5rem, 7vw, 6rem)', lineHeight: 1.1, letterSpacing: '-0.04em' }}>
+              <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', lineHeight: 1.1, letterSpacing: '-0.04em', wordBreak: 'break-word', overflowWrap: 'break-word', hyphens: 'auto' }}>
                 The terminal is
                 <br />
                 the platform.

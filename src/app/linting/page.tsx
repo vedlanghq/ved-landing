@@ -69,7 +69,7 @@ export default function LintingSystem() {
               style={{ textAlign: 'center', margin: '0 auto', maxWidth: '1200px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
               <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "2rem", fontWeight: 600 }}>Lexum Diagnostics</motion.div>
-              <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(3.5rem, 7vw, 6rem)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '100%', padding: '0 1rem', wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}>
+              <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', lineHeight: 1.1, letterSpacing: '-0.02em', maxWidth: '100%', padding: '0 1rem', wordBreak: 'break-word', overflowWrap: 'break-word', hyphens: 'auto' }}>
                 Lints for control plane idioms.
               </motion.h1>
 
@@ -131,27 +131,27 @@ export default function LintingSystem() {
                 Where possible, `Lexum fmt` and `Lexum fix` apply standardized, community-proven transformations to code. The objective is frictionless compliance with distributed system best practices.
               </p>
               <div className="command-breakdown" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
-                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', textAlign: 'center' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
+                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', flex: '1 1 auto', textAlign: 'center' }}>
                     <code style={{ color: 'var(--accent)', fontWeight: 600, fontSize: '1.1rem' }}>Lexum fix</code>
                   </div>
-                  <div style={{ padding: '1rem', color: 'var(--text-muted)' }}>
+                  <div style={{ padding: '1rem', color: 'var(--text-muted)', flex: '3 1 200px' }}>
                     Executes the deterministic static analysis engine.
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
-                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', textAlign: 'center' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
+                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', flex: '1 1 auto', textAlign: 'center' }}>
                     <code style={{ color: 'var(--text-main)', fontSize: '1.1rem' }}>--apply</code>
                   </div>
-                  <div style={{ padding: '1rem', color: 'var(--text-muted)' }}>
+                  <div style={{ padding: '1rem', color: 'var(--text-muted)', flex: '3 1 200px' }}>
                     Automatically resolves safe structural violations.
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
-                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', textAlign: 'center' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
+                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', flex: '1 1 auto', textAlign: 'center' }}>
                     <code style={{ color: 'var(--text-main)', fontSize: '1.1rem' }}>--all</code>
                   </div>
-                  <div style={{ padding: '1rem', color: 'var(--text-muted)' }}>
+                  <div style={{ padding: '1rem', color: 'var(--text-muted)', flex: '3 1 200px' }}>
                     Traverses all domain boundaries and goal configurations.
                   </div>
                 </div>

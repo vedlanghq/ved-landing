@@ -72,7 +72,7 @@ export default function ErrorTaxonomy() {
               style={{ textAlign: 'center', margin: '0 auto', maxWidth: '1200px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
               <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "2rem", fontWeight: 600 }}><br></br>Lexum Diagnostics</motion.div>
-              <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(3.5rem, 7vw, 6rem)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '100%', padding: '0 1rem', wordBreak: 'normal', overflowWrap: 'normal', hyphens: 'none' }}>
+              <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', lineHeight: 1.1, letterSpacing: '-0.02em', maxWidth: '100%', padding: '0 1rem', wordBreak: 'break-word', overflowWrap: 'break-word', hyphens: 'auto' }}>
                 Structured failure semantics.
               </motion.h1>
 

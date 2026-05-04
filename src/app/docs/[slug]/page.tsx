@@ -76,7 +76,7 @@ const getComponents = (doc: any) => ({
           </div>
 
           <a
-            href={`https://github.com/lexumhq/lexum-landing/edit/main/docs/${doc?.slug || "execution-DAG"}.mdx`}
+            href={`https://github.com/lexumhq/lexum-landing/edit/main/docs/${doc?.slug || "execution-dag"}.mdx`}
             target="_blank"
             rel="noopener noreferrer"
             className="docs-meta-item hover-underline"
