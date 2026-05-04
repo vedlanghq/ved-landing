@@ -17,6 +17,14 @@ export default function Footer() {
           </div>
 
           <div className="footer-column">
+            <h3>Architecture</h3>
+            <Link href="/determinism">Determinism</Link>
+            <Link href="/effects">Effects</Link>
+            <Link href="/convergence">Convergence</Link>
+            <Link href="/journaling">Journal</Link>
+          </div>
+
+          <div className="footer-column">
             <h3>Diagnostics</h3>
             <Link href="/errors">Error Taxonomy</Link>
             <Link href="/warnings">Warning System</Link>
@@ -30,7 +38,7 @@ export default function Footer() {
           </div>
 
           <div className="footer-column">
-            <h3>Project</h3>
+            <h3>Resources</h3>
             <Link href="/whitepaper">Whitepaper</Link>
             <a
               href="https://github.com/lexumhq"

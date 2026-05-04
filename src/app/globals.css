@@ -260,12 +260,25 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 
+.split-section.reverse {
+  direction: rtl;
+}
+
+.split-section.reverse > * {
+  direction: ltr;
+}
+
 .split-content {
   padding: 4rem 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   border-right: 1px solid var(--border);
+}
+
+.split-section.reverse .split-content {
+  border-right: none;
+  border-left: 1px solid var(--border);
 }
 
 .split-content h2 {
@@ -334,6 +347,10 @@ nav {
   .split-content {
     border-right: none;
     border-bottom: 1px solid var(--border);
+  }
+
+  .split-section.reverse .split-content {
+    border-left: none;
   }
 }
 
