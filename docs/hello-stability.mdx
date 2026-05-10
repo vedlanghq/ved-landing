@@ -43,8 +43,10 @@ transition CreateFile() {
 
 ## How It Executes
 
-1. **Initial Boot:** You run `Lexum runtime start hello.lexum`.
-2. **First Tick:** The runtime evaluates `EnsureGreetingExists`. The file does not exist, so the predicate is `false`.
+The process is mathematically rigorous:
+
+1. **Initial Boot:** You run `lexum runtime start hello.lxm`.
+2. **Snapshot Load:** The runtime checks for a `.snapshot.json`. Since none exists, it boots fresh.
 3. **Execution Slice:** The scheduler triggers the `CreateFile` transition. It executes purely and emits the `System.WriteFile` intent into the runtime envelope.
 4. **Effect Resolution:** The Impure Effect Adapter receives the intent, reaches out to the host OS, and successfully writes the file. It sends a success event back to the Domain.
 5. **Stability Reached:** The Domain evaluates the predicate again. It finds the file. It goes to sleep.

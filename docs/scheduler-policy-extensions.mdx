@@ -12,7 +12,7 @@ However, as projects mature into global architectures, operators will need to al
 
 ## The Extensibility Contract
 
-Lexum schedulers are designed as swappable, formal plugins. You can compile the runtime with a custom Scheduler Policy written in Rust that implements the `ved_scheduler_interface`.
+Lexum schedulers are designed as swappable, formal plugins. You can compile the runtime with a custom Scheduler Policy written in Rust that implements the `lexum_scheduler_interface`.
 
 Because Domains communicate via asynchronous mailboxes and mutations happen in perfectly isolated slices, you can safely swap the entire algorithm that decides _which_ slice runs next, without risking memory corruption or state races.
 

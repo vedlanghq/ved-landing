@@ -144,7 +144,7 @@ const DOCS_TABS: DocsTab[] = [
           <Link href="/docs/command-reference" className="dh-tile">
             <span className="dh-tile-num">01</span>
             <span className="dh-tile-title">Lexum build</span>
-            <span className="dh-tile-desc">Compile <code>.Lexum</code> source to <code>.lexum</code> bytecode.</span>
+            <span className="dh-tile-desc">Compile <code>.lxm</code> source to <code>.lxmc</code> bytecode.</span>
           </Link>
           <Link href="/docs/lint-verify-usage" className="dh-tile">
             <span className="dh-tile-num">02</span>

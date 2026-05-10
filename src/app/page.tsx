@@ -347,7 +347,7 @@ function CodeTerminal({
         <span className="term-dot dot-red" />
         <span className="term-dot dot-yellow" />
         <span className="term-dot dot-green" />
-        <span className="term-filename">worker_pool.lexum</span>
+        <span className="term-filename">worker_pool.lxm</span>
         <button
           className="term-copy-btn"
           onClick={onCopy}
@@ -797,7 +797,7 @@ const PROJECT_PKGS = [
     id: "compiler",
     name: "Lexum-compiler",
     tag: "Language Frontend",
-    desc: "Lexer, parser, AST construction, semantic validation, and bytecode emission. Produces portable `.lexc` binary artefacts consumed directly by the runtime.",
+    desc: "Lexer, parser, AST construction, semantic validation, and bytecode emission. Produces portable `.lxmc` binary artefacts consumed directly by the runtime.",
     href: "https://github.com/lexumhq/lexum-compiler",
   },
   {
@@ -1250,15 +1250,15 @@ export default function Home() {
             {/* Legend */}
             <div className="rdmap-legend">
               <span className="rdmap-legend-item">
-                <span className="rdmap-dot rdmap-dot--done" />
+                <span className="rdmap-dot rdmap-dot--done" />{" "}
                 Completed
               </span>
               <span className="rdmap-legend-item">
-                <span className="rdmap-dot rdmap-dot--active" />
+                <span className="rdmap-dot rdmap-dot--active" />{" "}
                 In progress
               </span>
               <span className="rdmap-legend-item">
-                <span className="rdmap-dot rdmap-dot--planned" />
+                <span className="rdmap-dot rdmap-dot--planned" />{" "}
                 Planned
               </span>
             </div>
@@ -1362,7 +1362,7 @@ export default function Home() {
             </p>
             <div className="large-ctas">
               <a
-                href="https://github.com/orgs/vedlanghq/discussions"
+                href="https://github.com/orgs/lexumhq/discussions"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="large-link"
