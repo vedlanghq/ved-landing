@@ -66,6 +66,23 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-B7THR7SFJT"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('config', 'G-B7THR7SFJT');
+            `,
+          }}
+        />
+        <Script
           id="theme-script"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
