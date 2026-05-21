@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://lexumhq.netlify.app
-
-# Sitemaps
-Sitemap: https://lexumhq.netlify.app/sitemap.xml

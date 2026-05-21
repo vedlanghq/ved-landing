@@ -616,7 +616,7 @@ function ProjectCard(
 /* ───── Roadmap Row ───────────────────────────────────────── */
 const RDMAP_WIDTH: Record<ProjStatus, string> = {
   done: "100%",
-  active: "52%",
+  active: "75%",
   planned: "0%",
 };
 const RDMAP_LABEL: Record<ProjStatus, string> = {
@@ -1039,7 +1039,7 @@ export default function Home() {
 
               <motion.div className="cta-group" variants={itemFade}>
                 <Link href="/errors" className="btn btn-primary">
-                  Explore Development Experience
+                  Explore DX
                 </Link>
                 <a
                   href="https://github.com/lexumhq"
@@ -1250,16 +1250,13 @@ export default function Home() {
             {/* Legend */}
             <div className="rdmap-legend">
               <span className="rdmap-legend-item">
-                <span className="rdmap-dot rdmap-dot--done" />{" "}
-                Completed
+                <span className="rdmap-dot rdmap-dot--done" /> Completed
               </span>
               <span className="rdmap-legend-item">
-                <span className="rdmap-dot rdmap-dot--active" />{" "}
-                In progress
+                <span className="rdmap-dot rdmap-dot--active" /> In progress
               </span>
               <span className="rdmap-legend-item">
-                <span className="rdmap-dot rdmap-dot--planned" />{" "}
-                Planned
+                <span className="rdmap-dot rdmap-dot--planned" /> Planned
               </span>
             </div>
 
@@ -1370,7 +1367,7 @@ export default function Home() {
                 Join discussions
               </a>
               <Link href="/errors" className="large-link">
-                Explore developer experience
+                Explore development experience
               </Link>
               <a
                 href="https://github.com/lexumhq"

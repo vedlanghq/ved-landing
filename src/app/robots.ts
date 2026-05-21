@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 export const dynamic = "force-static";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = "https://lexumhq.netlify.app/";
+  const baseUrl = "https://lexumhq.netlify.app";
 
   return {
     rules: {
