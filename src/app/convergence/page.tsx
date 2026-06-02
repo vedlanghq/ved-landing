@@ -1,10 +1,230 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import BackgroundShapes from "@/components/BackgroundShapes";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { Container } from "@/components/ui/Container";
+import { TabbedCodeBlock } from "@/components/ui/TabbedCodeBlock";
+import { StickyScrollReveal } from "@/components/ui/StickyScrollReveal";
+import { useState } from "react";
+
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+
+function ConvergenceInteractiveSection({
+  fadeUp,
+}: Readonly<{ fadeUp: Record<string, any> }>) {
+  const [activeTab, setActiveTab] = useState("imperative");
+
+  const tabs = [
+    {
+      id: "imperative",
+      title: "Imperative Drift",
+      language: "typescript",
+      code: `// Standard Automation (Unaware of collisions)\n\nasync function reconcileLoop() {\n  while (true) {\n    let state = await fetchState();\n\n    // This blind imperative logic will\n    // fight forever against a second script\n    // that wants nodes < 5\n    if (state.nodes < 5) {\n      await scaleUp();\n    }\n\n    await sleep(1000);\n  }\n}`,
+    },
+    {
+      id: "lexum",
+      title: "Predicate Declarations",
+      language: "lexum",
+      code: `// Lexum Goal Paradigm (Declarative)\n\ndomain ScalingController {\n  // The engine constantly evaluates this predicate\n  goal MaintainCapacity(priority: 10) {\n    state.nodes >= 5\n  }\n\n  // Transition only invoked if the goal fails\n  transition ScaleUp() {\n    yield effect {\n      type: RequestNodes,\n      count: 5 - state.nodes\n    };\n  }\n}`,
+    },
+  ];
+
+  return (
+    <section className="split-section bg-(--section-2) min-h-[70vh] flex items-center">
+      <Container className="grid-layout items-center">
+        <div className="split-content flex flex-col justify-center">
+          <AnimatePresence mode="wait">
+            {activeTab === "imperative" ? (
+              <motion.div
+                key="imperative"
+                initial={{ opacity: 0, y: 10, filter: "blur(2px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -10, filter: "blur(2px)" }}
+                transition={{ duration: 0.3 }}
+              >
+                <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6">
+                  The Imperative Drift
+                </h2>
+                <p className="text-lexum-muted leading-relaxed mb-6">
+                  Standard automation relies on manual reconciliation loops.
+                  When multiple scripts or controllers manage the same
+                  infrastructure, they often fight each other, creating infinite
+                  &quot;livelocks&quot; where the system thrashes without ever
+                  reaching stability.
+                </p>
+                <ul className="brutalist-list text-sm">
+                  <li className="mb-2">
+                    <strong className="text-lexum-text">
+                      Logic Collisions
+                    </strong>{" "}
+                    Controller A scales up, Controller B scales down. Neither
+                    knows the other exists.
+                  </li>
+                  <li className="mb-2">
+                    <strong className="text-lexum-text">
+                      Infinite Thrashing
+                    </strong>{" "}
+                    The system endlessly mutates state, burning CPU and API
+                    limits without halting.
+                  </li>
+                </ul>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="lexum"
+                initial={{ opacity: 0, y: 10, filter: "blur(2px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -10, filter: "blur(2px)" }}
+                transition={{ duration: 0.3 }}
+              >
+                <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6">
+                  Predicate Declarations
+                </h2>
+                <p className="text-lexum-muted leading-relaxed mb-6">
+                  Lexum completely abandons the{" "}
+                  <code className="font-mono text-sm bg-lexum-panel text-lexum-text border border-lexum-border px-1 rounded">
+                    while
+                  </code>{" "}
+                  loop. Instead, you declare a{" "}
+                  <code className="font-mono text-sm bg-lexum-panel text-lexum-text border border-lexum-border px-1 rounded">
+                    goal
+                  </code>
+                  . The Lexum VM natively evaluates all active goals across all
+                  domains, calculating priority dominance to silence weaker,
+                  conflicting intents before a single transition is executed.
+                </p>
+                <div className="brutalist-list text-sm">
+                  <div className="mb-2">
+                    <span className="font-bold text-lexum-text">
+                      Priority Dominance:
+                    </span>{" "}
+                    A `goal` with priority 10 automatically suppresses a
+                    conflicting `goal` with priority 5.
+                  </div>
+                  <div>
+                    <span className="font-bold text-lexum-text">
+                      Continuous Evaluation:
+                    </span>{" "}
+                    The engine only invokes transitions when the predicate
+                    evaluates to `false`.
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        <div className="code-panel bg-transparent! border-0! p-0 flex flex-col justify-center">
+          <motion.div {...fadeUp}>
+            <TabbedCodeBlock
+              tabs={tabs}
+              activeTabId={activeTab}
+              onTabChange={setActiveTab}
+            />
+          </motion.div>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+const convergenceContent = [
+  {
+    title: "Predicate Safety",
+    description: (
+      <>
+        <p className="mb-4">
+          Because the Lexum runtime continuously evaluates goals after{" "}
+          <em>every single state mutation</em>, Goal predicates are heavily
+          restricted by the compiler.
+        </p>
+        <p className="mb-4">
+          Lexum is not a magical AI. You still have to write the{" "}
+          <code className="font-mono text-sm bg-lexum-panel text-lexum-text border border-lexum-border px-1 rounded">
+            transition
+          </code>{" "}
+          logic that calls the AWS API. However, Lexum guarantees that if state
+          drifts from a Goal, your reconciliation logic will be
+          deterministically executed, strictly prioritized against 5 levels of
+          systemic importance, retried upon failure, and safely persisted.
+        </p>
+      </>
+    ),
+    content: (
+      <div className="w-full flex flex-col justify-center gap-6">
+        <div className="bg-lexum-panel border border-lexum-border rounded-lg p-6 flex flex-col gap-2 transition-colors hover:border-lexum-accent">
+          <code className="font-mono text-sm font-semibold text-lexum-text">
+            Pure Logic
+          </code>
+          <div className="text-lexum-muted text-sm">No memory mutation.</div>
+        </div>
+        <div className="bg-lexum-panel border border-lexum-border rounded-lg p-6 flex flex-col gap-2 transition-colors hover:border-lexum-accent">
+          <code className="font-mono text-sm font-semibold text-lexum-text">
+            No Effects
+          </code>
+          <div className="text-lexum-muted text-sm">
+            Network I/O strictly forbidden.
+          </div>
+        </div>
+        <div className="bg-lexum-panel border border-lexum-border rounded-lg p-6 flex flex-col gap-2 transition-colors hover:border-lexum-accent">
+          <code className="font-mono text-sm font-semibold text-lexum-text">
+            No Wall-Clock
+          </code>
+          <div className="text-lexum-muted text-sm">Time must be logical.</div>
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "Oscillation Traps",
+    description: (
+      <>
+        <p className="mb-4">
+          What happens when a bug is introduced where a domain&apos;s transition
+          fails to satisfy its own goal, or two equal-priority domains get
+          locked into a tug-of-war? Lexum tracks execution histories
+          mathematically to catch these failures.
+        </p>
+      </>
+    ),
+    content: (
+      <div className="w-full flex flex-col justify-center gap-6">
+        <div className="command-breakdown bg-lexum-bg/50 p-6 rounded-lg border border-lexum-border">
+          <div className="mb-6">
+            <div className="mb-2">
+              <code className="font-mono text-sm bg-lexum-panel text-lexum-text border border-lexum-border px-1 rounded">
+                Cycle N..9
+              </code>
+            </div>
+            <div className="text-lexum-muted text-sm">
+              Engine observes identical state transitions failing to satisfy the
+              goal predicate repeatedly.
+            </div>
+          </div>
+          <div className="mb-6">
+            <div className="mb-2">
+              <code className="font-mono text-sm bg-lexum-panel text-lexum-text border border-lexum-border px-1 rounded">
+                Cycle 10
+              </code>
+            </div>
+            <div className="text-lexum-muted text-sm">
+              <strong className="text-lexum-text">
+                ERROR[E005] Oscillation Detected.
+              </strong>{" "}
+              Engine mathematically proves livelock and physically aborts
+              execution.
+            </div>
+          </div>
+        </div>
+        <div className="bg-lexum-bg/50 p-6 rounded-lg border border-lexum-border text-lexum-muted text-sm leading-relaxed">
+          By abandoning imperative loops, the Lexum runtime guarantees that
+          software either successfully converges to the target state or
+          explicitly aborts with a fully reproducible trace hash.
+        </div>
+      </div>
+    ),
+  },
+];
 
 export default function ConvergencePage() {
   const fadeUp = {
@@ -28,572 +248,94 @@ export default function ConvergencePage() {
 
   return (
     <>
-      <BackgroundShapes />
       <Header />
 
-      <main>
+      <main className="flex-1 bg-lexum-bg">
         {/* HERO SECTION */}
-        <section
-          className="hero-section"
-          style={{
-            minHeight: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingTop: "100px",
-          }}
-        >
-          <div style={{ width: "100%" }}>
+        <section className="hero-section">
+          <Container>
             <motion.div
               variants={staggerContainer}
               initial="initial"
               animate="animate"
-              className="hero-text"
-              style={{
-                textAlign: "center",
-                margin: "0 auto",
-                maxWidth: "1200px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
+              className="grid-layout"
             >
               <motion.div
-                className="label"
+                className="col-span-12 text-tag text-lexum-accent tracking-widest mb-4 uppercase"
                 variants={itemFade}
-                style={{
-                  color: "var(--accent)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  marginBottom: "2rem",
-                  fontWeight: 600,
-                }}
               >
-                The Goal Engine
+                Livelock Mitigation
               </motion.div>
               <motion.h1
                 variants={itemFade}
-                style={{
-                  fontSize: "clamp(2.5rem, 8vw, 5rem)",
-                  lineHeight: 1.1,
-                  letterSpacing: "-0.02em",
-                  maxWidth: "100%",
-                  padding: "0 1rem",
-                  wordBreak: "break-word",
-                  overflowWrap: "break-word",
-                  hyphens: "auto",
-                }}
+                className="col-span-12 md:col-span-8 text-display-1 text-lexum-text mb-6"
               >
-                Declare the bounds.
+                Absolute <span className="text-lexum-accent">Convergence.</span>
               </motion.h1>
 
               <motion.p
-                className="sub-text"
+                className="sub-text col-span-12 md:col-span-8 text-lexum-muted text-lg leading-relaxed mb-6 wrap-break-word w-full"
                 variants={itemFade}
-                style={{
-                  margin: "2.5rem auto 0",
-                  fontSize: "clamp(1.2rem, 2.5vw, 1.6rem)",
-                  maxWidth: "800px",
-                  color: "var(--text-muted)",
-                  lineHeight: 1.6,
-                  padding: "0 1rem",
-                }}
               >
-                Stop writing imperative while loops. Declare the target state
-                predicates and let the runtime evaluate, resolve conflicts, and
-                drive the system toward convergence.
+                In a system with hundreds of autonomous controllers, how do you
+                prevent them from endlessly fighting each other? Lexum solves
+                distributed livelock at the compiler level.
               </motion.p>
             </motion.div>
-          </div>
+          </Container>
         </section>
 
-        {/* SPLIT SECTION: THE VULNERABILITY (IMPERATIVE DRIFT) */}
-        <section className="split-section">
-          <div className="split-content">
-            <motion.div {...fadeUp}>
-              <h2
-                style={{
-                  fontSize: "clamp(2rem, 4vw, 3rem)",
-                  textTransform: "uppercase",
-                  marginBottom: "1.5rem",
-                  lineHeight: 1.1,
-                }}
-              >
-                The Imperative Drift
-              </h2>
-              <p
-                style={{
-                  fontSize: "1.1rem",
-                  color: "var(--text-muted)",
-                  marginBottom: "2rem",
-                }}
-              >
-                Standard automation relies on manual reconciliation loops. When
-                multiple scripts or controllers manage the same infrastructure,
-                they often fight each other, creating infinite "livelocks" where
-                the system thrashes without ever reaching stability.
-              </p>
-              <ul className="brutalist-list" style={{ marginTop: "2rem" }}>
-                <li
-                  style={{
-                    borderBottom: "1px solid var(--border)",
-                    paddingBottom: "1rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <strong style={{ color: "var(--accent)" }}>
-                    Logic Collisions
-                  </strong>{" "}
-                  Controller A scales up, Controller B scales down. Neither
-                  knows the other exists.
-                </li>
-                <li
-                  style={{
-                    borderBottom: "1px solid var(--border)",
-                    paddingBottom: "1rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <strong style={{ color: "var(--accent)" }}>
-                    Infinite Thrashing
-                  </strong>{" "}
-                  The system endlessly mutates state, burning CPU and API limits
-                  without halting.
-                </li>
-              </ul>
-            </motion.div>
-          </div>
-          <div className="code-panel">
-            <motion.pre {...fadeUp} style={{ margin: 0 }}>
-              <span className="token-comment">
-                {/* Standard Automation (Unaware of collisions) */}
-              </span>
-              {"\n\n"}
-              <span className="token-keyword">async function</span>{" "}
-              <span className="token-entity">reconcileLoop</span>() {"{"}
-              {"\n"}
-              {"  "}
-              <span className="token-keyword">while</span> {" ("}
-              <span className="token-property">true</span> {" ) "}
-              {"{"}
-              {"\n"}
-              {"    "}
-              <span className="token-keyword">let</span> state ={" "}
-              <span className="token-keyword">await</span> fetchState();{"\n\n"}
-              {"    "}
-              <span className="token-comment">
-                {/* This blind imperative logic will */}
-              </span>
-              {"\n"}
-              {"    "}
-              <span className="token-comment">
-                {/* fight forever against a second script */}
-              </span>
-              {"\n"}
-              {"    "}
-              <span className="token-comment">
-                {/* that wants nodes {"<"} 5 */}
-              </span>
-              {"\n"}
-              {"    "}
-              <span className="token-keyword">if</span> (state.nodes {"<"}{" "}
-              <span className="token-operator">5</span>) {"{"}
-              {"\n"}
-              {"      "}
-              <span className="token-keyword">await</span> scaleUp();{"\n"}
-              {"    "}
-              {"}"}
-              {"\n\n"}
-              {"    "}
-              <span className="token-keyword">await</span>
-              {" sleep("}
-              <span className="token-operator">1000</span>
-              {");\n"}
-              {"  "}
-              {"}"}
-              {"\n"}
-              {"}"}
-            </motion.pre>
-          </div>
-        </section>
+        {/* INTERACTIVE TABBED SECTION */}
+        <ConvergenceInteractiveSection fadeUp={fadeUp} />
 
-        {/* SPLIT SECTION: LEXUM GOAL PREDICATES */}
-        <section className="split-section reverse">
-          <div className="split-content">
-            <motion.div {...fadeUp}>
-              <h2
-                style={{
-                  fontSize: "clamp(2rem, 4vw, 3rem)",
-                  textTransform: "uppercase",
-                  marginBottom: "1.5rem",
-                  lineHeight: 1.1,
-                }}
-              >
-                Predicate Declarations
-              </h2>
-              <p
-                style={{
-                  fontSize: "1.1rem",
-                  color: "var(--text-muted)",
-                  marginBottom: "2rem",
-                }}
-              >
-                Lexum completely abandons the <code>while</code> loop. Instead,
-                you declare a <code>goal</code>. The Lexum VM natively evaluates
-                all active goals across all domains, calculating priority
-                dominance to silence weaker, conflicting intents before a single
-                transition is executed.
-              </p>
-              <div
-                style={{
-                  background: "rgba(255,255,255,0.02)",
-                  padding: "1.5rem",
-                  border: "1px solid var(--border)",
-                  borderRadius: "8px",
-                  marginTop: "2rem",
-                }}
-              >
-                <p
-                  style={{
-                    color: "var(--text-main)",
-                    fontWeight: 600,
-                    margin: 0,
-                    textTransform: "uppercase",
-                    fontSize: "0.9rem",
-                    letterSpacing: "0.05em",
-                  }}
-                >
-                  Convergence Mechanics
-                </p>
-                <div
-                  style={{
-                    marginTop: "1rem",
-                    display: "grid",
-                    gap: "1rem",
-                    fontSize: "0.95rem",
-                    color: "var(--text-muted)",
-                  }}
-                >
-                  <div>
-                    <span
-                      style={{
-                        color: "var(--text-main)",
-                        marginRight: "0.5rem",
-                      }}
-                    >
-                      Priority Dominance:
-                    </span>{" "}
-                    A `goal` with priority 10 automatically suppresses a
-                    conflicting `goal` with priority 5.
-                  </div>
-                  <div>
-                    <span
-                      style={{
-                        color: "var(--text-main)",
-                        marginRight: "0.5rem",
-                      }}
-                    >
-                      Continuous Evaluation:
-                    </span>{" "}
-                    The engine only invokes transitions when the predicate
-                    evaluates to `false`.
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-          <div className="code-panel">
-            <motion.pre {...fadeUp} style={{ margin: 0 }}>
-              <span className="token-comment">
-                {/* Lexum Goal Paradigm (Declarative) */}
-              </span>
-              {"\n\n"}
-              <span className="token-keyword">domain</span>{" "}
-              <span className="token-entity">ScalingController</span> {"{"}
-              {"\n"}
-              {"  "}
-              <span className="token-comment">
-                {/* The engine constantly evaluates this predicate */}
-              </span>
-              {"\n"}
-              {"  "}
-              <span className="token-keyword">goal</span>{" "}
-              <span className="token-entity">MaintainCapacity</span>(priority:{" "}
-              <span className="token-operator">10</span>) {"{"}
-              {"\n"}
-              {"    "}state.nodes {">="}{" "}
-              <span className="token-operator">5</span>
-              {"\n"}
-              {"  "}
-              {"}"}
-              {"\n\n"}
-              {"  "}
-              <span className="token-comment">
-                {/* Transition only invoked if the goal fails */}
-              </span>
-              {"\n"}
-              {"  "}
-              <span className="token-keyword">transition</span>{" "}
-              <span className="token-entity">ScaleUp</span>() {"{"}
-              {"\n"}
-              {"    "}
-              <span className="token-keyword">yield</span> effect {"{"}
-              {"\n"}
-              {"      "}type:{" "}
-              <span className="token-property">RequestNodes</span>,{"\n"}
-              {"      "}count: <span className="token-operator">5</span> -
-              state.nodes{"\n"}
-              {"    "}
-              {"}"};{"\n"}
-              {"  "}
-              {"}"}
-              {"\n"}
-              {"}"}
-            </motion.pre>
-          </div>
-        </section>
-
-        {/* CONTENT SECTION: THE SHARED RESPONSIBILITY MODEL */}
-        <section
-          className="content-section"
-          style={{ background: "var(--bg-base)", borderBottom: "1px solid var(--border)" }}
-        >
-          <div className="two-col-grid align-top">
-            <motion.div className="col-text" {...fadeUp}>
-              <h2>Predicate Safety</h2>
-              <p
-                style={{
-                  color: "var(--text-muted)",
-                  fontSize: "1.1rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                The Shared Responsibility Model
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="col-text"
-              {...fadeUp}
-              transition={{
-                delay: 0.1,
-                duration: 0.8,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              <p style={{ marginBottom: "2rem" }}>
-                Because the Lexum runtime continuously evaluates goals after <em>every single state mutation</em>, Goal predicates are heavily restricted by the compiler:
-              </p>
-
-              <div style={{ display: "flex", gap: "1rem", marginBottom: "2rem" }}>
-                <div style={{ background: "rgba(255,255,255,0.05)", padding: "1rem", borderRadius: "6px", flex: 1, textAlign: "center" }}>
-                  <code style={{ color: "var(--accent)" }}>Pure Logic</code>
-                  <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>No memory mutation.</div>
-                </div>
-                <div style={{ background: "rgba(255,255,255,0.05)", padding: "1rem", borderRadius: "6px", flex: 1, textAlign: "center" }}>
-                  <code style={{ color: "var(--accent)" }}>No Effects</code>
-                  <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>Network I/O strictly forbidden.</div>
-                </div>
-                <div style={{ background: "rgba(255,255,255,0.05)", padding: "1rem", borderRadius: "6px", flex: 1, textAlign: "center" }}>
-                  <code style={{ color: "var(--accent)" }}>No Wall-Clock</code>
-                  <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>Time must be logical.</div>
-                </div>
-              </div>
-
-              <h3 style={{ fontSize: "1.3rem", color: "var(--text-main)", marginBottom: "1rem" }}>The Lexum Guarantee</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "1rem", borderLeft: "2px solid var(--accent)", paddingLeft: "1rem" }}>
-                Lexum is not a magical AI. You still have to write the <code>transition</code> logic that calls the AWS API. However, Lexum guarantees that if state drifts from a Goal, your reconciliation logic will be deterministically executed, strictly prioritized against 5 levels of systemic importance (<code>Critical</code> to <code>Background</code>), retried upon failure, and safely persisted.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* CONTENT SECTION: OSCILLATION TRAPS */}
-        <section
-          className="content-section"
-          style={{ background: "var(--bg-surface)" }}
-        >
-          <div className="two-col-grid align-top">
-            <motion.div className="col-text" {...fadeUp}>
-              <h2>Oscillation Traps</h2>
-              <p
-                style={{
-                  color: "var(--text-muted)",
-                  fontSize: "1.1rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                Deterministic Livelock Halting
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="col-text"
-              {...fadeUp}
-              transition={{
-                delay: 0.1,
-                duration: 0.8,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              <p style={{ marginBottom: "2rem" }}>
-                What happens when a bug is introduced where a domain's
-                transition fails to satisfy its own goal, or two equal-priority
-                domains get locked into a tug-of-war? Lexum tracks execution
-                histories mathematically to catch these failures.
-              </p>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.75rem",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    background: "var(--bg-base)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "6px",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div
-                    style={{
-                      padding: "1rem",
-                      borderRight: "1px solid var(--border)",
-                      minWidth: "120px",
-                      flex: "1 1 auto",
-                      textAlign: "center",
-                    }}
-                  >
-                    <code
-                      style={{
-                        color: "var(--text-muted)",
-                        fontWeight: 600,
-                        fontSize: "1.1rem",
-                      }}
-                    >
-                      Cycle N..9
-                    </code>
-                  </div>
-                  <div
-                    style={{
-                      padding: "1rem",
-                      color: "var(--text-muted)",
-                      flex: "3 1 200px",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    Engine observes identical state transitions failing to
-                    satisfy the goal predicate repeatedly.
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignItems: "center",
-                    background: "var(--bg-base)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "6px",
-                    overflow: "hidden",
-                  }}
-                >
-                  <div
-                    style={{
-                      padding: "1rem",
-                      borderRight: "1px solid var(--border)",
-                      minWidth: "120px",
-                      flex: "1 1 auto",
-                      textAlign: "center",
-                      background: "rgba(239, 68, 68, 0.1)",
-                    }}
-                  >
-                    <code
-                      style={{
-                        color: "#ef4444",
-                        fontSize: "1.1rem",
-                        fontWeight: 600,
-                      }}
-                    >
-                      Cycle 10
-                    </code>
-                  </div>
-                  <div
-                    style={{
-                      padding: "1rem",
-                      color: "var(--text-main)",
-                      flex: "3 1 200px",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "0.9rem",
-                    }}
-                  >
-                    <strong style={{ color: "#ef4444" }}>
-                      ERROR[E005] Oscillation Detected.
-                    </strong>{" "}
-                    Engine mathematically proves livelock and physically aborts
-                    execution.
-                  </div>
-                </div>
-              </div>
-
-              <p
-                style={{
-                  marginTop: "2rem",
-                  fontSize: "0.95rem",
-                  color: "var(--text-muted)",
-                  borderLeft: "2px solid var(--border)",
-                  paddingLeft: "1rem",
-                }}
-              >
-                By abandoning imperative loops, the Lexum runtime guarantees
-                that software either successfully converges to the target state
-                or explicitly aborts with a fully reproducible trace hash.
-              </p>
-            </motion.div>
-          </div>
+        {/* STICKY SCROLL SECTION */}
+        <section className="pt-24 pb-0 relative">
+          <Container>
+            <StickyScrollReveal content={convergenceContent} />
+          </Container>
         </section>
 
         {/* CTA */}
-        <section className="content-section" style={{ textAlign: "center" }}>
-          <motion.div
-            {...fadeUp}
-            style={{ maxWidth: "600px", margin: "0 auto" }}
-          >
-            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
-              Understand the Math
-            </h2>
-            <p
-              style={{
-                fontSize: "1.2rem",
-                color: "var(--text-muted)",
-                margin: "1.5rem 0 2.5rem",
-              }}
+        <section className="py-24 border-b border-lexum-border bg-(--section-1)">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <motion.div
+              {...fadeUp}
+              className="text-center flex flex-col items-center"
             >
-              Explore how Lexum resolves competing priorities across isolated
-              domains.
-            </p>
-            <div
-              style={{
-                display: "flex",
-                gap: "1rem",
-                justifyContent: "center",
-                flexWrap: "wrap",
-              }}
-            >
-              <Link href="/whitepaper" className="btn btn-primary">
-                Read the Whitepaper
-              </Link>
-            </div>
-          </motion.div>
+              <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6 inline-block">
+                Understand the Math
+              </h2>
+              <p className="text-lexum-muted leading-relaxed mb-6 max-w-2xl mx-auto">
+                Read the technical whitepaper on how the Lexum VM calculates
+                priority dominance and oscillation vectors.
+              </p>
+              <div className="mt-8 flex justify-center gap-4">
+                <Link
+                  href="/lexum-whitepaper.pdf"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 font-mono text-sm font-medium transition-all duration-300 bg-lexum-accent text-lexum-text hover:bg-lexum-text hover:text-lexum-bg rounded hover:scale-105 hover:shadow-[0_0_30px_rgba(255,69,0,0.6)] overflow-hidden"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    Read the Whitepaper
+                    <svg
+                      className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
+                    </svg>
+                  </span>
+                </Link>
+              </div>
+            </motion.div>
+          </div>
         </section>
       </main>
-
       <Footer />
     </>
   );

@@ -3,15 +3,24 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import BackgroundShapes from "@/components/BackgroundShapes";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { AccordionItem } from "@/components/AccordionItem";
 
 const WARNING_CATEGORIES = [
-  { title: "Starvation Probability", desc: "A queue configuration that might silently drop throughput over time." },
-  { title: "Oscillatory Transitions", desc: "A state graph that circles indefinitely without halting or violating hard loops." },
-  { title: "Excessive Snapshotting", desc: "Performance regression risks via structural constraints rather than raw execution speed." }
+  {
+    title: "Starvation Probability",
+    desc: "A queue configuration that might silently drop throughput over time.",
+  },
+  {
+    title: "Oscillatory Transitions",
+    desc: "A state graph that circles indefinitely without halting or violating hard loops.",
+  },
+  {
+    title: "Excessive Snapshotting",
+    desc: "Performance regression risks via structural constraints rather than raw execution speed.",
+  },
 ];
 
 function WarningCategoryAccordions() {
@@ -25,7 +34,9 @@ function WarningCategoryAccordions() {
           solution={item.desc}
           labelB="Details:"
           isOpen={openKey === item.title}
-          onToggle={() => setOpenKey(openKey === item.title ? null : item.title)}
+          onToggle={() =>
+            setOpenKey(openKey === item.title ? null : item.title)
+          }
         />
       ))}
     </>
@@ -54,142 +65,246 @@ export default function WarningSystem() {
 
   return (
     <>
-      <BackgroundShapes />
       <Header />
-      
-      <main>
-        <section className="hero-section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '100px' }}>
-          <div style={{ width: '100%' }}>
-            <motion.div
-              variants={staggerContainer}
-              initial="initial"
-              animate="animate"
-              className="hero-text"
-              style={{ textAlign: 'center', margin: '0 auto', maxWidth: '1200px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-            >
-              <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "2rem", fontWeight: 600 }}>Lexum Diagnostics</motion.div>
-              <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', lineHeight: 1.1, letterSpacing: '-0.02em', maxWidth: '100%', padding: '0 1rem', wordBreak: 'break-word', overflowWrap: 'break-word', hyphens: 'auto' }}>
-                Proactive system risk signalling.
-              </motion.h1>
 
-              <motion.p className="sub-text" variants={itemFade} style={{ margin: '2.5rem auto 0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', maxWidth: '800px', color: 'var(--text-muted)', lineHeight: 1.6, padding: '0 1rem' }}>
-                Lexum surfaces architectural risks before they become failures.
-              </motion.p>
-            </motion.div>
-          </div>
-        </section>
+      <main className="flex-1 bg-lexum-bg overflow-hidden">
+        <section className="hero-section">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <div>
+              <motion.div
+                variants={staggerContainer}
+                initial="initial"
+                animate="animate"
+                className="grid-layout"
+              >
+                <motion.div
+                  className="col-span-12 text-tag text-lexum-accent tracking-widest mb-4 uppercase"
+                  variants={itemFade}
+                >
+                  Lexum Diagnostics
+                </motion.div>
+                <motion.h1
+                  variants={itemFade}
+                  className="col-span-12 md:col-span-8 text-display-1 text-lexum-text mb-6"
+                >
+                  Proactive System <span className="text-lexum-accent">Risk Signalling.</span>
+                </motion.h1>
 
-        <section className="content-section">
-          <div className="two-col-grid">
-            <motion.div className="col-text" {...fadeUp}>
-              <h2>Why Warnings Matter</h2>
-              <p style={{ color: "var(--text-muted)", fontSize: "1.1rem", marginBottom: "1rem" }}>In Control-Plane Programming</p>
-            </motion.div>
-
-            <motion.div
-              className="col-text"
-              {...fadeUp}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <ul className="brutalist-list check">
-                <li>Delayed failure characteristics.</li>
-                <li>Probabilistic instability.</li>
-                <li>Convergence inefficiency.</li>
-              </ul>
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="content-section" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
-          <div className="two-col-grid">
-            <motion.div className="col-text" {...fadeUp}>
-              <h2>Warning Taxonomy</h2>
-            </motion.div>
-
-            <motion.div
-              className="col-text"
-              {...fadeUp}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <p style={{ marginBottom: "1.5rem" }}>
-                Structured Advisory System
-              </p>
-              <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', padding: '0.75rem 1rem', borderRadius: '6px', minWidth: '100px' }}>
-                  <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Namespace</span>
-                  <code style={{ fontSize: '1.1rem', color: 'var(--accent)' }}>Lexum</code>
-                </div>
-                <div style={{ color: 'var(--border)' }}>-</div>
-                <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', padding: '0.75rem 1rem', borderRadius: '6px', minWidth: '100px' }}>
-                  <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Severity</span>
-                  <code style={{ fontSize: '1.1rem', color: '#eab308' }}>WARN</code>
-                </div>
-                <div style={{ color: 'var(--border)' }}>-</div>
-                <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', padding: '0.75rem 1rem', borderRadius: '6px', minWidth: '120px' }}>
-                  <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Domain Area</span>
-                  <code style={{ fontSize: '1.1rem', color: 'var(--text-main)' }}>&lt;CATEGORY&gt;</code>
-                </div>
-                <div style={{ color: 'var(--border)' }}>-</div>
-                <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--border)', padding: '0.75rem 1rem', borderRadius: '6px', minWidth: '100px' }}>
-                  <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>Identifier</span>
-                  <code style={{ fontSize: '1.1rem', color: 'var(--text-main)' }}>&lt;NUMBER&gt;</code>
-                </div>
-              </div>
-              <p>Examples: Scheduler behaviour, Convergence quality, Determinism sensitivity, Authority placement.</p>
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="content-section">
-          <div className="two-col-grid">
-            <motion.div className="col-text" {...fadeUp}>
-              <h2>Warning Semantics</h2>
-            </motion.div>
-            
-            <motion.div
-              className="col-text"
-              {...fadeUp}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="accordion-group" style={{ margin: "1rem 0" }}>
-                <WarningCategoryAccordions />
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="content-section" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
-          <div className="two-col-grid">
-            <motion.div className="col-text" {...fadeUp}>
-              <h2>Suppression & Policy</h2>
-            </motion.div>
-
-            <motion.div
-              className="col-text"
-              {...fadeUp}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <p>
-                Explicit acknowledgement via local suppression guarantees warnings don&apos;t get lost in noise, while policy enforcement lets teams raise warnings to errors.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="content-section" style={{ textAlign: "center" }}>
-          <motion.div {...fadeUp} style={{ maxWidth: "600px", margin: "0 auto" }}>
-            <h2>Operational Wisdom</h2>
-            <p style={{ fontSize: "1.2rem", color: "var(--text-muted)", margin: "1.5rem 0" }}>
-              Warnings help encode operational wisdom into the language toolchain.
-            </p>
-            <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-              <Link href="/linting" className="btn btn-primary">
-                Explore Linting Rules
-              </Link>
+                <motion.p
+                  variants={itemFade}
+                  className="col-span-12 md:col-span-6 text-mono-body text-lexum-text mb-10"
+                >
+                  Lexum surfaces architectural risks before they become
+                  failures.
+                </motion.p>
+              </motion.div>
             </div>
-          </motion.div>
+          </div>
         </section>
 
+        <section className="content-section bg-(--section-2)">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="two-col-grid align-top">
+              <motion.div
+                className="col-span-12 md:col-span-4 lg:col-span-5"
+                {...fadeUp}
+              >
+                <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6">
+                  Why Warnings Matter
+                </h2>
+                <p className="text-lexum-muted leading-relaxed mb-6">
+                  In Control-Plane Programming
+                </p>
+              </motion.div>
+
+              <motion.div
+                className="col-span-12 md:col-span-8 lg:col-span-7"
+                {...fadeUp}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.8,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <ul className="brutalist-list check">
+                  <li>Delayed failure characteristics.</li>
+                  <li>Probabilistic instability.</li>
+                  <li>Convergence inefficiency.</li>
+                </ul>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="content-section bg-(--section-3)">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="two-col-grid align-top">
+              <motion.div
+                className="col-span-12 md:col-span-4 lg:col-span-5"
+                {...fadeUp}
+              >
+                <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6">
+                  Warning Taxonomy
+                </h2>
+              </motion.div>
+
+              <motion.div
+                className="col-span-12 md:col-span-8 lg:col-span-7"
+                {...fadeUp}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.8,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <p className="text-lexum-muted leading-relaxed mb-6">
+                  Structured Advisory System
+                </p>
+                <div className="flex flex-wrap items-center gap-4 bg-lexum-panel border border-lexum-border rounded-lg p-6 mb-6">
+                  <div className="flex flex-col gap-2">
+                    <span className="text-xs text-lexum-muted uppercase tracking-widest">
+                      Namespace
+                    </span>
+                    <code className="bg-lexum-bg px-3 py-1 rounded border border-lexum-border text-lexum-text font-semibold text-sm">
+                      Lexum
+                    </code>
+                  </div>
+                  <div className="text-lexum-muted mt-5">—</div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-xs text-lexum-muted uppercase tracking-widest">
+                      Severity
+                    </span>
+                    <code className="bg-[#ffae00]/10 px-3 py-1 rounded border border-[#ffae00] text-[#ffae00] font-semibold text-sm">
+                      WARN
+                    </code>
+                  </div>
+                  <div className="text-lexum-muted mt-5">—</div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-xs text-lexum-muted uppercase tracking-widest">
+                      Domain Area
+                    </span>
+                    <code className="bg-lexum-bg px-3 py-1 rounded border border-lexum-border text-lexum-text font-semibold text-sm">
+                      &lt;CATEGORY&gt;
+                    </code>
+                  </div>
+                  <div className="text-lexum-muted mt-5">—</div>
+                  <div className="flex flex-col gap-2">
+                    <span className="text-xs text-lexum-muted uppercase tracking-widest">
+                      Identifier
+                    </span>
+                    <code className="bg-lexum-bg px-3 py-1 rounded border border-lexum-border text-lexum-text font-semibold text-sm">
+                      &lt;NUMBER&gt;
+                    </code>
+                  </div>
+                </div>
+                <p className="text-lexum-muted leading-relaxed mb-6">
+                  Examples: Scheduler behaviour, Convergence quality,
+                  Determinism sensitivity, Authority placement.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="content-section bg-(--section-2)">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="two-col-grid align-top">
+              <motion.div
+                className="col-span-12 md:col-span-4 lg:col-span-5"
+                {...fadeUp}
+              >
+                <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6">
+                  Warning Semantics
+                </h2>
+              </motion.div>
+
+              <motion.div
+                className="col-span-12 md:col-span-8 lg:col-span-7"
+                {...fadeUp}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.8,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <div className="accordion-group">
+                  <WarningCategoryAccordions />
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="content-section bg-(--section-3)">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="two-col-grid align-top">
+              <motion.div
+                className="col-span-12 md:col-span-4 lg:col-span-5"
+                {...fadeUp}
+              >
+                <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6">
+                  Suppression & Policy
+                </h2>
+              </motion.div>
+
+              <motion.div
+                className="col-span-12 md:col-span-8 lg:col-span-7"
+                {...fadeUp}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.8,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <p className="text-lexum-muted leading-relaxed mb-6">
+                  Explicit acknowledgement via local suppression guarantees
+                  warnings don&apos;t get lost in noise, while policy
+                  enforcement lets teams raise warnings to errors.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 border-b border-lexum-border bg-(--section-1)">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <motion.div
+              {...fadeUp}
+              className="text-center flex flex-col items-center"
+            >
+              <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6 inline-block">
+                Operational Wisdom
+              </h2>
+              <p className="text-lexum-muted leading-relaxed mb-6 max-w-2xl mx-auto">
+                Warnings help encode operational wisdom into the language
+                toolchain.
+              </p>
+              <div className="mt-8 flex justify-center gap-4">
+                <Link
+                  href="/linting"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 font-mono text-sm font-medium transition-all duration-300 bg-lexum-accent text-lexum-text hover:bg-lexum-text hover:text-lexum-bg rounded hover:scale-105 hover:shadow-[0_0_30px_rgba(255,69,0,0.6)] overflow-hidden"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    Explore Linting Rules
+                    <svg
+                      className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
+                    </svg>
+                  </span>
+                </Link>
+              </div>
+            </motion.div>
+          </div>
+        </section>
       </main>
 
       <Footer />

@@ -1,13 +1,24 @@
 import { MetadataRoute } from "next";
-import { getDocSlugs } from "../lib/docs";
+import { getAllDocsMeta } from "@/lib/docs";
 
 export const dynamic = "force-static";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://lexumhq.netlify.app";
+const BASE_URL = "https://lexumhq.netlify.app";
 
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const docs = getAllDocsMeta();
+
+  // Map dynamic docs routes
+  const docsSitemap: MetadataRoute.Sitemap = docs.map((doc) => ({
+    url: `${BASE_URL}/docs/${doc.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  // Define static routes
   const staticRoutes = [
-    "",
+    "/",
     "/docs",
     "/cli",
     "/convergence",
@@ -17,27 +28,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/journaling",
     "/linting",
     "/warnings",
-    "/whitepaper",
-  ].map((route) => {
-    let priority = 0.8;
-    if (route === "") priority = 1;
-    else if (route === "/docs") priority = 0.9;
+    "/privacy",
+    "/terms",
+  ];
 
-    return {
-      url: `${baseUrl}${route}`,
-      lastModified: new Date(),
-      changeFrequency: (route === "" || route === "/docs" ? "weekly" : "monthly") as any,
-      priority,
-    };
-  });
-
-  const docSlugs = getDocSlugs();
-  const docRoutes = docSlugs.map((slug) => ({
-    url: `${baseUrl}/docs/${slug}`,
+  const staticSitemap: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
+    url: `${BASE_URL}${route}`,
     lastModified: new Date(),
-    changeFrequency: "weekly" as any,
-    priority: 0.7,
+    changeFrequency: route === "/" ? "daily" : "monthly",
+    priority: route === "/" ? 1 : 0.7,
   }));
 
-  return [...staticRoutes, ...docRoutes];
+  return [...staticSitemap, ...docsSitemap];
 }

@@ -1,317 +1,384 @@
-"use client";
-
-import { useState } from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
+import type { Metadata } from "next";
+import { AnimatedTabs, Tab } from "@/components/ui/AnimatedTabs";
+import { AlertCircle, Map, Users } from "lucide-react";
 
-type DocsTab = {
-  title: string;
-  value: string;
-  content: React.ReactNode;
+export const metadata: Metadata = {
+  title: "Documentation",
+  description:
+    "Explore the Lexum documentation. Learn how to write deterministic control-plane logic, manage state, and build self-healing distributed systems.",
+  openGraph: {
+    title: "Documentation | Lexum",
+    description:
+      "Explore the Lexum documentation. Learn how to write deterministic control-plane logic, manage state, and build self-healing distributed systems.",
+    url: "https://lexumhq.netlify.app/docs",
+  },
 };
 
-const DOCS_TABS: DocsTab[] = [
+const GithubIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+const GET_STARTED_TAB = (
+  <div className="w-full relative rounded-md border border-lexum-border bg-lexum-panel/80 backdrop-blur-md shadow-sm flex flex-col md:flex-row min-h-full">
+    {/* Left Column */}
+    <div className="md:w-[45%] p-8 lg:p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-lexum-border">
+      <div className="text-blue-500 font-mono text-xs tracking-widest mb-4 uppercase">
+        01 / Get Started
+      </div>
+      <h2 className="text-2xl lg:text-3xl font-bold text-lexum-text mb-4 tracking-tight leading-tight">
+        Install & run your first Lexum program.
+      </h2>
+      <p className="text-lexum-muted leading-relaxed text-base">
+        Set up the toolchain, compile a domain definition, and watch the runtime
+        stabilise your first self-healing worker pool — in under five minutes.
+      </p>
+    </div>
+
+    {/* Right Column */}
+    <div className="md:w-[55%] grid grid-cols-1 md:grid-cols-2">
+      <Link
+        href="/docs/what-is-lexum"
+        className="group p-6 lg:p-8 md:border-b md:border-r border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">01</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          What is Lexum?
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          A brief introduction to the control plane language.
+        </p>
+      </Link>
+      <Link
+        href="/docs/hello-stability"
+        className="group p-6 lg:p-8 md:border-b border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">02</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          Quick Start
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Write and run your first domain in 60 seconds.
+        </p>
+      </Link>
+      <Link
+        href="/docs/problem-space"
+        className="group p-6 lg:p-8 md:border-r border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">03</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          The Problem Space
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Why deterministic orchestration is necessary.
+        </p>
+      </Link>
+      <Link
+        href="/docs/worker-pool-scaling"
+        className="group p-6 lg:p-8 border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">04</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">Examples</h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Real-world worker-pool scaling demo.
+        </p>
+      </Link>
+    </div>
+  </div>
+);
+
+const LANGUAGE_GUIDE_TAB = (
+  <div className="w-full relative rounded-md border border-lexum-border bg-lexum-panel/80 backdrop-blur-md shadow-sm flex flex-col md:flex-row min-h-full">
+    <div className="md:w-[45%] p-8 lg:p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-lexum-border">
+      <div className="text-blue-500 font-mono text-xs tracking-widest mb-4 uppercase">
+        02 / Language Guide
+      </div>
+      <h2 className="text-2xl lg:text-3xl font-bold text-lexum-text mb-4 tracking-tight leading-tight">
+        Explore the Language Guide.
+      </h2>
+      <p className="text-lexum-muted leading-relaxed text-base">
+        Learn the ins and outs of Lexum's domain definition syntax, types, and
+        stability patterns.
+      </p>
+    </div>
+    <div className="md:w-[55%] grid grid-cols-1 md:grid-cols-2">
+      <Link
+        href="/docs/syntax-modes"
+        className="group p-6 lg:p-8 md:border-b md:border-r border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">01</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          Syntax Modes
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Discover Lexum's strict syntax and declarations.
+        </p>
+      </Link>
+      <Link
+        href="/docs/type-system-overview"
+        className="group p-6 lg:p-8 md:border-b border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">02</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          Type System
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Understand the core types and structures.
+        </p>
+      </Link>
+      <Link
+        href="/docs/domains"
+        className="group p-6 lg:p-8 md:border-r border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">03</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">Domains</h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Isolate logic safely across robust domains.
+        </p>
+      </Link>
+      <Link
+        href="/docs/effects"
+        className="group p-6 lg:p-8 border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">04</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">Effects</h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Manage side-effects and boundaries.
+        </p>
+      </Link>
+    </div>
+  </div>
+);
+
+const RUNTIME_TAB = (
+  <div className="w-full relative rounded-md border border-lexum-border bg-lexum-panel/80 backdrop-blur-md shadow-sm flex flex-col md:flex-row min-h-full">
+    <div className="md:w-[45%] p-8 lg:p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-lexum-border">
+      <div className="text-blue-500 font-mono text-xs tracking-widest mb-4 uppercase">
+        03 / Runtime
+      </div>
+      <h2 className="text-2xl lg:text-3xl font-bold text-lexum-text mb-4 tracking-tight leading-tight">
+        Explore the Runtime.
+      </h2>
+      <p className="text-lexum-muted leading-relaxed text-base">
+        Dive deep into the self-healing orchestration engine, mailboxes, and
+        failure recovery loops.
+      </p>
+    </div>
+    <div className="md:w-[55%] grid grid-cols-1 md:grid-cols-2">
+      <Link
+        href="/docs/runtime-architecture"
+        className="group p-6 lg:p-8 md:border-b md:border-r border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">01</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          Architecture
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          High-level components and runtime engine.
+        </p>
+      </Link>
+      <Link
+        href="/docs/concurrency-model"
+        className="group p-6 lg:p-8 md:border-b border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">02</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          Concurrency
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Understand how Lexum handles parallel processing.
+        </p>
+      </Link>
+      <Link
+        href="/docs/mailbox-model"
+        className="group p-6 lg:p-8 md:border-r border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">03</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          Mailbox Model
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Asynchronous messaging and queueing.
+        </p>
+      </Link>
+      <Link
+        href="/docs/failure-recovery-loop"
+        className="group p-6 lg:p-8 border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">04</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">Recovery</h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Learn how the failure recovery loop works.
+        </p>
+      </Link>
+    </div>
+  </div>
+);
+
+const CLI_TAB = (
+  <div className="w-full relative rounded-md border border-lexum-border bg-lexum-panel/80 backdrop-blur-md shadow-sm flex flex-col md:flex-row min-h-full">
+    <div className="md:w-[45%] p-8 lg:p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-lexum-border">
+      <div className="text-blue-500 font-mono text-xs tracking-widest mb-4 uppercase">
+        04 / CLI
+      </div>
+      <h2 className="text-2xl lg:text-3xl font-bold text-lexum-text mb-4 tracking-tight leading-tight">
+        Explore the CLI.
+      </h2>
+      <p className="text-lexum-muted leading-relaxed text-base">
+        Command reference for compiling, diagnosing, and running your worker
+        pools.
+      </p>
+    </div>
+    <div className="md:w-[55%] grid grid-cols-1 md:grid-cols-2">
+      <Link
+        href="/docs/command-reference"
+        className="group p-6 lg:p-8 md:border-b md:border-r border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">01</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          Command Reference
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Complete list of Lexum CLI commands.
+        </p>
+      </Link>
+      <Link
+        href="/docs/cli-ux-philosophy"
+        className="group p-6 lg:p-8 md:border-b border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">02</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          UX Philosophy
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Our approach to developer tooling.
+        </p>
+      </Link>
+      <Link
+        href="/docs/observability-commands"
+        className="group p-6 lg:p-8 md:border-r border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">03</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">
+          Observability
+        </h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Commands to introspect running domains.
+        </p>
+      </Link>
+      <Link
+        href="/docs/lint-verify-usage"
+        className="group p-6 lg:p-8 border-lexum-border hover:bg-lexum-text/5 transition-colors flex flex-col"
+      >
+        <div className="text-lexum-muted/60 font-mono text-xs mb-3">04</div>
+        <h3 className="text-lexum-text font-semibold text-lg mb-2">Linting</h3>
+        <p className="text-lexum-muted text-sm leading-relaxed flex-1">
+          Usage of the verify and linting systems.
+        </p>
+      </Link>
+    </div>
+  </div>
+);
+
+const tabs: Tab[] = [
   {
     title: "Get Started",
     value: "get-started",
-    content: (
-      <div className="dh-card">
-        <div className="dh-card-header">
-          <span className="dh-chip">01 / Get Started</span>
-          <h2>Install &amp; run your first Lexum program.</h2>
-          <p>
-            Set up the toolchain, compile a domain definition, and watch the
-            runtime stabilise your first self-healing worker pool — in under
-            five minutes.
-          </p>
-        </div>
-        <div className="dh-card-grid">
-          <Link href="/docs/what-is-Lexum" className="dh-tile">
-            <span className="dh-tile-num">01</span>
-            <span className="dh-tile-title">Installation</span>
-            <span className="dh-tile-desc">Build from source or grab a pre-built binary.</span>
-          </Link>
-          <Link href="/docs/hello-stability" className="dh-tile">
-            <span className="dh-tile-num">02</span>
-            <span className="dh-tile-title">Quick Start</span>
-            <span className="dh-tile-desc">Write and run your first <code>domain</code> in 60 seconds.</span>
-          </Link>
-          <Link href="/docs/domains" className="dh-tile">
-            <span className="dh-tile-num">03</span>
-            <span className="dh-tile-title">Core Concepts</span>
-            <span className="dh-tile-desc">Understand state, goals, transitions, and effects.</span>
-          </Link>
-          <Link href="/docs/priority-scheduling-example" className="dh-tile">
-            <span className="dh-tile-num">04</span>
-            <span className="dh-tile-title">Examples</span>
-            <span className="dh-tile-desc">Real-world worker-pool, scheduler, and journal demos.</span>
-          </Link>
-        </div>
-      </div>
-    ),
+    content: GET_STARTED_TAB,
   },
   {
     title: "Language Guide",
     value: "language-guide",
-    content: (
-      <div className="dh-card">
-        <div className="dh-card-header">
-          <span className="dh-chip">02 / Language Guide</span>
-          <h2>The Lexum language reference.</h2>
-          <p>
-            Every keyword, type, and construct — explained with worked examples
-            and the compiler error codes you will encounter along the way.
-          </p>
-        </div>
-        <div className="dh-card-grid">
-          <Link href="/docs/syntax-modes" className="dh-tile">
-            <span className="dh-tile-num">01</span>
-            <span className="dh-tile-title">Syntax</span>
-            <span className="dh-tile-desc">File layout, keywords, and grammar fundamentals.</span>
-          </Link>
-          <Link href="/docs/goals-and-convergence" className="dh-tile">
-            <span className="dh-tile-num">02</span>
-            <span className="dh-tile-title">State &amp; Goals</span>
-            <span className="dh-tile-desc">Declare persistent state and predicate-based goals.</span>
-          </Link>
-          <Link href="/docs/transitions-and-slices" className="dh-tile">
-            <span className="dh-tile-num">03</span>
-            <span className="dh-tile-title">Transitions</span>
-            <span className="dh-tile-desc">Deterministic step functions and effect emission.</span>
-          </Link>
-          <Link href="/docs/type-system-overview" className="dh-tile">
-            <span className="dh-tile-num">04</span>
-            <span className="dh-tile-title">Type System</span>
-            <span className="dh-tile-desc">Primitives, records, and authority-bounded access.</span>
-          </Link>
-        </div>
-      </div>
-    ),
+    content: LANGUAGE_GUIDE_TAB,
   },
   {
     title: "Runtime",
     value: "runtime",
-    content: (
-      <div className="dh-card">
-        <div className="dh-card-header">
-          <span className="dh-chip">03 / Runtime</span>
-          <h2>The deterministic execution engine.</h2>
-          <p>
-            Understand how the scheduler, interpreter, gas model, and snapshot
-            journal work together to give you reproducible, crash-safe
-            orchestration.
-          </p>
-        </div>
-        <div className="dh-card-grid">
-          <Link href="/docs/deterministic-scheduler" className="dh-tile">
-            <span className="dh-tile-num">01</span>
-            <span className="dh-tile-title">Scheduler</span>
-            <span className="dh-tile-desc">Priority aging, starvation control, quiescence detection.</span>
-          </Link>
-          <Link href="/docs/execution-dag" className="dh-tile">
-            <span className="dh-tile-num">02</span>
-            <span className="dh-tile-title">Interpreter</span>
-            <span className="dh-tile-desc">Gas-bounded slice execution and safe state yielding.</span>
-          </Link>
-          <Link href="/docs/persistent-snapshot-engine" className="dh-tile">
-            <span className="dh-tile-num">03</span>
-            <span className="dh-tile-title">State Journal</span>
-            <span className="dh-tile-desc">Write-ahead log, snapshot / restore, and replay.</span>
-          </Link>
-          <Link href="/docs/quiescence-detection" className="dh-tile">
-            <span className="dh-tile-num">04</span>
-            <span className="dh-tile-title">Reconciliation</span>
-            <span className="dh-tile-desc">AST-bound autonomous recovery strategies.</span>
-          </Link>
-        </div>
-      </div>
-    ),
+    content: RUNTIME_TAB,
   },
   {
     title: "CLI",
     value: "cli",
-    content: (
-      <div className="dh-card">
-        <div className="dh-card-header">
-          <span className="dh-chip">04 / CLI</span>
-          <h2>Operate Lexum from the terminal.</h2>
-          <p>
-            Compile, run, inspect execution traces, and integrate the runtime
-            into CI pipelines — everything exposed through a single binary.
-          </p>
-        </div>
-        <div className="dh-card-grid">
-          <Link href="/docs/command-reference" className="dh-tile">
-            <span className="dh-tile-num">01</span>
-            <span className="dh-tile-title">Lexum build</span>
-            <span className="dh-tile-desc">Compile <code>.lxm</code> source to <code>.lxmc</code> bytecode.</span>
-          </Link>
-          <Link href="/docs/lint-verify-usage" className="dh-tile">
-            <span className="dh-tile-num">02</span>
-            <span className="dh-tile-title">Lexum run</span>
-            <span className="dh-tile-desc">Execute a compiled artifact in the runtime sandbox.</span>
-          </Link>
-          <Link href="/docs/deterministic-replay-debugging" className="dh-tile">
-            <span className="dh-tile-num">03</span>
-            <span className="dh-tile-title">Lexum trace</span>
-            <span className="dh-tile-desc">Inspect execution traces and determinism hashes.</span>
-          </Link>
-          <Link href="/docs/observability-commands" className="dh-tile">
-            <span className="dh-tile-num">04</span>
-            <span className="dh-tile-title">Lexum check</span>
-            <span className="dh-tile-desc">Run the compiler in lint-only mode for CI gates.</span>
-          </Link>
-        </div>
-      </div>
-    ),
+    content: CLI_TAB,
   },
 ];
 
-function FadeInStack({
-  tabs,
-  hovering,
-}: Readonly<{ tabs: DocsTab[]; hovering: boolean }>) {
+export default function DocsIndex() {
   return (
-    <div className="dh-stack-container">
-      {tabs.map((tab, idx) => (
-        <motion.div
-          key={tab.value}
-          layoutId={tab.value}
-          style={{
-            scale: 1 - idx * 0.05,
-            top: hovering ? idx * -20 : 0,
-            zIndex: -idx,
-            opacity: idx < 3 ? 1 - idx * 0.18 : 0,
-          }}
-          animate={{ y: 0 }}
-          transition={
-            idx === 0
-              ? { type: "spring", bounce: 0.3, duration: 0.65 }
-              : { type: "spring", bounce: 0, duration: 0.4 }
-          }
-          className="dh-stack-frame"
-        >
-          {tab.content}
-        </motion.div>
-      ))}
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────
-   Tabs  — spring-pill bar + stacked content orchestrator
-───────────────────────────────────────────────────────────── */
-
-function DocsTabs({ tabs }: Readonly<{ tabs: DocsTab[] }>) {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [hovering, setHovering] = useState(false);
-
-  const reordered: DocsTab[] = [
-    tabs[activeIdx],
-    ...tabs.filter((_, i) => i !== activeIdx),
-  ];
-
-  return (
-    <div
-      className="dh-tabs-root"
-      onMouseEnter={() => setHovering(true)}
-      onMouseLeave={() => setHovering(false)}
-    >
-      {/* Spring-pill tab bar */}
-      <div className="dh-tab-bar" role="tablist" aria-label="Documentation sections">
-        {tabs.map((tab, idx) => {
-          const isActive = idx === activeIdx;
-          return (
-            <button
-              key={tab.value}
-              role="tab"
-              aria-selected={isActive}
-              aria-controls={`dh-panel-${tab.value}`}
-              id={`dh-tab-${tab.value}`}
-              onClick={() => setActiveIdx(idx)}
-              className={`dh-tab-btn${isActive ? " dh-tab-btn--active" : ""}`}
-            >
-              {isActive && (
-                <motion.span
-                  layoutId="dh-active-pill"
-                  className="dh-active-pill"
-                  transition={{ type: "spring", bounce: 0.28, duration: 0.55 }}
-                  aria-hidden="true"
-                />
-              )}
-              <span className="dh-tab-label">{tab.title}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Stacked panels */}
-      <FadeInStack tabs={reordered} hovering={hovering} />
-    </div>
-  );
-}
-
-export default function DocsHome() {
-  return (
-    <div className="docs-content dh-content-span">
-      <div className="docs-content-inner dh-home">
-
-        {/* Hero */}
-        <section className="dh-hero">
-          <p className="dh-eyebrow">Lexum Documentation</p>
-          <h1 className="dh-hero-title">
-            Deterministic orchestration.<br />
-            deeply documented.
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-10 min-h-[calc(100vh-64px)] flex flex-col">
+      <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
+        <header className="mb-12 border-b border-lexum-border pb-8">
+          <p className="text-tag text-lexum-muted mb-3">Lexum Documentation</p>
+          <h1 className="text-display-2 text-lexum-text mb-3">
+            Deterministic orchestration. <br /> Deeply Documented.
           </h1>
-          <p className="dh-hero-sub">
+          <p className="text-lexum-muted max-w-3xl leading-relaxed">
             Everything you need to understand, operate, and extend the Lexum
             runtime. From first principles to production.
           </p>
-        </section>
+        </header>
 
-        {/* Animated Tab Explorer */}
-        <section aria-label="Documentation explorer">
-          <DocsTabs tabs={DOCS_TABS} />
-        </section>
+        <div className="mb-16">
+          <AnimatedTabs tabs={tabs} containerClassName="gap-2 mb-12" />
+        </div>
 
-        {/* Quick-links strip */}
-        <nav className="dh-strip" aria-label="Quick links">
+        {/* Bottom Nav Links */}
+        <div className="mt-auto grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0 md:border-t md:border-lexum-border pt-12 md:pt-16">
           <a
-            href="https://github.com/lexumhq"
+            href="https://github.com/lexumhq/lexum"
             target="_blank"
             rel="noopener noreferrer"
-            className="dh-strip-link"
+            className="flex items-center justify-center md:justify-start gap-3 p-4 md:p-0 text-lexum-muted hover:text-lexum-text transition-colors group"
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.083-.729.083-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z" />
-            </svg>
-            GitHub
+            <GithubIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <span className="font-mono text-sm tracking-widest uppercase">
+              Github
+            </span>
           </a>
           <a
             href="https://github.com/lexumhq/lexum/issues"
             target="_blank"
             rel="noopener noreferrer"
-            className="dh-strip-link"
+            className="flex items-center justify-center md:justify-start gap-3 p-4 md:p-0 text-lexum-muted hover:text-lexum-text transition-colors group md:border-l md:border-lexum-border md:pl-8"
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
-            </svg>
-            Issues
+            <AlertCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <span className="font-mono text-sm tracking-widest uppercase">
+              Issues
+            </span>
           </a>
-          <Link href="/docs/roadmap" className="dh-strip-link">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-            </svg>
-            Roadmap
-          </Link>
-          <Link href="/docs/contributing-guide" className="dh-strip-link">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-            Contributing
-          </Link>
-        </nav>
-
+          <a
+            href="/docs/roadmap"
+            className="flex items-center justify-center md:justify-start gap-3 p-4 md:p-0 text-lexum-muted hover:text-lexum-text transition-colors group md:border-l md:border-lexum-border md:pl-8"
+          >
+            <Map className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <span className="font-mono text-sm tracking-widest uppercase">
+              Roadmap
+            </span>
+          </a>
+          <a
+            href="/docs/contributing-guide"
+            className="flex items-center justify-center md:justify-start gap-3 p-4 md:p-0 text-lexum-muted hover:text-lexum-text transition-colors group md:border-l md:border-lexum-border md:pl-8"
+          >
+            <Users className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <span className="font-mono text-sm tracking-widest uppercase">
+              Contributing
+            </span>
+          </a>
+        </div>
       </div>
     </div>
   );

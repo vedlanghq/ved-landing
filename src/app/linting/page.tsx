@@ -3,16 +3,28 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import BackgroundShapes from "@/components/BackgroundShapes";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { AccordionItem } from "@/components/AccordionItem";
 
 const LINT_CATEGORIES = [
-  { title: "Unbounded Retry Loops", desc: "Lexum flags retries on best-effort networks without strict upper limits or backoff guarantees." },
-  { title: "State Domain Mishandling", desc: "Catches confusion between transient cache states and fatal persistent storage bounds." },
-  { title: "Non-idempotent Cross-Boundary Payloads", desc: "Warns when emitting network IO that isn't guaranteed to be idempotent across failure boundaries." },
-  { title: "Implicit Authority Downgrades", desc: "Flags when high-authority domains pass unsanitized references down to lower scopes." }
+  {
+    title: "Unbounded Retry Loops",
+    desc: "Lexum flags retries on best-effort networks without strict upper limits or backoff guarantees.",
+  },
+  {
+    title: "State Domain Mishandling",
+    desc: "Catches confusion between transient cache states and fatal persistent storage bounds.",
+  },
+  {
+    title: "Non-idempotent Cross-Boundary Payloads",
+    desc: "Warns when emitting network IO that isn't guaranteed to be idempotent across failure boundaries.",
+  },
+  {
+    title: "Implicit Authority Downgrades",
+    desc: "Flags when high-authority domains pass unsanitized references down to lower scopes.",
+  },
 ];
 
 function LintCategoryAccordions() {
@@ -26,7 +38,9 @@ function LintCategoryAccordions() {
           solution={item.desc}
           labelB="Lint target:"
           isOpen={openKey === item.title}
-          onToggle={() => setOpenKey(openKey === item.title ? null : item.title)}
+          onToggle={() =>
+            setOpenKey(openKey === item.title ? null : item.title)
+          }
         />
       ))}
     </>
@@ -55,123 +69,201 @@ export default function LintingSystem() {
 
   return (
     <>
-      <BackgroundShapes />
       <Header />
-      
-      <main>
-        <section className="hero-section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '100px' }}>
-          <div style={{ width: '100%' }}>
-            <motion.div
-              variants={staggerContainer}
-              initial="initial"
-              animate="animate"
-              className="hero-text"
-              style={{ textAlign: 'center', margin: '0 auto', maxWidth: '1200px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-            >
-              <motion.div className="label" variants={itemFade} style={{ color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "2rem", fontWeight: 600 }}>Lexum Diagnostics</motion.div>
-              <motion.h1 variants={itemFade} style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', lineHeight: 1.1, letterSpacing: '-0.02em', maxWidth: '100%', padding: '0 1rem', wordBreak: 'break-word', overflowWrap: 'break-word', hyphens: 'auto' }}>
-                Lints for control plane idioms.
-              </motion.h1>
 
-              <motion.p className="sub-text" variants={itemFade} style={{ margin: '2.5rem auto 0', fontSize: 'clamp(1.2rem, 2.5vw, 1.6rem)', maxWidth: '800px', color: 'var(--text-muted)', lineHeight: 1.6, padding: '0 1rem' }}>
-                Not just formatting. Static analysis tailored for distributed execution and robustness.
-              </motion.p>
-            </motion.div>
+      <main className="flex-1 bg-lexum-bg overflow-hidden">
+        <section className="hero-section">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <div>
+              <motion.div
+                variants={staggerContainer}
+                initial="initial"
+                animate="animate"
+                className="grid-layout"
+              >
+                <motion.div
+                  className="col-span-12 text-tag text-lexum-accent tracking-widest mb-4 uppercase"
+                  variants={itemFade}
+                >
+                  Lexum Diagnostics
+                </motion.div>
+                <motion.h1
+                  variants={itemFade}
+                  className="col-span-12 md:col-span-8 text-display-1 text-lexum-text mb-6"
+                >
+                  Lints for <span className="text-lexum-accent">Control Plane idioms.</span>
+                </motion.h1>
+
+                <motion.p
+                  variants={itemFade}
+                  className="col-span-12 md:col-span-6 text-mono-body text-lexum-text mb-10"
+                >
+                  Not just formatting. Static analysis tailored for distributed
+                  execution and robustness.
+                </motion.p>
+              </motion.div>
+            </div>
           </div>
         </section>
 
-        <section className="content-section" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
-          <div className="two-col-grid">
-            <motion.div className="col-text" {...fadeUp}>
-              <h2>Idiomatic Robustness</h2>
-            </motion.div>
+        <section className="content-section bg-(--section-2)">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="two-col-grid align-top">
+              <motion.div
+                className="col-span-12 md:col-span-4 lg:col-span-5"
+                {...fadeUp}
+              >
+                <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6">
+                  Idiomatic Robustness
+                </h2>
+              </motion.div>
 
+              <motion.div
+                className="col-span-12 md:col-span-8 lg:col-span-7"
+                {...fadeUp}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.8,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <p className="text-lexum-muted leading-relaxed mb-6">
+                  Linting isn&apos;t a stylistic suggestion in Lexum. It&apos;s
+                  a proactive defense against emergent chaos. Lints catch
+                  antipatterns that cause systemic failures rather than local
+                  crashes.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="content-section bg-(--section-3)">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="two-col-grid align-top">
+              <motion.div
+                className="col-span-12 md:col-span-4 lg:col-span-5"
+                {...fadeUp}
+              >
+                <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6">
+                  Actionable Lints
+                </h2>
+              </motion.div>
+
+              <motion.div
+                className="col-span-12 md:col-span-8 lg:col-span-7"
+                {...fadeUp}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.8,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <div className="accordion-group">
+                  <LintCategoryAccordions />
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="content-section bg-(--section-2)">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div className="two-col-grid align-top">
+              <motion.div
+                className="col-span-12 md:col-span-4 lg:col-span-5"
+                {...fadeUp}
+              >
+                <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6">
+                  Auto-Remediation
+                </h2>
+              </motion.div>
+
+              <motion.div
+                className="col-span-12 md:col-span-8 lg:col-span-7"
+                {...fadeUp}
+                transition={{
+                  delay: 0.1,
+                  duration: 0.8,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <p className="text-lexum-muted leading-relaxed mb-6">
+                  Where possible, `Lexum fmt` and `Lexum fix` apply
+                  standardized, community-proven transformations to code. The
+                  objective is frictionless compliance with distributed system
+                  best practices.
+                </p>
+                <div className="command-breakdown">
+                  <div>
+                    <div>
+                      <code>Lexum fix</code>
+                    </div>
+                    <div>
+                      Executes the deterministic static analysis engine.
+                    </div>
+                  </div>
+                  <div>
+                    <div>
+                      <code>--apply</code>
+                    </div>
+                    <div>
+                      Automatically resolves safe structural violations.
+                    </div>
+                  </div>
+                  <div>
+                    <div>
+                      <code>--all</code>
+                    </div>
+                    <div>
+                      Traverses all domain boundaries and goal configurations.
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-24 border-b border-lexum-border bg-(--section-1)">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <motion.div
-              className="col-text"
               {...fadeUp}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-center flex flex-col items-center"
             >
-              <p>
-                Linting isn&apos;t a stylistic suggestion in Lexum. It&apos;s a proactive defense against emergent chaos. Lints catch antipatterns that cause systemic failures rather than local crashes.
+              <h2 className="text-2xl text-lexum-text font-semibold tracking-tight border-b border-lexum-border pb-2 mb-6 inline-block">
+                The Developer Experience
+              </h2>
+              <p className="text-lexum-muted leading-relaxed mb-6 max-w-2xl mx-auto">
+                Read about how the CLI unifies all diagnostic tools into a
+                single, cohesive interface.
               </p>
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="content-section">
-          <div className="two-col-grid">
-            <motion.div className="col-text" {...fadeUp}>
-              <h2>Actionable Lints</h2>
-            </motion.div>
-
-            <motion.div
-              className="col-text"
-              {...fadeUp}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="accordion-group" style={{ margin: "1rem 0" }}>
-                <LintCategoryAccordions />
+              <div className="mt-8 flex justify-center gap-4">
+                <Link
+                  href="/cli"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 font-mono text-sm font-medium transition-all duration-300 bg-lexum-accent text-lexum-text hover:bg-lexum-text hover:text-lexum-bg rounded hover:scale-105 hover:shadow-[0_0_30px_rgba(255,69,0,0.6)] overflow-hidden"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    CLI UX Philosophy
+                    <svg
+                      className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
+                    </svg>
+                  </span>
+                </Link>
               </div>
             </motion.div>
           </div>
         </section>
-
-        <section className="content-section" style={{ background: "rgba(255, 255, 255, 0.02)" }}>
-          <div className="two-col-grid">
-            <motion.div className="col-text" {...fadeUp}>
-              <h2>Auto-Remediation</h2>
-            </motion.div>
-
-            <motion.div
-              className="col-text"
-              {...fadeUp}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <p>
-                Where possible, `Lexum fmt` and `Lexum fix` apply standardized, community-proven transformations to code. The objective is frictionless compliance with distributed system best practices.
-              </p>
-              <div className="command-breakdown" style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
-                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', flex: '1 1 auto', textAlign: 'center' }}>
-                    <code style={{ color: 'var(--accent)', fontWeight: 600, fontSize: '1.1rem' }}>Lexum fix</code>
-                  </div>
-                  <div style={{ padding: '1rem', color: 'var(--text-muted)', flex: '3 1 200px' }}>
-                    Executes the deterministic static analysis engine.
-                  </div>
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
-                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', flex: '1 1 auto', textAlign: 'center' }}>
-                    <code style={{ color: 'var(--text-main)', fontSize: '1.1rem' }}>--apply</code>
-                  </div>
-                  <div style={{ padding: '1rem', color: 'var(--text-muted)', flex: '3 1 200px' }}>
-                    Automatically resolves safe structural violations.
-                  </div>
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: '6px', overflow: 'hidden' }}>
-                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.02)', borderRight: '1px solid var(--border)', minWidth: '120px', flex: '1 1 auto', textAlign: 'center' }}>
-                    <code style={{ color: 'var(--text-main)', fontSize: '1.1rem' }}>--all</code>
-                  </div>
-                  <div style={{ padding: '1rem', color: 'var(--text-muted)', flex: '3 1 200px' }}>
-                    Traverses all domain boundaries and goal configurations.
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="content-section" style={{ textAlign: "center" }}>
-          <motion.div {...fadeUp} style={{ maxWidth: "600px", margin: "0 auto" }}>
-            <h2>The Developer Experience</h2>
-            <p style={{ fontSize: "1.2rem", color: "var(--text-muted)", margin: "1.5rem 0" }}>
-              Read about how the CLI unifies all diagnostic tools into a single, cohesive interface.
-            </p>
-            <Link href="/cli" className="btn btn-primary">
-              CLI UX Philosophy
-            </Link>
-          </motion.div>
-        </section>
-
       </main>
 
       <Footer />

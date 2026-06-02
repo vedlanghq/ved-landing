@@ -1,4 +1,4 @@
-name: Ved Landing Deploy
+name: Lexum Landing Deploy
 
 on:
   push:
