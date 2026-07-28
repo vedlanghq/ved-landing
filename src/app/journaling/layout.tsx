@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Cryptographic Journaling",
+  alternates: {
+    canonical: "https://lexumhq.netlify.app/journaling",
+  },
   description:
     "Every state transition in Lexum is hashed and appended to a cryptographic journal, ensuring 100% auditability and deterministic replayability.",
   openGraph: {

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Zero-Trust Effects",
+  alternates: {
+    canonical: "https://lexumhq.netlify.app/effects",
+  },
   description:
     "I/O is an intent. Effects are never executed imperatively; they are declared, tracked, and dispatched exclusively under strict capabilities.",
   openGraph: {

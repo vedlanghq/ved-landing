@@ -10,6 +10,9 @@ export const metadata: Metadata = {
     template: "%s | Lexum",
     default: "Lexum | Deterministic Control-Plane Language",
   },
+  alternates: {
+    canonical: "/",
+  },
   description:
     "A radically deterministic, statically typed programming language built for zero-trust, high-assurance control-plane operations.",
   keywords: [

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
+  alternates: {
+    canonical: "https://lexumhq.netlify.app/terms",
+  },
   description:
     "Terms of Service for Lexum HQ. Read the rules and guidelines for using the Lexum website and tools.",
   openGraph: {

@@ -1,7 +1,28 @@
 {
-  "name": "web",
+  "name": "lexumhq",
+  "displayName": "Lexum",
+  "description": "Lexum is a deterministic, declarative systems programming language designed for engineering reliable, long-lived distributed system evolutions.",
   "version": "0.1.0",
+  "publisher": "Aniket Raj",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lexumhq"
+  },
+  "bugs": {
+    "url": "https://github.com/lexumhq/lexum/issues"
+  },
+  "homepage": "https://lexumhq.netlify.app/",
   "private": true,
+  "categories": [
+    "Programming Languages",
+    "Language Packs"
+  ],
+  "keywords": [
+    "lexum",
+    "control-plane",
+    "distributed-systems",
+    "deterministic"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

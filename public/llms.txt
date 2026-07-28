@@ -1,0 +1,36 @@
+# Lexum Programming Language
+
+Lexum is a radically deterministic, statically typed programming language built specifically for zero-trust, high-assurance control-plane operations. It is designed to replace chaotic imperative scripting with predictable, mathematically sound convergence.
+
+## Core Philosophy
+
+- **Math, not magic**: Build systems that converge predictably.
+- **Determinism**: The execution model guarantees that identical states and inputs will always produce identical outcomes, completely eliminating race conditions and non-deterministic side effects.
+- **Zero-Trust**: Built-in capabilities and authority isolation ensure that domains can only access explicitly permitted resources.
+- **Control-Plane Focus**: Optimized for orchestrating distributed systems, managing state, and enforcing invariants.
+
+## Architecture
+
+Lexum systems are composed of **Domains**, which are isolated state machines. Domains communicate via asynchronous messaging and transitions. 
+
+Key constructs include:
+- `domain`: An isolated unit of state and logic.
+- `state`: The strongly-typed data structure representing the domain's state.
+- `transition`: Atomic state mutations that are evaluated deterministically.
+- `invariant`: Mathematical proofs that the compiler and runtime enforce to guarantee system correctness.
+- `goal`: Declarative target states that the system will autonomously attempt to reconcile.
+- `capability`: Security boundaries and permission elevations.
+
+## Getting Started
+
+Lexum provides a unified CLI toolchain for compiling, simulating, and verifying your deterministic systems without requiring external plugins or messy dependencies.
+
+To learn more, explore the documentation on our website:
+- **CLI & Toolchain**: https://lexumhq.netlify.app/cli
+- **Determinism**: https://lexumhq.netlify.app/determinism
+- **Convergence Engine**: https://lexumhq.netlify.app/convergence
+- **Journaling & Tracing**: https://lexumhq.netlify.app/journaling
+
+## SEO & Web Setup
+
+This file `llms.txt` is provided to assist AI agents and language models in understanding the context and purpose of Lexum when crawling `lexumhq.netlify.app`. 

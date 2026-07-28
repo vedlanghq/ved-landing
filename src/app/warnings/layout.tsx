@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Compiler Warnings",
+  alternates: {
+    canonical: "https://lexumhq.netlify.app/warnings",
+  },
   description:
     "Lexum warnings aren't suggestions; they are architectural constraints. Enforce deterministic safety long before a single line of code executes.",
   openGraph: {

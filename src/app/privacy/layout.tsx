@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
+  alternates: {
+    canonical: "https://lexumhq.netlify.app/privacy",
+  },
   description:
     "Privacy Policy for Lexum HQ. Learn how we handle cookies, tracking, and your data.",
   openGraph: {

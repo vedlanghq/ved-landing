@@ -241,7 +241,7 @@ export function Footer() {
               </MagneticButton>
               <MagneticButton>
                 <a
-                  href="https://twitter.com"
+                  href="https://x.com/aniketfoundry"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center w-12 h-12 rounded-full bg-lexum-bg/60 border border-lexum-border hover:border-lexum-accent hover:text-lexum-accent text-lexum-muted transition-colors"

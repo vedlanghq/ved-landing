@@ -13,6 +13,9 @@ export const metadata: Metadata = {
       "Explore the Lexum documentation. Learn how to write deterministic control-plane logic, manage state, and build self-healing distributed systems.",
     url: "https://lexumhq.netlify.app/docs",
   },
+  alternates: {
+    canonical: "https://lexumhq.netlify.app/docs",
+  },
 };
 
 const GithubIcon = ({ className }: { className?: string }) => (
@@ -317,9 +320,38 @@ const tabs: Tab[] = [
   },
 ];
 
-export default function DocsIndex() {
+import Script from "next/script";
+
+export default function DocsPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://lexumhq.netlify.app/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Documentation",
+        "item": "https://lexumhq.netlify.app/docs"
+      }
+    ]
+  };
+
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-10 min-h-[calc(100vh-64px)] flex flex-col">
+    <div className="flex-1 bg-lexum-bg min-h-screen">
+      <Script
+        id="schema-org-breadcrumbs"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      
+      {/* Decorative background elements */}
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-10 min-h-[calc(100vh-64px)] flex flex-col">
       <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
         <header className="mb-12 border-b border-lexum-border pb-8">
           <p className="text-tag text-lexum-muted mb-3">Lexum Documentation</p>
@@ -378,6 +410,7 @@ export default function DocsIndex() {
               Contributing
             </span>
           </a>
+        </div>
         </div>
       </div>
     </div>

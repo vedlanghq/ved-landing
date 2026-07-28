@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Unified Workflow & CLI",
+  alternates: {
+    canonical: "https://lexumhq.netlify.app/cli",
+  },
   description:
     "A single binary toolchain for Lexum. Compile, simulate, verify, and test your deterministic system without messy plugins or external dependencies.",
   openGraph: {
